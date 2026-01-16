@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "title": "NextJS বয়লারপ্লেট",
+    "desc": "আধুনিক Next.js অ্যাপ্লিকেশনের জন্য ওপেন-সোর্স বয়লারপ্লেট, যেখানে React, TypeScript, Tailwind CSS এবং TanStack Query রয়েছে।"
+  },
+  "localeSwitcher": {
+    "label": "Change language",
+    "locale": "{locale, select, bn {Bangla} en {English} other {Unknown}}"
+  },
+  "homePage": {
+    "title": "NextJS বয়লারপ্লেট",
+    "desc": "আধুনিক Next.js অ্যাপ্লিকেশনের জন্য ওপেন-সোর্স বয়লারপ্লেট, যেখানে React, TypeScript, Tailwind CSS এবং TanStack Query রয়েছে।"
+  }
+}
