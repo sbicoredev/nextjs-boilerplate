@@ -3,6 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { SUPPORTED_LOCALES } from "~/constants/i18n";
 
 import { LocaleSwitcherSelect } from "./locale-switcher-select";
+import { SelectItem } from "./ui/select";
 
 export const LocaleSwitcher = () => {
   const t = useTranslations("localeSwitcher");
@@ -11,9 +12,9 @@ export const LocaleSwitcher = () => {
   return (
     <LocaleSwitcherSelect defaultValue={locale} label={t("label")}>
       {SUPPORTED_LOCALES.map((cur) => (
-        <option key={cur} value={cur}>
+        <SelectItem key={cur} value={cur}>
           {t("locale", { locale: cur })}
-        </option>
+        </SelectItem>
       ))}
     </LocaleSwitcherSelect>
   );

@@ -1,7 +1,6 @@
 import { NextIntlClientProvider } from "next-intl";
+import { ThemeProvider } from "next-themes";
 import type { PropsWithChildren } from "react";
-
-import { LocaleSwitcher } from "./locale-switcher";
 
 type Props = PropsWithChildren & {
   locale: string;
@@ -10,8 +9,9 @@ type Props = PropsWithChildren & {
 export const Providers = ({ children, locale }: Props) => {
   return (
     <NextIntlClientProvider locale={locale}>
-      <LocaleSwitcher />
-      {children}
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        {children}
+      </ThemeProvider>
     </NextIntlClientProvider>
   );
 };

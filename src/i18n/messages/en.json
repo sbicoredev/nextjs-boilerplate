@@ -4,7 +4,7 @@
     "desc": "Open-source boilerplate for modern Next.js applications, featuring React, TypeScript, Tailwind CSS, and TanStack Query."
   },
   "localeSwitcher": {
-    "label": "Change language",
+    "label": "Language",
     "locale": "{locale, select, bn {Bangla} en {English} other {Unknown}}"
   },
   "homePage": {
