@@ -1,9 +1,10 @@
 "use client";
 
-import { type ChangeEvent, type ReactNode, useTransition } from "react";
+import { type ReactNode, useTransition } from "react";
 
 import { setLocale } from "~/actions/locale";
-import { cn } from "~/lib/utils";
+
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 
 type Props = {
   children: ReactNode;
@@ -14,30 +15,22 @@ type Props = {
 export const LocaleSwitcherSelect = ({ children, defaultValue, label }: Props) => {
   const [isPending, startTransition] = useTransition();
 
-  function onSelectChange(event: ChangeEvent<HTMLSelectElement>) {
-    const nextLocale = event.target.value as string;
+  function onSelectChange(value: string) {
     startTransition(() => {
-      setLocale(nextLocale);
+      setLocale(value);
     });
   }
 
   return (
-    <label
-      className={cn(
-        "relative text-gray-400",
-        isPending && "transition-opacity disabled:opacity-30",
-      )}
+    <Select
+      value={defaultValue}
+      disabled={isPending}
+      onValueChange={(e) => onSelectChange(e as string)}
     >
-      <p className="sr-only">{label}</p>
-      <select
-        className="inline-flex appearance-none bg-transparent py-3 pr-6 pl-2"
-        defaultValue={defaultValue}
-        disabled={isPending}
-        onChange={onSelectChange}
-      >
-        {children}
-      </select>
-      <span className="pointer-events-none absolute top-2 right-2">⌄</span>
-    </label>
+      <SelectTrigger size="sm">
+        <SelectValue placeholder={label} />
+      </SelectTrigger>
+      <SelectContent>{children}</SelectContent>
+    </Select>
   );
 };

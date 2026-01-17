@@ -32,13 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={locale}>
-      <body
-        className={cn(
-          "flex min-h-screen w-full flex-col antialiased",
-          libre_franklin.variable,
-          roboto.variable,
-        )}
-      >
+      <body className={cn(libre_franklin.variable, roboto.variable)}>
         <Providers locale={locale}>{children}</Providers>
       </body>
     </html>
