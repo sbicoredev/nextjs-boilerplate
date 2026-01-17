@@ -9,6 +9,7 @@ import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
 import { LocaleSwitcher } from "./locale-switcher";
+import { ThemeToggle } from "./theme-toggle";
 
 const menuItems = [
   { name: "Features", href: "#link" },
@@ -103,15 +104,6 @@ export const HeroHeader = () => {
                 >
                   <span>Sign Up</span>
                 </Button>
-                <LocaleSwitcher />
-                <Button
-                  size="sm"
-                  className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
-                  render={<Link href="#" />}
-                  nativeButton={false}
-                >
-                  <LocaleSwitcher />
-                </Button>
                 <Button
                   size="sm"
                   className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
@@ -120,6 +112,8 @@ export const HeroHeader = () => {
                 >
                   <span>Get Started</span>
                 </Button>
+                <LocaleSwitcher />
+                <ThemeToggle />
               </div>
             </div>
           </div>

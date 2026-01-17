@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const locale = await getLocale();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body className={cn(libre_franklin.variable, roboto.variable)}>
         <Providers locale={locale}>{children}</Providers>
       </body>
