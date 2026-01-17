@@ -33,6 +33,9 @@
             "functions": ["clsx", "cva", "cn"]
           }
         }
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
       }
     },
     "domains": {
