@@ -44,42 +44,6 @@ export const HeroSection = () => {
         </div>
         <section>
           <div className="relative pt-24 md:pt-36">
-            <AnimatedGroup
-              variants={{
-                container: {
-                  visible: {
-                    transition: {
-                      delayChildren: 1,
-                    },
-                  },
-                },
-                item: {
-                  hidden: {
-                    opacity: 0,
-                    y: 20,
-                  },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      type: "spring",
-                      bounce: 0.3,
-                      duration: 2,
-                    },
-                  },
-                },
-              }}
-              className="mask-b-from-35% mask-b-to-90% absolute inset-0 top-56 -z-20 lg:top-32"
-            >
-              <Image
-                src="https://ik.imagekit.io/lrigu76hy/tailark/night-background.jpg?updatedAt=1745733451120"
-                alt="background"
-                className="hidden size-full dark:block"
-                width="3276"
-                height="4095"
-              />
-            </AnimatedGroup>
-
             <div
               aria-hidden
               className="absolute inset-0 -z-10 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,var(--color-background)_75%)]"
@@ -221,6 +185,7 @@ export const HeroSection = () => {
                   src="https://html.tailus.io/blocks/customers/nvidia.svg"
                   alt="Nvidia Logo"
                   height="20"
+                  width="20"
                 />
               </div>
 
@@ -230,6 +195,7 @@ export const HeroSection = () => {
                   src="https://html.tailus.io/blocks/customers/column.svg"
                   alt="Column Logo"
                   height="16"
+                  width="20"
                 />
               </div>
               <div className="flex">
@@ -238,6 +204,7 @@ export const HeroSection = () => {
                   src="https://html.tailus.io/blocks/customers/github.svg"
                   alt="GitHub Logo"
                   height="16"
+                  width="20"
                 />
               </div>
               <div className="flex">
@@ -246,6 +213,7 @@ export const HeroSection = () => {
                   src="https://html.tailus.io/blocks/customers/nike.svg"
                   alt="Nike Logo"
                   height="20"
+                  width="20"
                 />
               </div>
               <div className="flex">
@@ -254,6 +222,7 @@ export const HeroSection = () => {
                   src="https://html.tailus.io/blocks/customers/lemonsqueezy.svg"
                   alt="Lemon Squeezy Logo"
                   height="20"
+                  width="20"
                 />
               </div>
               <div className="flex">
@@ -262,6 +231,7 @@ export const HeroSection = () => {
                   src="https://html.tailus.io/blocks/customers/laravel.svg"
                   alt="Laravel Logo"
                   height="16"
+                  width="20"
                 />
               </div>
               <div className="flex">
@@ -270,6 +240,7 @@ export const HeroSection = () => {
                   src="https://html.tailus.io/blocks/customers/lilly.svg"
                   alt="Lilly Logo"
                   height="28"
+                  width="20"
                 />
               </div>
 
@@ -279,6 +250,7 @@ export const HeroSection = () => {
                   src="https://html.tailus.io/blocks/customers/openai.svg"
                   alt="OpenAI Logo"
                   height="24"
+                  width="20"
                 />
               </div>
             </div>
