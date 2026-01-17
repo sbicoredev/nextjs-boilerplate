@@ -1,10 +1,11 @@
 "use client";
 
+import { LanguagesIcon } from "lucide-react";
 import { type ReactNode, useTransition } from "react";
 
 import { setLocale } from "~/actions/locale";
 
-import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
+import { Select, SelectContent, SelectGroup, SelectLabel, SelectTrigger, SelectValue } from "./ui/select";
 
 type Props = {
   children: ReactNode;
@@ -28,9 +29,14 @@ export const LocaleSwitcherSelect = ({ children, defaultValue, label }: Props) =
       onValueChange={(e) => onSelectChange(e as string)}
     >
       <SelectTrigger size="sm">
-        <SelectValue placeholder={label} />
+        <SelectValue placeholder={<LanguagesIcon />} />
       </SelectTrigger>
-      <SelectContent>{children}</SelectContent>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>{label}</SelectLabel>
+          {children}
+        </SelectGroup>
+      </SelectContent>
     </Select>
   );
 };
