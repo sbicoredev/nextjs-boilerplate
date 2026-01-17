@@ -5,7 +5,14 @@ import { type ReactNode, useTransition } from "react";
 
 import { setLocale } from "~/actions/locale";
 
-import { Select, SelectContent, SelectGroup, SelectLabel, SelectTrigger, SelectValue } from "./ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 type Props = {
   children: ReactNode;
