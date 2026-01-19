@@ -11,14 +11,16 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 
-export function PricingSection() {
+import { Container } from "../container";
+
+export const PricingSection = () => {
   return (
     <section className="py-16 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
+      <Container>
         <div className="mx-auto max-w-2xl space-y-6 text-center">
-          <h1 className="text-center font-semibold text-4xl lg:text-5xl">
+          <h2 className="text-center font-semibold text-4xl lg:text-5xl">
             Pricing that Scales with You
-          </h1>
+          </h2>
           <p>
             Gemini is evolving to be more than just the models. It supports an entire to the APIs
             and platforms helping developers and businesses innovate.
@@ -137,7 +139,7 @@ export function PricingSection() {
             </CardFooter>
           </Card>
         </div>
-      </div>
+      </Container>
     </section>
   );
-}
+};

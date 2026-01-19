@@ -1,19 +1,23 @@
-import { FooterSection } from "~/components/footer-section";
-import { HeroSection } from "~/components/hero-section";
-import { IntegrationsSection } from "~/components/integrations-section";
-import { PricingSection } from "~/components/pricing-section";
-import { StatsSection } from "~/components/stats-section";
-import { TestimonialsSection } from "~/components/testimonials-section";
+import { Footer } from "~/components/sections/footer";
+import { Header } from "~/components/sections/header";
+import { HeroSection } from "~/components/sections/hero-section";
+import { IntegrationsSection } from "~/components/sections/integrations-section";
+import { PricingSection } from "~/components/sections/pricing-section";
+import { StatsSection } from "~/components/sections/stats-section";
+import { TestimonialSection } from "~/components/sections/testimonial-section";
 
 export default function HomePage() {
   return (
-    <div>
-      <HeroSection />
-      <IntegrationsSection />
-      <StatsSection />
-      <TestimonialsSection />
-      <PricingSection />
-      <FooterSection />
-    </div>
+    <>
+      <Header />
+      <main>
+        <HeroSection />
+        <IntegrationsSection />
+        <StatsSection />
+        <TestimonialSection />
+        <PricingSection />
+      </main>
+      <Footer />
+    </>
   );
 }
