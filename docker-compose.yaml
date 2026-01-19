@@ -19,8 +19,6 @@ services:
     image: axllent/mailpit
     restart: always
     container_name: nextjs-boilerplate-mail
-    environment:
-      MP_DATABASE: /data/mailpit.db
     ports:
       - 8025:8025
       - 1025:1025
