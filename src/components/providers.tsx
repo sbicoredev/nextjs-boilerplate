@@ -1,17 +1,24 @@
-import { NextIntlClientProvider } from "next-intl";
+"use client";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import type { PropsWithChildren } from "react";
+
+import { Toaster } from "./ui/sonner";
 
 type Props = PropsWithChildren & {
   locale: string;
 };
 
+const queryClient = new QueryClient();
+
 export const Providers = ({ children, locale }: Props) => {
   return (
-    <NextIntlClientProvider locale={locale}>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <QueryClientProvider client={queryClient}>
         {children}
-      </ThemeProvider>
-    </NextIntlClientProvider>
+        <Toaster position="top-center" richColors duration={5000} closeButton />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 };

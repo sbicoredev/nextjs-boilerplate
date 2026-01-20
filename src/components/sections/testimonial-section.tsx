@@ -118,7 +118,7 @@ export const TestimonialSection = () => {
           </div>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
             {testimonialChunks.map((chunk, idx) => (
-              <div key={`${chunk}-${idx}`} className="space-y-3">
+              <div key={`${chunk[idx]?.name}`} className="space-y-3">
                 {chunk.map(({ name, role, quote, image }) => (
                   <Card key={`${name}`}>
                     <CardContent className="grid grid-cols-[auto_1fr] gap-3 pt-6">

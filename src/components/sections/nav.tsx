@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { AUTH_URI } from "~/constants/auth";
 import { cn } from "~/lib/utils";
 
 import { LocaleSwitcher } from "../locale-switcher";
@@ -57,13 +58,18 @@ export const Nav = ({ isScrolled }: Props) => {
             <LocaleSwitcher />
             <ThemeToggle />
           </div>
-          <Button variant="outline" size="sm" render={<Link href="#" />} nativeButton={false}>
+          <Button
+            variant="outline"
+            size="sm"
+            render={<Link href={AUTH_URI.signin} />}
+            nativeButton={false}
+          >
             Login
           </Button>
           <Button
             size="sm"
             className={cn(isScrolled && "lg:hidden")}
-            render={<Link href="#" />}
+            render={<Link href={AUTH_URI.signup} />}
             nativeButton={false}
           >
             Sign Up
