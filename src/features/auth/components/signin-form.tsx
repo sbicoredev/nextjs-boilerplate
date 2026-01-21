@@ -27,7 +27,7 @@ export const SigninForm = ({ className, ...props }: React.ComponentProps<"div">)
   const { mutateAsync, isPending } = useSignin();
 
   const form = useForm({
-    defaultValues: { email: "jhon@mail.com", password: "123456" },
+    defaultValues: { email: "jhon@mail.com", password: "12345678" },
     validators: { onSubmit: signinSchema },
     onSubmit: async ({ value }) => mutateAsync(value),
   });

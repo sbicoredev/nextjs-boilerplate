@@ -14,7 +14,8 @@ export const env = createEnv({
     POSTGRES_DB: z.string(),
     POSTGRES_PASSWORD: z.string(),
     // auth
-    EMAIL_CONFIRMATION_EXPIRES: z.coerce.number(),
+    AUTH_OTP_EXPIRES: z.coerce.number().default(300),
+    AUTH_OTP_ALLOWED_ATTEMPT: z.coerce.number().default(3),
     // email
     SMTP_SERVER_HOST: z.string(),
     SMTP_SERVER_PORT: z.coerce.number(),

@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale} suppressHydrationWarning>
       <body className={cn(libre_franklin.variable, roboto.variable)}>
         <NextIntlClientProvider locale={locale}>
-          <Providers locale={locale}>{children}</Providers>
+          <Providers>{children}</Providers>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -44,7 +44,7 @@ const VerifyOTPEmail = ({ code, appUrl, expiration, companyName, companyAddr }: 
             <Heading className="font-bold text-xl">Verification Code</Heading>
             <Text>Enter the following verification code when prompted:</Text>
             <Text className="font-black text-3xl">{code}</Text>
-            <Text className="font-bold">This code will expire in {expiration} minutes.</Text>
+            <Text className="font-bold">This code will expire in {expiration / 60} minutes.</Text>
             <Text>
               To protect your account, do not share this code.
               <br />

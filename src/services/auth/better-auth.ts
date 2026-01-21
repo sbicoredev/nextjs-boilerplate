@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, createAuthMiddleware, emailOTP } from "better-auth/plugins";
 
-import { SIGNUP_EMAIL_COOKIE } from "~/constants/auth";
+import { EMAIL_OTP_COOKIE, SIGNUP_EMAIL_COOKIE } from "~/constants/auth";
 import { db } from "~/db/drizzle";
 import { env } from "~/env";
 
@@ -15,10 +15,21 @@ export const auth = betterAuth({
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
       if (ctx.context.returned instanceof Error) return;
+      console.log(ctx.path);
 
       // after successfull signup request set a cookie for unverified email
       if (ctx.path.startsWith("/sign-up")) {
         ctx.setCookie(SIGNUP_EMAIL_COOKIE, ctx.body.email, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          secure: env.NODE_ENV === "production",
+          path: "/",
+        });
+      }
+
+      // after successfull forgot password request set a cookie for email
+      if (ctx.path.startsWith("/email-otp")) {
+        ctx.setCookie(EMAIL_OTP_COOKIE, ctx.body.email, {
           httpOnly: true,
           expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
           secure: env.NODE_ENV === "production",
@@ -53,21 +64,22 @@ export const auth = betterAuth({
   },
   plugins: [
     emailOTP({
+      overrideDefaultEmailVerification: true,
       sendVerificationOnSignUp: true,
       disableSignUp: true,
-      async sendVerificationOTP({ email, otp, type }) {
-        if (type === "email-verification" || type === "forget-password") {
-          await sendEmail({
-            sendTo: email,
-            subject: `Verify your email for ${env.NEXT_PUBLIC_APP_NAME}`,
-            react: VerifyOTPEmail({
-              code: otp,
-              appUrl: env.NEXT_PUBLIC_APP_URL,
-              appName: env.NEXT_PUBLIC_APP_NAME,
-              expiration: authConfig.email.confirmationExpires,
-            }),
-          });
-        }
+      allowedAttempts: authConfig.email.otpAllowedAttempts,
+      expiresIn: authConfig.email.otpExpiresIn,
+      async sendVerificationOTP({ email, otp }) {
+        await sendEmail({
+          sendTo: email,
+          subject: `Verify your otp for ${env.NEXT_PUBLIC_APP_NAME}`,
+          react: VerifyOTPEmail({
+            code: otp,
+            appUrl: env.NEXT_PUBLIC_APP_URL,
+            appName: env.NEXT_PUBLIC_APP_NAME,
+            expiration: authConfig.email.otpExpiresIn,
+          }),
+        });
       },
     }),
     admin(),

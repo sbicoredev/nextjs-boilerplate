@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Sign in",
 };
 
-export default function SignInPage() {
+export default function SigninPage() {
   return (
     <SigninForm className="h-screen max-w-xl place-content-center justify-self-center md:max-w-5xl" />
   );

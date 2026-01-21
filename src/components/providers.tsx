@@ -6,13 +6,9 @@ import type { PropsWithChildren } from "react";
 
 import { Toaster } from "./ui/sonner";
 
-type Props = PropsWithChildren & {
-  locale: string;
-};
-
 const queryClient = new QueryClient();
 
-export const Providers = ({ children, locale }: Props) => {
+export const Providers = ({ children }: PropsWithChildren) => {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <QueryClientProvider client={queryClient}>

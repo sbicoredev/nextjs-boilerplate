@@ -14,12 +14,13 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel } from "~/components/ui/field";
+import { Field, FieldError, FieldGroup } from "~/components/ui/field";
 import { Heading } from "~/components/ui/heading";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "~/components/ui/input-otp";
 import { AUTH_URI } from "~/constants/auth";
 import { cn } from "~/lib/utils";
 
+import { useSendVerificationOTP } from "../api/send-verification-otp";
 import { useVerifyEmail } from "../api/verify-email";
 import { verifyEmailSchema } from "../schemas";
 
@@ -29,7 +30,7 @@ type Props = React.ComponentProps<"div"> & {
 
 export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
   const { mutateAsync, isPending, isSuccess } = useVerifyEmail();
-  const isResending = false;
+  const { mutateAsync: resendOTP, isPending: isSendingOTP } = useSendVerificationOTP();
 
   const form = useForm({
     defaultValues: { otp: "" },
@@ -76,8 +77,8 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
                 children={(field) => {
                   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
-                    <Field data-invalid={isInvalid} className="sajid">
-                      <InputOTP maxLength={6} onChange={field.handleChange} className="sajid">
+                    <Field data-invalid={isInvalid}>
+                      <InputOTP maxLength={6} onChange={field.handleChange}>
                         <InputOTPGroup className="min-w-full place-content-center">
                           <InputOTPSlot index={0} />
                           <InputOTPSlot index={1} />
@@ -97,14 +98,15 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
                 <ButtonLoading loading={isPending} className="w-full">
                   Verify
                 </ButtonLoading>
-                <Button
+                <ButtonLoading
+                  type="button"
                   size={"sm"}
                   variant={"link"}
-                  onClick={() => {}}
-                  disabled={isResending || isPending}
+                  onClick={() => resendOTP({ email, type: "email-verification" })}
+                  loading={isSendingOTP || isPending}
                 >
                   Didn't receive a code? Resend
-                </Button>
+                </ButtonLoading>
               </Field>
             </FieldGroup>
           </form>

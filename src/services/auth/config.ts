@@ -7,7 +7,8 @@ export const authConfig = {
   email: {
     enabled: true,
     requiredVerification: true,
-    confirmationExpires: env.EMAIL_CONFIRMATION_EXPIRES * 1000,
+    otpExpiresIn: env.AUTH_OTP_EXPIRES,
+    otpAllowedAttempts: env.AUTH_OTP_ALLOWED_ATTEMPT,
   },
   magicLink: {
     enabeld: false,
