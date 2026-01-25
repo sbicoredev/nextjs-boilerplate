@@ -9,12 +9,7 @@ import { ButtonLoading } from "~/components/ui/button-loading";
 import { Card, CardContent } from "~/components/ui/card";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "~/components/ui/input-otp";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "~/components/ui/input-otp";
 import { AUTH_URI } from "~/constants/auth";
 import { cn } from "~/lib/utils";
 
