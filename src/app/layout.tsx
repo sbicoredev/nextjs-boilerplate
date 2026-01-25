@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Libre_Franklin, Roboto } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { Providers } from "~/components/providers";
@@ -33,7 +34,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={cn(libre_franklin.variable, roboto.variable)}>
-        <Providers locale={locale}>{children}</Providers>
+        <NextIntlClientProvider locale={locale}>
+          <Providers>{children}</Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

@@ -1,6 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Card, CardContent } from "~/components/ui/card";
 
+import { Container } from "../container";
+
 type Testimonial = {
   name: string;
   role: string;
@@ -105,18 +107,18 @@ const chunkArray = (array: Testimonial[], chunkSize: number): Testimonial[][] =>
 
 const testimonialChunks = chunkArray(testimonials, Math.ceil(testimonials.length / 3));
 
-export function TestimonialsSection() {
+export const TestimonialSection = () => {
   return (
     <section>
       <div className="bg-muted py-16 md:py-32">
-        <div className="mx-auto max-w-6xl px-6">
+        <Container>
           <div className="text-center">
             <h2 className="font-semibold text-3xl">Loved by the Community</h2>
             <p className="mt-6">Harum quae dolore orrupti aut temporibus ariatur.</p>
           </div>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
             {testimonialChunks.map((chunk, idx) => (
-              <div key={`${chunk}-${idx}`} className="space-y-3">
+              <div key={`${chunk[idx]?.name}`} className="space-y-3">
                 {chunk.map(({ name, role, quote, image }) => (
                   <Card key={`${name}`}>
                     <CardContent className="grid grid-cols-[auto_1fr] gap-3 pt-6">
@@ -148,8 +150,8 @@ export function TestimonialsSection() {
               </div>
             ))}
           </div>
-        </div>
+        </Container>
       </div>
     </section>
   );
-}
+};

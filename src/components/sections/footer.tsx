@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import { Logo } from "~/components/logo";
 
+import { Container } from "../container";
+
 const links = [
   {
     title: "Features",
@@ -29,10 +31,10 @@ const links = [
   },
 ];
 
-export function FooterSection() {
+export const Footer = () => {
   return (
     <footer className="py-16 md:py-32">
-      <div className="mx-auto max-w-5xl px-6">
+      <Container>
         <Link href="/" aria-label="go home" className="mx-auto block size-fit">
           <Logo />
         </Link>
@@ -178,7 +180,7 @@ export function FooterSection() {
         <span className="block text-center text-muted-foreground text-sm">
           © {new Date().getFullYear()} Sajid, All rights reserved
         </span>
-      </div>
+      </Container>
     </footer>
   );
-}
+};
