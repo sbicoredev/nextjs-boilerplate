@@ -5,6 +5,8 @@ import Link from "next/link";
 import React from "react";
 
 import { Logo } from "~/components/logo";
+import { Button } from "~/components/ui/button";
+import { AUTH_URI } from "~/constants/auth";
 import { cn } from "~/lib/utils";
 
 import { LocaleSwitcher } from "../locale-switcher";
@@ -55,7 +57,25 @@ export const Header = () => {
                 </button>
               </div>
             </div>
-            <Nav isScrolled={isScrolled} />
+
+            <Nav />
+
+            <div className="hidden gap-2 lg:flex">
+              <LocaleSwitcher />
+              <ThemeToggle />
+              <Button
+                variant="outline"
+                size="sm"
+                className={cn(isScrolled && "lg:hidden")}
+                render={<Link href={AUTH_URI.signin} />}
+                nativeButton={false}
+              >
+                Login
+              </Button>
+              <Button size="sm" render={<Link href={AUTH_URI.signup} />} nativeButton={false}>
+                {isScrolled ? "Get Started" : "Signup"}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
