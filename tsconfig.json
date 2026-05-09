@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2022",
     "module": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "moduleResolution": "bundler",
@@ -34,7 +34,6 @@
     "incremental": true,
     "noEmit": true,
     "plugins": [{ "name": "next" }],
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"]
     }
