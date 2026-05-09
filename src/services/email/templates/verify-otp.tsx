@@ -16,52 +16,58 @@ import {
 import React from "react";
 
 interface Props {
-  code: string;
-  appUrl: string;
   appName: string;
-  expiration: number;
-  companyName?: string;
+  appUrl: string;
+  code: string;
   companyAddr?: string;
+  companyName?: string;
+  expiration: number;
 }
 
-const VerifyOTPEmail = ({ code, appUrl, expiration, companyName, companyAddr }: Props) => {
-  return (
-    <Html>
-      <Head />
-      <Preview>{code} is your verfication code</Preview>
-      <Tailwind>
-        <Body className="bg-gray-100 p-6 font-sans text-primary-foreground">
-          <Container className="mx-auto max-w-[600px] rounded bg-white p-8">
-            <Section className="mb-10">
-              <Img
-                src={`${appUrl}/assets/logo.svg`}
-                width="140"
-                height="30"
-                alt="logo"
-                className="mx-auto my-0"
-              />
-            </Section>
-            <Heading className="font-bold text-xl">Verification Code</Heading>
-            <Text>Enter the following verification code when prompted:</Text>
-            <Text className="font-black text-3xl">{code}</Text>
-            <Text className="font-bold">This code will expire in {expiration / 60} minutes.</Text>
-            <Text>
-              To protect your account, do not share this code.
-              <br />
-              If you didn't request this email, please ignore it.
+const VerifyOTPEmail = ({
+  code,
+  appUrl,
+  expiration,
+  companyName,
+  companyAddr,
+}: Props) => (
+  <Html>
+    <Head />
+    <Preview>{code} is your verfication code</Preview>
+    <Tailwind>
+      <Body className="bg-gray-100 p-6 font-sans text-primary-foreground">
+        <Container className="mx-auto max-w-[600px] rounded bg-white p-8">
+          <Section className="mb-10">
+            <Img
+              alt="logo"
+              className="mx-auto my-0"
+              height="30"
+              src={`${appUrl}/assets/logo.svg`}
+              width="140"
+            />
+          </Section>
+          <Heading className="font-bold text-xl">Verification Code</Heading>
+          <Text>Enter the following verification code when prompted:</Text>
+          <Text className="font-black text-3xl">{code}</Text>
+          <Text className="font-bold">
+            This code will expire in {expiration / 60} minutes.
+          </Text>
+          <Text>
+            To protect your account, do not share this code.
+            <br />
+            If you didn't request this email, please ignore it.
+          </Text>
+          <Section className="mt-10">
+            <Hr />
+            <Text className="text-center text-gray-500 text-sm">
+              © 2025 {companyName}. All rights reserved. <br /> {companyAddr}
             </Text>
-            <Section className="mt-10">
-              <Hr />
-              <Text className="text-center text-gray-500 text-sm">
-                © 2025 {companyName}. All rights reserved. <br /> {companyAddr}
-              </Text>
-            </Section>
-          </Container>
-        </Body>
-      </Tailwind>
-    </Html>
-  );
-};
+          </Section>
+        </Container>
+      </Body>
+    </Tailwind>
+  </Html>
+);
 
 export default VerifyOTPEmail;
 

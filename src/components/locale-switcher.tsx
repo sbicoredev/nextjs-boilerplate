@@ -21,13 +21,16 @@ export const LocaleSwitcher = () => {
 
   return (
     <DropdownMenu>
-      <Button variant="outline" size="sm" render={<DropdownMenuTrigger />}>
+      <Button render={<DropdownMenuTrigger />} size="sm" variant="outline">
         <GlobeIcon />
       </Button>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
           <DropdownMenuLabel>{t("label")}</DropdownMenuLabel>
-          <DropdownMenuRadioGroup value={locale} onValueChange={(v) => setLocale(v)}>
+          <DropdownMenuRadioGroup
+            onValueChange={(v) => setLocale(v)}
+            value={locale}
+          >
             {SUPPORTED_LOCALES.map((cur) => (
               <DropdownMenuRadioItem key={cur} value={cur}>
                 {t("locale", { locale: cur })}

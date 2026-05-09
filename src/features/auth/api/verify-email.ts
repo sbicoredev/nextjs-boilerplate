@@ -5,11 +5,13 @@ import { authClient } from "~/services/auth/auth-client";
 
 import type { VerifyEmailPayload } from "../schemas";
 
-export const useVerifyEmail = () => {
-  return useMutation({
+export const useVerifyEmail = () =>
+  useMutation({
     mutationFn: async (input: VerifyEmailPayload & { email: string }) => {
       const { data, error } = await authClient.emailOtp.verifyEmail(input);
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {
@@ -19,4 +21,3 @@ export const useVerifyEmail = () => {
       toast.error(error.message);
     },
   });
-};

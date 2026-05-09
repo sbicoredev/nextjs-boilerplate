@@ -12,12 +12,14 @@ export const metadata: Metadata = {
 export default async function ResetPasswordPage() {
   const cookie = await cookies();
   const email = cookie.get(EMAIL_OTP_COOKIE)?.value;
-  if (!email) return redirect(AUTH_URI.signin);
+  if (!email) {
+    return redirect(AUTH_URI.signin);
+  }
 
   return (
     <ResetPasswordForm
-      email={email}
       className="h-screen max-w-xl place-content-center justify-self-center md:max-w-5xl"
+      email={email}
     />
   );
 }

@@ -17,7 +17,9 @@ export const useSignup = () => {
         password: input.password,
         // callbackURL: "/",
       });
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {

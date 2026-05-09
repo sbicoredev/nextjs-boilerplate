@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { admin, createAuthMiddleware, emailOTP } from "better-auth/plugins";
+import { createAuthMiddleware } from "better-auth/api";
+import { admin, emailOTP } from "better-auth/plugins";
 
 import { EMAIL_OTP_COOKIE, SIGNUP_EMAIL_COOKIE } from "~/constants/auth";
 import { db } from "~/db/drizzle";
@@ -14,7 +15,9 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, { provider: "pg", usePlural: false }),
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
-      if (ctx.context.returned instanceof Error) return;
+      if (ctx.context.returned instanceof Error) {
+        return;
+      }
       console.log(ctx.path);
 
       // after successfull signup request set a cookie for unverified email
