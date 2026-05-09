@@ -30,7 +30,12 @@ export type ContainerProps = React.HTMLAttributes<HTMLDivElement> &
   VariantProps<typeof containerVariants> &
   useRender.ComponentProps<"div"> & {};
 
-const Container = ({ className, variant, render, ...props }: ContainerProps) => {
+const Container = ({
+  className,
+  variant,
+  render,
+  ...props
+}: ContainerProps) => {
   const containerClasses = cn(containerVariants({ variant }), className);
 
   return useRender({

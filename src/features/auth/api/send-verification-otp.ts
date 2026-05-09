@@ -3,8 +3,8 @@ import { toast } from "sonner";
 
 import { authClient } from "~/services/auth/auth-client";
 
-export const useSendVerificationOTP = () => {
-  return useMutation({
+export const useSendVerificationOTP = () =>
+  useMutation({
     mutationFn: async (input: {
       email: string;
       type: "sign-in" | "email-verification" | "forget-password";
@@ -13,7 +13,9 @@ export const useSendVerificationOTP = () => {
         email: input.email,
         type: input.type,
       });
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {
@@ -23,4 +25,3 @@ export const useSendVerificationOTP = () => {
       toast.error(error.message);
     },
   });
-};

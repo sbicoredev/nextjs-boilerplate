@@ -26,7 +26,7 @@ export const Heading: React.FC<React.PropsWithChildren<Props>> = ({
       className={cn(
         "scroll-m-20 truncate font-bold tracking-tight",
         {
-          "text-4xl font-extrabold lg:text-5xl": tagSize === "h1",
+          "font-extrabold text-4xl lg:text-5xl": tagSize === "h1",
           "text-3xl lg:text-4xl": tagSize === "h2",
           "text-2xl lg:text-3xl": tagSize === "h3",
           "text-xl lg:text-2xl": tagSize === "h4",

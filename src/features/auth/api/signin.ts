@@ -17,7 +17,9 @@ export const useSignin = () => {
         rememberMe: false,
         callbackURL: searchParams.get("callback-url") ?? DEFAULT_LOGIN_REDIRECT,
       });
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {

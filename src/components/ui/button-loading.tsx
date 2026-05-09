@@ -15,11 +15,9 @@ export const ButtonLoading: React.FC<Props> = ({
   className,
   type = "submit",
   ...props
-}) => {
-  return (
-    <Button type={type} disabled={loading} className={className} {...props}>
-      {loading && <Loader2Icon className="animate-spin" />}
-      {children}
-    </Button>
-  );
-};
+}) => (
+  <Button className={className} disabled={loading} type={type} {...props}>
+    {loading && <Loader2Icon className="animate-spin" />}
+    {children}
+  </Button>
+);

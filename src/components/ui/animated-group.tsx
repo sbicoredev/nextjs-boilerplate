@@ -120,10 +120,10 @@ function AnimatedGroup({
 
   return (
     <MotionComponent
-      initial="hidden"
       animate="visible"
-      variants={containerVariants}
       className={className}
+      initial="hidden"
+      variants={containerVariants}
     >
       {React.Children.map(children, (child) => (
         <MotionChild key={`${child}`} variants={itemVariants}>

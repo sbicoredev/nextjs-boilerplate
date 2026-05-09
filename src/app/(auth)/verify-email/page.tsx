@@ -12,12 +12,14 @@ export const metadata: Metadata = {
 export default async function VerifyEmailPage() {
   const cookie = await cookies();
   const email = cookie.get(SIGNUP_EMAIL_COOKIE)?.value;
-  if (!email) return redirect(AUTH_URI.signup);
+  if (!email) {
+    return redirect(AUTH_URI.signup);
+  }
 
   return (
     <VerifyEmailForm
-      email={email}
       className="h-screen max-w-xl place-content-center justify-self-center md:max-w-5xl"
+      email={email}
     />
   );
 }

@@ -97,7 +97,10 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-const chunkArray = (array: Testimonial[], chunkSize: number): Testimonial[][] => {
+const chunkArray = (
+  array: Testimonial[],
+  chunkSize: number
+): Testimonial[][] => {
   const result: Testimonial[][] = [];
   for (let i = 0; i < array.length; i += chunkSize) {
     result.push(array.slice(i, i + chunkSize));
@@ -105,53 +108,58 @@ const chunkArray = (array: Testimonial[], chunkSize: number): Testimonial[][] =>
   return result;
 };
 
-const testimonialChunks = chunkArray(testimonials, Math.ceil(testimonials.length / 3));
+const testimonialChunks = chunkArray(
+  testimonials,
+  Math.ceil(testimonials.length / 3)
+);
 
-export const TestimonialSection = () => {
-  return (
-    <section>
-      <div className="bg-muted py-16 md:py-32">
-        <Container>
-          <div className="text-center">
-            <h2 className="font-semibold text-3xl">Loved by the Community</h2>
-            <p className="mt-6">Harum quae dolore orrupti aut temporibus ariatur.</p>
-          </div>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
-            {testimonialChunks.map((chunk, idx) => (
-              <div key={`${chunk[idx]?.name}`} className="space-y-3">
-                {chunk.map(({ name, role, quote, image }) => (
-                  <Card key={`${name}`}>
-                    <CardContent className="grid grid-cols-[auto_1fr] gap-3 pt-6">
-                      <Avatar className="size-9">
-                        <AvatarImage
-                          alt={name}
-                          src={image}
-                          loading="lazy"
-                          width="120"
-                          height="120"
-                        />
-                        <AvatarFallback>ST</AvatarFallback>
-                      </Avatar>
+export const TestimonialSection = () => (
+  <section>
+    <div className="bg-muted py-16 md:py-32">
+      <Container>
+        <div className="text-center">
+          <h2 className="font-semibold text-3xl">Loved by the Community</h2>
+          <p className="mt-6">
+            Harum quae dolore orrupti aut temporibus ariatur.
+          </p>
+        </div>
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
+          {testimonialChunks.map((chunk, idx) => (
+            <div className="space-y-3" key={`${chunk[idx]?.name}`}>
+              {chunk.map(({ name, role, quote, image }) => (
+                <Card key={`${name}`}>
+                  <CardContent className="grid grid-cols-[auto_1fr] gap-3 pt-6">
+                    <Avatar className="size-9">
+                      <AvatarImage
+                        alt={name}
+                        height="120"
+                        loading="lazy"
+                        src={image}
+                        width="120"
+                      />
+                      <AvatarFallback>ST</AvatarFallback>
+                    </Avatar>
 
-                      <div>
-                        <h3 className="font-medium">{name}</h3>
+                    <div>
+                      <h3 className="font-medium">{name}</h3>
 
-                        <span className="block text-muted-foreground text-sm tracking-wide">
-                          {role}
-                        </span>
+                      <span className="block text-muted-foreground text-sm tracking-wide">
+                        {role}
+                      </span>
 
-                        <blockquote className="mt-3">
-                          <p className="text-gray-700 dark:text-gray-300">{quote}</p>
-                        </blockquote>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ))}
-          </div>
-        </Container>
-      </div>
-    </section>
-  );
-};
+                      <blockquote className="mt-3">
+                        <p className="text-gray-700 dark:text-gray-300">
+                          {quote}
+                        </p>
+                      </blockquote>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ))}
+        </div>
+      </Container>
+    </div>
+  </section>
+);

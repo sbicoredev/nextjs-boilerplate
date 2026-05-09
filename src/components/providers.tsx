@@ -8,13 +8,16 @@ import { Toaster } from "./ui/sonner";
 
 const queryClient = new QueryClient();
 
-export const Providers = ({ children }: PropsWithChildren) => {
-  return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-      <QueryClientProvider client={queryClient}>
-        {children}
-        <Toaster position="top-center" richColors duration={5000} closeButton />
-      </QueryClientProvider>
-    </ThemeProvider>
-  );
-};
+export const Providers = ({ children }: PropsWithChildren) => (
+  <ThemeProvider
+    attribute="class"
+    defaultTheme="system"
+    disableTransitionOnChange
+    enableSystem
+  >
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <Toaster closeButton duration={5000} position="top-center" richColors />
+    </QueryClientProvider>
+  </ThemeProvider>
+);

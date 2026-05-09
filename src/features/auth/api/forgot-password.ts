@@ -16,7 +16,9 @@ export const useForgotPassword = () => {
         email: input.email,
         type: "forget-password",
       });
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {

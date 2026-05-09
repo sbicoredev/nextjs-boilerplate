@@ -33,7 +33,7 @@ export async function sendEmail({
       "Something Went Wrong",
       env.SMTP_SERVER_USERNAME,
       env.SMTP_SERVER_PASSWORD,
-      error,
+      error
     );
     return;
   }
@@ -41,7 +41,7 @@ export async function sendEmail({
   const info = await transporter.sendMail({
     from: env.MAIL_FROM_ADDRESS,
     to: sendTo,
-    subject: subject,
+    subject,
     html,
   });
 

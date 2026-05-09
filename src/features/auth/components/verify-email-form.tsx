@@ -16,7 +16,11 @@ import {
 } from "~/components/ui/card";
 import { Field, FieldError, FieldGroup } from "~/components/ui/field";
 import { Heading } from "~/components/ui/heading";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "~/components/ui/input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "~/components/ui/input-otp";
 import { AUTH_URI } from "~/constants/auth";
 import { cn } from "~/lib/utils";
 
@@ -30,7 +34,8 @@ type Props = React.ComponentProps<"div"> & {
 
 export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
   const { mutateAsync, isPending, isSuccess } = useVerifyEmail();
-  const { mutateAsync: resendOTP, isPending: isSendingOTP } = useSendVerificationOTP();
+  const { mutateAsync: resendOTP, isPending: isSendingOTP } =
+    useSendVerificationOTP();
 
   const form = useForm({
     defaultValues: { otp: "" },
@@ -44,7 +49,7 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
         <div className="flex flex-col items-center justify-center gap-4 rounded-md">
           <CheckCircleIcon className="size-14 animate-bounce text-green-500" />
           <Heading>Email verification successfull</Heading>
-          <Button render={<Link href={AUTH_URI.signin} />} nativeButton={false}>
+          <Button nativeButton={false} render={<Link href={AUTH_URI.signin} />}>
             Go to sign in
             <ArrowRightIcon />
           </Button>
@@ -72,10 +77,10 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
             }}
           >
             <FieldGroup>
-              <form.Field
-                name="otp"
-                children={(field) => {
-                  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+              <form.Field name="otp">
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <InputOTP maxLength={6} onChange={field.handleChange}>
@@ -88,22 +93,26 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
                           <InputOTPSlot index={5} />
                         </InputOTPGroup>
                       </InputOTP>
-                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
                     </Field>
                   );
                 }}
-              />
+              </form.Field>
 
               <Field>
-                <ButtonLoading loading={isPending} className="w-full">
+                <ButtonLoading className="w-full" loading={isPending}>
                   Verify
                 </ButtonLoading>
                 <ButtonLoading
-                  type="button"
-                  size={"sm"}
-                  variant={"link"}
-                  onClick={() => resendOTP({ email, type: "email-verification" })}
                   loading={isSendingOTP || isPending}
+                  onClick={() =>
+                    resendOTP({ email, type: "email-verification" })
+                  }
+                  size={"sm"}
+                  type="button"
+                  variant={"link"}
                 >
                   Didn't receive a code? Resend
                 </ButtonLoading>
@@ -113,11 +122,11 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
         </CardContent>
         <CardFooter className="justify-center">
           <Button
-            variant="link"
             className="font-normal"
-            size="sm"
             nativeButton={false}
             render={<Link href={AUTH_URI.signup} />}
+            size="sm"
+            variant="link"
           >
             Back to Sign Up
           </Button>

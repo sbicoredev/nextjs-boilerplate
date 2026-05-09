@@ -17,7 +17,9 @@ export const useResetPassword = () => {
         email: input.email,
         password: input.password,
       });
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {

@@ -13,9 +13,12 @@ const globalForDb = globalThis as unknown as {
   client: Pool | undefined;
 };
 
-export const client = globalForDb.client ?? new Pool({ connectionString: env.DB_URL });
+export const client =
+  globalForDb.client ?? new Pool({ connectionString: env.DB_URL });
 
-if (env.NODE_ENV !== "production") globalForDb.client = client;
+if (env.NODE_ENV !== "production") {
+  globalForDb.client = client;
+}
 
 export const db = drizzle({ client, schema });
 

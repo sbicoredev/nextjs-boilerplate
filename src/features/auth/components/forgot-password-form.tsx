@@ -7,7 +7,13 @@ import type * as React from "react";
 
 import { ButtonLoading } from "~/components/ui/button-loading";
 import { Card, CardContent } from "~/components/ui/card";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "~/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { AUTH_URI } from "~/constants/auth";
 import { cn } from "~/lib/utils";
@@ -15,7 +21,10 @@ import { cn } from "~/lib/utils";
 import { useForgotPassword } from "../api/forgot-password";
 import { forgotPasswordSchema } from "../schemas";
 
-export const ForgotPasswordForm = ({ className, ...props }: React.ComponentProps<"div">) => {
+export const ForgotPasswordForm = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">) => {
   const { mutateAsync, isPending } = useForgotPassword();
 
   const form = useForm({
@@ -38,35 +47,41 @@ export const ForgotPasswordForm = ({ className, ...props }: React.ComponentProps
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="font-bold text-2xl">Forgot your password?</h1>
-                <p className="text-balance text-muted-foreground">Reset using your email</p>
+                <p className="text-balance text-muted-foreground">
+                  Reset using your email
+                </p>
               </div>
 
-              <form.Field
-                name="email"
-                children={(field) => {
-                  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+              <form.Field name="email">
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                       <Input
-                        type="email"
+                        aria-invalid={isInvalid}
                         id={field.name}
                         name={field.name}
-                        value={field.state.value}
-                        onChange={(e) => field.handleChange(e.target.value)}
                         onBlur={field.handleBlur}
-                        aria-invalid={isInvalid}
+                        onChange={(e) => field.handleChange(e.target.value)}
                         placeholder="jhon@mail.com"
                         required
+                        type="email"
+                        value={field.state.value}
                       />
-                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
                     </Field>
                   );
                 }}
-              />
+              </form.Field>
 
               <Field>
-                <ButtonLoading loading={isPending}>Send Reset Link</ButtonLoading>
+                <ButtonLoading loading={isPending}>
+                  Send Reset Link
+                </ButtonLoading>
               </Field>
 
               <FieldDescription className="text-center">
@@ -76,11 +91,11 @@ export const ForgotPasswordForm = ({ className, ...props }: React.ComponentProps
           </form>
           <div className="relative hidden bg-muted md:block">
             <Image
-              src="/assets/placeholder.svg"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-              width={500}
               height={500}
+              src="/assets/placeholder.svg"
+              width={500}
             />
           </div>
         </CardContent>

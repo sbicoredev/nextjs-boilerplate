@@ -3,10 +3,10 @@ import type { SVGProps } from "react";
 export default function Replit(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="1em"
+      fill="none"
       height="1em"
       viewBox="0 0 20 24"
-      fill="none"
+      width="1em"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
