@@ -13,6 +13,36 @@ import { authConfig } from "./config";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, { provider: "pg", usePlural: false }),
+  advanced: {
+    useSecureCookies: env.NODE_ENV === "production",
+  },
+  emailAndPassword: {
+    enabled: authConfig.email.enabled,
+    requireEmailVerification: authConfig.email.requiredVerification,
+  },
+  socialProviders: authConfig.socialProviders,
+  plugins: [
+    emailOTP({
+      overrideDefaultEmailVerification: true,
+      sendVerificationOnSignUp: true,
+      disableSignUp: true,
+      allowedAttempts: authConfig.email.otpAllowedAttempts,
+      expiresIn: authConfig.email.otpExpiresIn,
+      async sendVerificationOTP({ email, otp }) {
+        await sendEmail({
+          sendTo: email,
+          subject: `Verify your otp for ${env.NEXT_PUBLIC_APP_NAME}`,
+          react: VerifyOTPEmail({
+            code: otp,
+            appUrl: env.NEXT_PUBLIC_APP_URL,
+            appName: env.NEXT_PUBLIC_APP_NAME,
+            expiration: authConfig.email.otpExpiresIn,
+          }),
+        });
+      },
+    }),
+    admin(),
+  ],
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
       if (ctx.context.returned instanceof Error) {
@@ -51,40 +81,4 @@ export const auth = betterAuth({
       }
     }),
   },
-  advanced: {
-    useSecureCookies: env.NODE_ENV === "production",
-  },
-  emailAndPassword: {
-    enabled: authConfig.email.enabled,
-    requireEmailVerification: authConfig.email.requiredVerification,
-  },
-  socialProviders: {
-    google: {
-      enabled: authConfig.google.enabled,
-      clientId: authConfig.google.clientId,
-      clientSecret: authConfig.google.secret,
-    },
-  },
-  plugins: [
-    emailOTP({
-      overrideDefaultEmailVerification: true,
-      sendVerificationOnSignUp: true,
-      disableSignUp: true,
-      allowedAttempts: authConfig.email.otpAllowedAttempts,
-      expiresIn: authConfig.email.otpExpiresIn,
-      async sendVerificationOTP({ email, otp }) {
-        await sendEmail({
-          sendTo: email,
-          subject: `Verify your otp for ${env.NEXT_PUBLIC_APP_NAME}`,
-          react: VerifyOTPEmail({
-            code: otp,
-            appUrl: env.NEXT_PUBLIC_APP_URL,
-            appName: env.NEXT_PUBLIC_APP_NAME,
-            expiration: authConfig.email.otpExpiresIn,
-          }),
-        });
-      },
-    }),
-    admin(),
-  ],
 });

@@ -11,3 +11,5 @@ export const AUTH_URI = {
   resetPassword: "/reset-password",
   verifyEmail: "/verify-email",
 } as const;
+
+export const ROLES = ["admin", "user"] as const;

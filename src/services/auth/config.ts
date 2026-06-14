@@ -1,3 +1,4 @@
+import type { SocialProviders } from "better-auth";
 import "server-only";
 
 import { env } from "~/env";
@@ -13,16 +14,18 @@ export const authConfig = {
   magicLink: {
     enabeld: false,
   },
-  google: {
-    enabled: true,
-    clientId: "", // from env,
-    secret: "", // from env.
-    redirectUri: "",
-  },
-  github: {
-    enabled: false,
-    clientId: "", // env
-    secret: "", // env
-    redirectUri: "",
-  },
+  socialProviders: {
+    google: {
+      enabled: false,
+      clientId: "", // from env,
+      secret: "", // from env.
+      redirectUri: "",
+    },
+    github: {
+      enabled: false,
+      clientId: "", // env
+      secret: "", // env
+      redirectUri: "",
+    },
+  } as SocialProviders,
 };
