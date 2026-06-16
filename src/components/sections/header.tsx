@@ -7,6 +7,7 @@ import React from "react";
 import { Logo } from "~/components/logo";
 import { Button } from "~/components/ui/button";
 import { AUTH_URI } from "~/constants/auth";
+import { useAuth } from "~/contexts/auth-context";
 import { cn } from "~/lib/utils";
 
 import { LocaleSwitcher } from "../locale-switcher";
@@ -14,6 +15,7 @@ import { ThemeToggle } from "../theme-toggle";
 import { Nav } from "./nav";
 
 export const Header = () => {
+  const { user } = useAuth();
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
 
@@ -50,8 +52,8 @@ export const Header = () => {
 
               <div className="flex gap-3">
                 <div className="flex gap-2 lg:hidden">
-                  <LocaleSwitcher />
-                  <ThemeToggle />
+                  <LocaleSwitcher size="icon-sm" variant="outline" />
+                  <ThemeToggle size="icon-sm" variant="outline" />
                 </div>
 
                 <button
@@ -69,24 +71,37 @@ export const Header = () => {
             <Nav />
 
             <div className="hidden gap-2 lg:flex">
-              <LocaleSwitcher />
-              <ThemeToggle />
-              <Button
-                className={cn(isScrolled && "lg:hidden")}
-                nativeButton={false}
-                render={<Link href={AUTH_URI.signin} />}
-                size="sm"
-                variant="outline"
-              >
-                Login
-              </Button>
-              <Button
-                nativeButton={false}
-                render={<Link href={AUTH_URI.signup} />}
-                size="sm"
-              >
-                {isScrolled ? "Get Started" : "Signup"}
-              </Button>
+              <LocaleSwitcher size="icon-sm" variant="outline" />
+              <ThemeToggle size="icon-sm" variant="outline" />
+              {user ? (
+                <Button
+                  nativeButton={false}
+                  render={<Link href="/dashboard" />}
+                  size="sm"
+                  variant="outline"
+                >
+                  Dashbaord
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    className={cn(isScrolled && "lg:hidden")}
+                    nativeButton={false}
+                    render={<Link href={AUTH_URI.signin} />}
+                    size="sm"
+                    variant="outline"
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    nativeButton={false}
+                    render={<Link href={AUTH_URI.signup} />}
+                    size="sm"
+                  >
+                    {isScrolled ? "Get Started" : "Signup"}
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

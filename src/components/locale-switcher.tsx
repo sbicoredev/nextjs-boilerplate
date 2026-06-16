@@ -1,3 +1,5 @@
+"use client";
+
 import { GlobeIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -15,13 +17,18 @@ import { SUPPORTED_LOCALES } from "~/constants/i18n";
 
 import { Button } from "./ui/button";
 
-export const LocaleSwitcher = () => {
+type Props = {
+  variant?: "outline" | "ghost" | "secondary";
+  size?: "sm" | "lg" | "icon" | "icon-sm";
+};
+
+export const LocaleSwitcher = ({ variant, size }: Props) => {
   const t = useTranslations("localeSwitcher");
   const locale = useLocale();
 
   return (
     <DropdownMenu>
-      <Button render={<DropdownMenuTrigger />} size="sm" variant="outline">
+      <Button render={<DropdownMenuTrigger />} size={size} variant={variant}>
         <GlobeIcon />
       </Button>
       <DropdownMenuContent align="end">

@@ -11,12 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
-export function ThemeToggle() {
+type Props = {
+  variant?: "outline" | "ghost" | "secondary";
+  size?: "sm" | "lg" | "icon" | "icon-sm";
+};
+
+export function ThemeToggle({ variant, size }: Props) {
   const { setTheme } = useTheme();
 
   return (
     <DropdownMenu>
-      <Button render={<DropdownMenuTrigger />} size="sm" variant="outline">
+      <Button render={<DropdownMenuTrigger />} size={size} variant={variant}>
         <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
         <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
         <span className="sr-only">Toggle theme</span>

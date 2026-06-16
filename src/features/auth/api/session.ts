@@ -4,7 +4,7 @@ import { authClient } from "~/services/auth/auth-client";
 import { mapAuthSession, mapAuthUser } from "~/services/auth/utils";
 
 export const useSession = () =>
-  useQuery<AuthResponse>({
+  useQuery({
     queryKey: ["session"],
     queryFn: async () => {
       const { data, error } = await authClient.getSession();

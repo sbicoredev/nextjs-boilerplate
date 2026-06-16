@@ -1,6 +1,6 @@
 import type { Session, User } from "better-auth/types";
 
-export function mapAuthUser(user: User): AuthUser {
+export function mapAuthUser(user: User) {
   return {
     id: user.id,
     name: user.name,
