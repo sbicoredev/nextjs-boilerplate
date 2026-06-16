@@ -1,0 +1,138 @@
+"use client";
+
+import { useForm } from "@tanstack/react-form";
+import Link from "next/link";
+import { useState } from "react";
+import { z } from "zod";
+
+import { Button } from "~/components/ui/button";
+import { ButtonLoading } from "~/components/ui/button-loading";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "~/components/ui/field";
+import { Input } from "~/components/ui/input";
+import { AUTH_URI } from "~/constants/auth";
+import { useSession } from "~/features/auth/api/session";
+
+import { useDeleteAccount } from "../../api/delete-account";
+
+const schema = z.object({
+  password: z.string().min(6),
+});
+
+export const DeleteAccountDialog = () => {
+  const [open, setOpen] = useState(false);
+  const { data: auth } = useSession();
+
+  const { mutate: deleteAccoount, isPending } = useDeleteAccount();
+
+  const form = useForm({
+    defaultValues: {
+      password: "123456",
+    },
+    validators: { onSubmit: schema },
+    onSubmit: async ({ value }) => handleDelete(value.password),
+  });
+
+  const handleDelete = async (password: string) => {
+    if (!auth?.session?.token) {
+      return;
+    }
+    deleteAccoount({
+      token: auth.session.token,
+      password,
+    });
+  };
+
+  return (
+    <Dialog onOpenChange={(v) => setOpen(v)} open={open}>
+      <DialogTrigger
+        render={
+          <ButtonLoading
+            loading={isPending}
+            onClick={() => handleDelete("")}
+            variant={"destructive"}
+          >
+            Delete Account
+          </ButtonLoading>
+        }
+      />
+
+      <DialogContent>
+        <DialogTitle>Are you sure you want to delete your account?</DialogTitle>
+        <DialogDescription>
+          Once your account is deleted, all of its resources and data will also
+          be permanently deleted. Please enter your password to confirm you
+          would like to permanently delete your account.
+        </DialogDescription>
+        <form
+          className="p-6 md:p-8"
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit();
+          }}
+        >
+          <FieldGroup>
+            <form.Field name="password">
+              {(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field>
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+                      <Link
+                        className="ml-auto text-sm underline-offset-2 hover:underline"
+                        href={AUTH_URI.forgotPassword}
+                      >
+                        Forgot your password?
+                      </Link>
+                    </div>
+                    <Input
+                      aria-invalid={isInvalid}
+                      id={field.name}
+                      name={field.name}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      required
+                      type="password"
+                      value={field.state.value}
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                );
+              }}
+            </form.Field>
+          </FieldGroup>
+          <DialogFooter className="gap-2">
+            <DialogClose
+              render={
+                <Button onClick={() => setOpen(false)} variant="secondary" />
+              }
+            >
+              Cancel
+            </DialogClose>
+
+            <ButtonLoading loading={isPending} variant="destructive">
+              Delete account
+            </ButtonLoading>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
