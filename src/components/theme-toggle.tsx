@@ -16,7 +16,7 @@ type Props = {
   size?: "sm" | "lg" | "icon" | "icon-sm";
 };
 
-export function ThemeToggle({ variant, size }: Props) {
+export const ThemeToggle = ({ variant, size }: Props) => {
   const { setTheme } = useTheme();
 
   return (
@@ -39,4 +39,4 @@ export function ThemeToggle({ variant, size }: Props) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};

@@ -8,9 +8,15 @@ import { AUTH_URI } from "~/constants/auth";
 import { auth } from "./better-auth";
 import { mapAuthSession, mapAuthUser } from "./utils";
 
-export async function getAuthUser() {
-  const data = await auth.api.getSession({ headers: await headers() });
-  return data?.user ? mapAuthUser(data.user) : null;
+export async function checkAuth() {
+  const result = await auth.api.getSession({ headers: await headers() });
+  if (!result) {
+    return null;
+  }
+  return {
+    user: mapAuthUser(result.user),
+    session: mapAuthSession(result.session),
+  };
 }
 
 export async function authenticate() {

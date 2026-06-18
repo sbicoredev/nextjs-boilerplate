@@ -1,6 +1,6 @@
 "use client";
 
-import { GalleryVerticalEnd } from "lucide-react";
+import { GalleryVerticalEndIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Heading } from "~/components/ui/heading";
@@ -18,7 +18,9 @@ import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
 import { NavUser } from "./nav-user";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export const DashboardSidebar = ({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) => {
   const { user } = useAuth();
 
   return (
@@ -26,10 +28,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <Link
           className="flex gap-2 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-          href={"/dashboard"}
+          href="/dashboard"
         >
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <GalleryVerticalEnd className="size-4" />
+            <GalleryVerticalEndIcon className="size-4" />
           </div>
           <Heading>Acme Inc</Heading>
         </Link>
@@ -43,4 +45,4 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarRail />
     </Sidebar>
   );
-}
+};

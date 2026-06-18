@@ -1,4 +1,4 @@
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRightIcon, ChevronRightIcon } from "lucide-react";
 import type { Variants } from "motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -59,10 +59,10 @@ export const HeroSection = () => (
                 <div className="size-6 overflow-hidden rounded-full bg-background duration-500 group-hover:bg-muted">
                   <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
                     <span className="flex size-6">
-                      <ArrowRight className="m-auto size-3" />
+                      <ArrowRightIcon className="m-auto size-3" />
                     </span>
                     <span className="flex size-6">
-                      <ArrowRight className="m-auto size-3" />
+                      <ArrowRightIcon className="m-auto size-3" />
                     </span>
                   </div>
                 </div>
@@ -173,7 +173,7 @@ export const HeroSection = () => (
           >
             <span> Meet Our Customers</span>
 
-            <ChevronRight className="ml-1 inline-block size-3" />
+            <ChevronRightIcon className="ml-1 inline-block size-3" />
           </Link>
         </div>
         <div className="mx-auto mt-12 grid max-w-2xl grid-cols-4 gap-x-12 gap-y-8 transition-all duration-500 group-hover:opacity-50 group-hover:blur-xs sm:gap-x-16 sm:gap-y-14">

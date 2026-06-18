@@ -5,7 +5,7 @@ import {
   DockIcon,
   FileIcon,
   FolderIcon,
-  MoreHorizontal,
+  MoreHorizontalIcon,
   ShareIcon,
   TrashIcon,
 } from "lucide-react";
@@ -28,25 +28,25 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar";
 
-const documents: NavItem[] = [
+const documents = [
   {
     title: "Data Library",
     icon: DatabaseIcon,
-    href: "#",
+    url: "#",
   },
   {
     title: "Reports",
     icon: DockIcon,
-    href: "#",
+    url: "#",
   },
   {
     title: "Word Assistant",
     icon: FileIcon,
-    href: "#",
+    url: "#",
   },
 ];
 
-export function NavDocuments() {
+export const NavDocuments = () => {
   const { isMobile } = useSidebar();
 
   return (
@@ -55,7 +55,7 @@ export function NavDocuments() {
       <SidebarMenu>
         {documents.map((item) => (
           <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton render={<Link href={item.href ?? "/"} />}>
+            <SidebarMenuButton render={<Link href={item.url} />}>
               <item.icon />
               <span>{item.title}</span>
             </SidebarMenuButton>
@@ -68,7 +68,7 @@ export function NavDocuments() {
                   />
                 }
               >
-                <MoreHorizontal />
+                <MoreHorizontalIcon />
                 <span className="sr-only">More</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -95,11 +95,11 @@ export function NavDocuments() {
         ))}
         <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
-            <MoreHorizontal className="text-sidebar-foreground/70" />
+            <MoreHorizontalIcon className="text-sidebar-foreground/70" />
             <span>More</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   );
-}
+};

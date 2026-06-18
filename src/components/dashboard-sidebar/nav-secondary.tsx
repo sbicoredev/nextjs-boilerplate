@@ -1,7 +1,6 @@
 "use client";
 
-import { useKBar } from "kbar";
-import { ChevronRight, SearchIcon } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type * as React from "react";
@@ -21,33 +20,28 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "~/components/ui/sidebar";
-import { dashboardConfig } from "~/configs/dashboard-config";
+import { dashboardNav } from "~/configs/dashboard-config";
 
-interface Props extends React.ComponentPropsWithoutRef<typeof SidebarGroup> {}
+import { CommandMenu } from "./command-menu";
 
-export function NavSecondary(props: Props) {
+type Props = React.ComponentPropsWithoutRef<typeof SidebarGroup>;
+
+export const NavSecondary = (props: Props) => {
   const pathname = usePathname();
-  const { query } = useKBar();
 
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={query.toggle}>
-              <SearchIcon />
-              <span>Search</span>
-              <kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100">
-                <span className="text-sm">⌘</span>k
-              </kbd>
-            </SidebarMenuButton>
+            <SidebarMenuButton render={<CommandMenu />} />
           </SidebarMenuItem>
-          {dashboardConfig.secondary.map((item) =>
-            item.href ? (
+          {dashboardNav.secondary.map((item) =>
+            item.url ? (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
-                  isActive={item.href === pathname}
-                  render={<Link href={item.href} />}
+                  isActive={item.url === pathname}
+                  render={<Link href={item.url} />}
                 >
                   <item.icon />
                   <span>{item.title}</span>
@@ -56,7 +50,7 @@ export function NavSecondary(props: Props) {
             ) : (
               <Collapsible
                 className="group/collapsible"
-                defaultOpen={item.href === pathname}
+                defaultOpen={item.url === pathname}
                 key={item.title}
                 render={<SidebarMenuItem />}
               >
@@ -65,15 +59,15 @@ export function NavSecondary(props: Props) {
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton
-                          isActive={subItem.href === pathname}
-                          render={<Link href={subItem.href ?? "#"} />}
+                          isActive={subItem.url === pathname}
+                          render={<Link href={subItem.url ?? "#"} />}
                         >
                           <span>{subItem.title}</span>
                         </SidebarMenuSubButton>
@@ -88,4 +82,4 @@ export function NavSecondary(props: Props) {
       </SidebarGroupContent>
     </SidebarGroup>
   );
-}
+};

@@ -12,7 +12,7 @@ import {
 import { UserAvatar } from "../user-avatar";
 import { UserMenu } from "./user-menu";
 
-export function NavUser({ user }: { user: AuthUser }) {
+export const NavUser = ({ user }: { user: AuthUser }) => {
   const { isMobile } = useSidebar();
 
   return (
@@ -40,4 +40,4 @@ export function NavUser({ user }: { user: AuthUser }) {
       </SidebarMenuItem>
     </SidebarMenu>
   );
-}
+};

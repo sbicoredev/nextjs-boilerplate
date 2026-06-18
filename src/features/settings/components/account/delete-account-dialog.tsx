@@ -24,7 +24,7 @@ import {
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { AUTH_URI } from "~/constants/auth";
-import { useSession } from "~/features/auth/api/session";
+import { useAuth } from "~/contexts/auth-context";
 
 import { useDeleteAccount } from "../../api/delete-account";
 
@@ -34,7 +34,7 @@ const schema = z.object({
 
 export const DeleteAccountDialog = () => {
   const [open, setOpen] = useState(false);
-  const { data: auth } = useSession();
+  const auth = useAuth();
 
   const { mutate: deleteAccoount, isPending } = useDeleteAccount();
 

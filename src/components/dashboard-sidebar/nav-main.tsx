@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -19,21 +19,21 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "~/components/ui/sidebar";
-import { dashboardConfig } from "~/configs/dashboard-config";
+import { dashboardNav } from "~/configs/dashboard-config";
 
-export function NavMain() {
+export const NavMain = () => {
   const pathname = usePathname();
 
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        {dashboardConfig.mainNav.map((item) =>
-          item.href ? (
+        {dashboardNav.mainNav.map((item) =>
+          item.url ? (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
-                isActive={item.href === pathname}
-                render={<Link href={item.href} />}
+                isActive={item.url === pathname}
+                render={<Link href={item.url} />}
               >
                 <item.icon />
                 <span>{item.title}</span>
@@ -42,7 +42,7 @@ export function NavMain() {
           ) : (
             <Collapsible
               className="group/collapsible"
-              defaultOpen={item.href === pathname}
+              defaultOpen={item.url === pathname}
               key={item.title}
               render={<SidebarMenuItem />}
             >
@@ -51,15 +51,15 @@ export function NavMain() {
               >
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>
-                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton
-                        isActive={subItem.href === pathname}
-                        render={<Link href={subItem.href ?? "#"} />}
+                        isActive={subItem.url === pathname}
+                        render={<Link href={subItem.url ?? "#"} />}
                       >
                         <span>{subItem.title}</span>
                       </SidebarMenuSubButton>
@@ -73,4 +73,4 @@ export function NavMain() {
       </SidebarMenu>
     </SidebarGroup>
   );
-}
+};

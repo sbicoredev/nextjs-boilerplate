@@ -3,10 +3,10 @@ import { toast } from "sonner";
 
 import { authClient } from "~/services/auth/auth-client";
 
-interface Input {
+type Input = {
   password?: string;
   token: string;
-}
+};
 
 export const useDeleteAccount = () => {
   const queryClient = useQueryClient();

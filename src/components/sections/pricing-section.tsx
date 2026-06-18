@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
@@ -45,7 +45,7 @@ export const PricingSection = () => (
                 "Email and Chat Support",
               ].map((item) => (
                 <li className="flex items-center gap-2" key={item}>
-                  <Check className="size-3" />
+                  <CheckIcon className="size-3" />
                   {item}
                 </li>
               ))}
@@ -94,7 +94,7 @@ export const PricingSection = () => (
                   "Standard Security Features",
                 ].map((item) => (
                   <li className="flex items-center gap-2" key={item}>
-                    <Check className="size-3" />
+                    <CheckIcon className="size-3" />
                     {item}
                   </li>
                 ))}
@@ -130,7 +130,7 @@ export const PricingSection = () => (
                 "Email and Chat Support",
               ].map((item) => (
                 <li className="flex items-center gap-2" key={item}>
-                  <Check className="size-3" />
+                  <CheckIcon className="size-3" />
                   {item}
                 </li>
               ))}

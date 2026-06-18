@@ -1,33 +1,52 @@
 import {
   CheckCircleIcon,
+  type LucideIcon,
   LucideLayoutDashboard,
   SettingsIcon,
   UsersIcon,
 } from "lucide-react";
 
-export const dashboardConfig = {
+type NavItem = {
+  title: string;
+  url?: string;
+  icon?: LucideIcon;
+  label?: string;
+  disabled?: boolean;
+  external?: boolean;
+  description?: string;
+};
+
+type NavItemWithChildren = NavItem & {
+  items: NavItemWithChildren[];
+};
+
+type NavItemWithOptionalChildren = NavItem & {
+  items?: NavItemWithChildren[];
+};
+
+export const dashboardNav = {
   mainNav: [
     {
       title: "Dashboard",
       icon: LucideLayoutDashboard,
-      href: "/dashboard",
+      url: "/dashboard",
     },
     {
       title: "Users",
       icon: UsersIcon,
-      href: "/dashboard/users",
+      url: "/dashboard/users",
     },
     {
       title: "Permissions",
       icon: CheckCircleIcon,
-      href: "/dashboard/permissions",
+      url: "/dashboard/permissions",
     },
   ] as NavItemWithOptionalChildren[],
   secondary: [
     {
       title: "Settings",
       icon: SettingsIcon,
-      href: "/dashboard/settings",
+      url: "/dashboard/settings",
     },
   ] as NavItemWithOptionalChildren[],
 };

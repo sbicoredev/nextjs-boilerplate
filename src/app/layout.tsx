@@ -6,7 +6,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Providers } from "~/components/providers";
 import { AuthContext } from "~/contexts/auth-context";
 import { cn } from "~/lib/utils";
-import { getAuthUser } from "~/services/auth";
+import { checkAuth } from "~/services/auth";
 import "./globals.css";
 
 const libre_franklin = Libre_Franklin({
@@ -36,13 +36,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const locale = await getLocale();
-  const user = await getAuthUser();
+  const auth = await checkAuth();
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={cn(libre_franklin.variable, roboto.variable)}>
         <NextIntlClientProvider locale={locale}>
-          <AuthContext value={{ user: user ?? null }}>
+          <AuthContext
+            value={{ user: auth?.user ?? null, session: auth?.session ?? null }}
+          >
             <Providers>{children}</Providers>
           </AuthContext>
         </NextIntlClientProvider>

@@ -58,8 +58,10 @@
       "a11y": {
         "noLabelWithoutControl": "off",
         "noSvgWithoutTitle": "off",
+        "noNoninteractiveElementInteractions": "warn",
         "useAriaPropsForRole": "warn",
         "useFocusableInteractive": "warn",
+        "useKeyWithClickEvents": "warn",
         "useSemanticElements": "warn"
       }
     }
@@ -67,6 +69,7 @@
   "assist": {
     "actions": {
       "source": {
+        "useSortedInterfaceMembers": "off",
         "organizeImports": {
           "level": "on",
           "options": {

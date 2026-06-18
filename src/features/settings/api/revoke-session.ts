@@ -3,9 +3,9 @@ import { toast } from "sonner";
 
 import { authClient } from "~/services/auth/auth-client";
 
-interface Input {
+type Input = {
   token: string;
-}
+};
 
 export const useAllRevokeSession = () => {
   const queryClient = useQueryClient();

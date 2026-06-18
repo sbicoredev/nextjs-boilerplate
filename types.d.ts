@@ -2,33 +2,18 @@ type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
-interface NavItem {
-  description?: string;
-  disabled?: boolean;
-  external?: boolean;
-  href?: string;
-  icon?: LucideIcon;
-  label?: string;
-  title: string;
-}
+type Nullable<T> = {
+  [K in keyof T]: T[K] | null;
+};
 
-interface NavItemWithChildren extends NavItem {
-  items: NavItemWithChildren[];
-}
+type Nullish<T> = {
+  [K in keyof T]: undefined extends T[K]
+    ? T[K] | null | undefined
+    : null extends T[K]
+      ? T[K] | null | undefined
+      : T[K];
+};
 
-interface NavItemWithOptionalChildren extends NavItem {
-  items?: NavItemWithChildren[];
-}
-
-type MainNavItem = NavItemWithOptionalChildren;
-
-type SidebarNavItem = NavItemWithChildren;
-
-interface FooterItem {
-  items: {
-    title: string;
-    href: string;
-    external?: boolean;
-  }[];
-  title: string;
-}
+type UndefinedToNullable<T> = {
+  [K in keyof T]: undefined extends T[K] ? T[K] | null | undefined : T[K];
+};

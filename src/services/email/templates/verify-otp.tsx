@@ -15,14 +15,14 @@ import {
 // biome-ignore lint/correctness/noUnusedImports: explain
 import React from "react";
 
-interface Props {
+type Props = {
   appName: string;
   appUrl: string;
   code: string;
   companyAddr?: string;
   companyName?: string;
   expiration: number;
-}
+};
 
 const VerifyOTPEmail = ({
   code,

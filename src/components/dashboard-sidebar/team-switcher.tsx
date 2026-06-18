@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronsUpDown, Plus } from "lucide-react";
+import { ChevronsUpDownIcon, PlusIcon } from "lucide-react";
 import * as React from "react";
 
 import {
@@ -19,7 +19,7 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar";
 
-export function TeamSwitcher({
+export const TeamSwitcher = ({
   teams,
 }: {
   teams: {
@@ -27,7 +27,7 @@ export function TeamSwitcher({
     logo: React.ElementType;
     plan: string;
   }[];
-}) {
+}) => {
   const { isMobile } = useSidebar();
   const [activeTeam, setActiveTeam] = React.useState(teams[0]);
 
@@ -50,7 +50,7 @@ export function TeamSwitcher({
               <span className="truncate font-semibold">{activeTeam?.name}</span>
               <span className="truncate text-xs">{activeTeam?.plan}</span>
             </div>
-            <ChevronsUpDown className="ml-auto" />
+            <ChevronsUpDownIcon className="ml-auto" />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="start"
@@ -77,7 +77,7 @@ export function TeamSwitcher({
             <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 p-2">
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                <Plus className="size-4" />
+                <PlusIcon className="size-4" />
               </div>
               <div className="font-medium text-muted-foreground">Add team</div>
             </DropdownMenuItem>
@@ -86,4 +86,4 @@ export function TeamSwitcher({
       </SidebarMenuItem>
     </SidebarMenu>
   );
-}
+};

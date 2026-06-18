@@ -5,17 +5,18 @@ declare global {
   type UserRole = (typeof ROLES)[number];
 
   interface AuthUser {
-    email: string;
     id: string;
-    image?: string | null;
     name: string;
-    role?: UserRole | null;
+    email: string;
+    image: string | null;
+    role: UserRole;
+    banned: boolean | null;
   }
 
   interface AuthSession {
-    expiresAt: Date;
     id: string;
     token: string;
+    expiresAt: Date;
   }
 
   interface AuthResponse {

@@ -3,10 +3,10 @@ import { toast } from "sonner";
 
 import { authClient } from "~/services/auth/auth-client";
 
-interface Input {
+type Input = {
   currentPassword: string;
   newPassword: string;
-}
+};
 
 export const useChangePassword = () =>
   useMutation({
