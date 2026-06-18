@@ -60,11 +60,7 @@ export const DeleteAccountDialog = () => {
     <Dialog onOpenChange={(v) => setOpen(v)} open={open}>
       <DialogTrigger
         render={
-          <ButtonLoading
-            loading={isPending}
-            onClick={() => handleDelete("")}
-            variant={"destructive"}
-          >
+          <ButtonLoading loading={isPending} variant={"destructive"}>
             Delete Account
           </ButtonLoading>
         }
@@ -72,13 +68,12 @@ export const DeleteAccountDialog = () => {
 
       <DialogContent>
         <DialogTitle>Are you sure you want to delete your account?</DialogTitle>
-        <DialogDescription>
+        <DialogDescription className="text-justify">
           Once your account is deleted, all of its resources and data will also
           be permanently deleted. Please enter your password to confirm you
           would like to permanently delete your account.
         </DialogDescription>
         <form
-          className="p-6 md:p-8"
           onSubmit={(e) => {
             e.preventDefault();
             form.handleSubmit();
@@ -90,11 +85,11 @@ export const DeleteAccountDialog = () => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
-                  <Field>
+                  <Field data-invalid={isInvalid}>
                     <div className="flex items-center">
                       <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                       <Link
-                        className="ml-auto text-sm underline-offset-2 hover:underline"
+                        className="ml-auto text-xs underline-offset-2 hover:underline"
                         href={AUTH_URI.forgotPassword}
                       >
                         Forgot your password?
@@ -118,7 +113,7 @@ export const DeleteAccountDialog = () => {
               }}
             </form.Field>
           </FieldGroup>
-          <DialogFooter className="gap-2">
+          <DialogFooter className="mt-4 gap-2">
             <DialogClose
               render={
                 <Button onClick={() => setOpen(false)} variant="secondary" />

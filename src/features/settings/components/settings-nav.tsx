@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import type { JSX } from "react";
 
 import { buttonVariants } from "~/components/ui/button";
-import { ScrollArea } from "~/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { cn } from "~/lib/utils";
 
 type Props = React.HTMLAttributes<HTMLElement> & {
@@ -23,7 +23,7 @@ export const SettingsNav = ({ className, items, ...props }: Props) => {
     <ScrollArea className="w-full min-w-40 bg-background">
       <nav
         className={cn(
-          "flex space-x-2 rounded-md border p-2 lg:flex-col lg:space-x-0 lg:space-y-1",
+          "flex space-x-2 rounded-md p-2 lg:flex-col lg:space-x-0 lg:space-y-1",
           className
         )}
         {...props}
@@ -45,6 +45,7 @@ export const SettingsNav = ({ className, items, ...props }: Props) => {
           </Link>
         ))}
       </nav>
+      <ScrollBar orientation="horizontal" />
     </ScrollArea>
   );
 };

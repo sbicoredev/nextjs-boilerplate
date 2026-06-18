@@ -1,4 +1,4 @@
-import { BellIcon, LockIcon, PaletteIcon, WrenchIcon } from "lucide-react";
+import { BellIcon, LockIcon, WrenchIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
@@ -15,11 +15,6 @@ const sidebarNavItems = [
     title: "Security",
     href: "/dashboard/settings/security",
     icon: <LockIcon size={18} />,
-  },
-  {
-    title: "Appearance",
-    href: "/dashboard/settings/appearance",
-    icon: <PaletteIcon size={18} />,
   },
   {
     title: "Notifications",
