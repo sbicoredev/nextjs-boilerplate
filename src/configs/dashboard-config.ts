@@ -6,47 +6,55 @@ import {
   UsersIcon,
 } from "lucide-react";
 
-type NavItem = {
-  title: string;
-  url?: string;
-  icon?: LucideIcon;
-  label?: string;
-  disabled?: boolean;
-  external?: boolean;
-  description?: string;
+export type SidebarNav = {
+  label: string;
+  items: Array<
+    | {
+        title: string;
+        icon: LucideIcon;
+        parentUrl: string;
+        items: { title: string; url: string }[];
+      }
+    | {
+        title: string;
+        icon: LucideIcon;
+        url: string;
+        disabled?: boolean;
+        external?: boolean;
+        description?: string;
+      }
+  >;
 };
 
-type NavItemWithChildren = NavItem & {
-  items: NavItemWithChildren[];
-};
-
-type NavItemWithOptionalChildren = NavItem & {
-  items?: NavItemWithChildren[];
-};
-
-export const dashboardNav = {
-  mainNav: [
-    {
-      title: "Dashboard",
-      icon: LucideLayoutDashboard,
-      url: "/dashboard",
-    },
-    {
-      title: "Users",
-      icon: UsersIcon,
-      url: "/dashboard/users",
-    },
-    {
-      title: "Permissions",
-      icon: CheckCircleIcon,
-      url: "/dashboard/permissions",
-    },
-  ] as NavItemWithOptionalChildren[],
-  secondary: [
-    {
-      title: "Settings",
-      icon: SettingsIcon,
-      url: "/dashboard/settings",
-    },
-  ] as NavItemWithOptionalChildren[],
-};
+export const dashboardNav: SidebarNav[] = [
+  {
+    label: "Main Menus",
+    items: [
+      {
+        title: "Dashboard",
+        icon: LucideLayoutDashboard,
+        url: "/dashboard",
+      },
+      {
+        title: "Users",
+        icon: UsersIcon,
+        url: "/dashboard/users",
+      },
+      {
+        title: "Permissions",
+        icon: CheckCircleIcon,
+        url: "/dashboard/permissions",
+      },
+      {
+        title: "Settings",
+        icon: SettingsIcon,
+        parentUrl: "/dashboard/settings",
+        items: [
+          { title: "Account", url: "/dashboard/settings/account" },
+          { title: "Security", url: "/dashboard/settings/security" },
+          { title: "Notification", url: "/dashboard/settings/notification" },
+        ],
+      },
+    ],
+  },
+];

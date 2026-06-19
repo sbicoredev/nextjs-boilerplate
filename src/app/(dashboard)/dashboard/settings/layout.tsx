@@ -5,10 +5,10 @@ import { getTranslations } from "next-intl/server";
 import { Container } from "~/components/container";
 import { SettingsNav } from "~/features/settings/components/settings-nav";
 
-const sidebarNavItems = [
+const settingsNavItem = [
   {
     title: "Account",
-    href: "/dashboard/settings",
+    href: "/dashboard/settings/account",
     icon: <WrenchIcon size={18} />,
   },
   {
@@ -18,7 +18,7 @@ const sidebarNavItems = [
   },
   {
     title: "Notifications",
-    href: "/dashboard/settings/notifications",
+    href: "/dashboard/settings/notification",
     icon: <BellIcon size={18} />,
   },
 ];
@@ -47,7 +47,7 @@ export default async function SettingsLayout({ children }: Props) {
       </div>
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-8 lg:space-y-0">
         <aside className="lg:w-1/5">
-          <SettingsNav items={sidebarNavItems} />
+          <SettingsNav items={settingsNavItem} />
         </aside>
         <div className="flex-1 lg:max-w-2xl">{children}</div>
       </div>

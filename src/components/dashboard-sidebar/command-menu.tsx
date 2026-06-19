@@ -1,20 +1,8 @@
 "use client";
 
-import {
-  BellIcon,
-  CopyIcon,
-  CreditCardIcon,
-  FolderPlusIcon,
-  HelpCircleIcon,
-  HomeIcon,
-  InboxIcon,
-  LayoutGridIcon,
-  ListIcon,
-  PlusIcon,
-  SearchIcon,
-  SettingsIcon,
-  UserIcon,
-} from "lucide-react";
+import { ArrowRightIcon, MoonIcon, SearchIcon, SunIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import React from "react";
 
 import { Button } from "~/components/ui/button";
@@ -27,11 +15,45 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "~/components/ui/command";
+import { dashboardNav } from "~/configs/dashboard-config";
 
 export const CommandMenu = () => {
+  const { setTheme } = useTheme();
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((prev) => !prev);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
+  const handleSelect = React.useCallback(
+    (item: {
+      title: string;
+      url: string;
+      disabled?: boolean;
+      external?: boolean;
+    }) => {
+      console.log(item);
+      if (item.disabled) {
+        return;
+      }
+      setOpen(false);
+      if (item.external) {
+        window.open(item.url, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(item.url);
+      }
+    },
+    [router, setOpen]
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -47,71 +69,42 @@ export const CommandMenu = () => {
           <CommandInput placeholder="Type a command or search..." />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup heading="Navigation">
-              <CommandItem>
-                <HomeIcon />
-                <span>Home</span>
-                <CommandShortcut>⌘H</CommandShortcut>
-              </CommandItem>
-              <CommandItem>
-                <InboxIcon />
-                <span>Inbox</span>
-                <CommandShortcut>⌘I</CommandShortcut>
-              </CommandItem>
-            </CommandGroup>
+            {dashboardNav.map((group) => (
+              <CommandGroup heading={group.label} key={group.label}>
+                {group.items.map((item) =>
+                  "url" in item ? (
+                    <CommandItem
+                      key={item.title}
+                      onSelect={() => handleSelect(item)}
+                    >
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </CommandItem>
+                  ) : (
+                    item.items.map((sub) => (
+                      <CommandItem
+                        key={`${item.title}-${sub.title}`}
+                        onSelect={() => handleSelect(sub)}
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                        <ArrowRightIcon />
+                        <span>{sub.title}</span>
+                      </CommandItem>
+                    ))
+                  )
+                )}
+              </CommandGroup>
+            ))}
             <CommandSeparator />
-            <CommandGroup heading="Actions">
-              <CommandItem>
-                <PlusIcon />
-                <span>New File</span>
-                <CommandShortcut>⌘N</CommandShortcut>
+            <CommandGroup heading="Theme">
+              <CommandItem onSelect={() => setTheme("light")}>
+                <SunIcon />
+                <span>Set Light Theme</span>
               </CommandItem>
-              <CommandItem>
-                <FolderPlusIcon />
-                <span>New Folder</span>
-                <CommandShortcut>⇧⌘N</CommandShortcut>
-              </CommandItem>
-              <CommandItem>
-                <CopyIcon />
-                <span>Copy</span>
-                <CommandShortcut>⌘C</CommandShortcut>
-              </CommandItem>
-            </CommandGroup>
-            <CommandSeparator />
-            <CommandGroup heading="View">
-              <CommandItem>
-                <LayoutGridIcon />
-                <span>Grid View</span>
-              </CommandItem>
-              <CommandItem>
-                <ListIcon />
-                <span>List View</span>
-              </CommandItem>
-            </CommandGroup>
-            <CommandSeparator />
-            <CommandGroup heading="Account">
-              <CommandItem>
-                <UserIcon />
-                <span>Profile</span>
-                <CommandShortcut>⌘P</CommandShortcut>
-              </CommandItem>
-              <CommandItem>
-                <CreditCardIcon />
-                <span>Billing</span>
-                <CommandShortcut>⌘B</CommandShortcut>
-              </CommandItem>
-              <CommandItem>
-                <SettingsIcon />
-                <span>Settings</span>
-                <CommandShortcut>⌘S</CommandShortcut>
-              </CommandItem>
-              <CommandItem>
-                <BellIcon />
-                <span>Notifications</span>
-              </CommandItem>
-              <CommandItem>
-                <HelpCircleIcon />
-                <span>Help & Support</span>
+              <CommandItem onSelect={() => setTheme("dark")}>
+                <MoonIcon />
+                <span>Set Dark Theme</span>
               </CommandItem>
             </CommandGroup>
           </CommandList>

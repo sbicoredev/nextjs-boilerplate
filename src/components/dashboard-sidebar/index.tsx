@@ -13,7 +13,6 @@ import {
 } from "~/components/ui/sidebar";
 import { useAuth } from "~/contexts/auth-context";
 
-import { NavDocuments } from "./nav-documents";
 import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
 import { NavUser } from "./nav-user";
@@ -38,8 +37,7 @@ export const DashboardSidebar = ({
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
-        <NavDocuments />
-        <NavSecondary className="mt-auto" />
+        <NavSecondary />
       </SidebarContent>
       <SidebarFooter>{user && <NavUser user={user} />}</SidebarFooter>
       <SidebarRail />
