@@ -12,4 +12,10 @@ export const AuthContext = createContext<AuthContext>({
   session: null,
 });
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("Lack of AuthContext");
+  }
+  return context;
+};

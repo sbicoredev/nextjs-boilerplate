@@ -3,6 +3,7 @@ export const SIGNUP_EMAIL_COOKIE = "sign-up-email";
 export const EMAIL_OTP_COOKIE = "email-otp";
 
 export const DEFAULT_LOGIN_REDIRECT = "/";
+export const CALLBACK_QUERY_NAME = "callback-url";
 
 export const AUTH_URI = {
   signin: "/signin",
