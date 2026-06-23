@@ -1,25 +1,20 @@
 import type { Metadata } from "next";
-import { Libre_Franklin, Roboto } from "next/font/google";
+import { cookies } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
+import type { StorageValue } from "zustand/middleware";
 
 import { Providers } from "~/components/providers";
+import {
+  DASHBOARD_THEME_COOKIE_NAME,
+  DEFAULT_THEME_PREFERENCE,
+} from "~/constants/theme-customizer";
 import { AuthContext } from "~/contexts/auth-context";
-import { cn } from "~/lib/utils";
+import { ThemeCustomizerContext } from "~/contexts/theme-customizer-context";
+import { fontRegistry, fontVars } from "~/lib/fonts";
 import { checkAuth } from "~/services/auth";
-import "./globals.css";
 
-const libre_franklin = Libre_Franklin({
-  subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
-  variable: "--font-libre_franklin",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
-  variable: "--font-roboto",
-});
+import "../styles/globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata");
@@ -32,21 +27,46 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: React.PropsWithChildren) {
   const locale = await getLocale();
   const auth = await checkAuth();
+  const v = (await cookies()).get(DASHBOARD_THEME_COOKIE_NAME)?.value;
+  const settings =
+    (JSON.parse(v ?? "{}") as StorageValue<ThemeCustomizerField> | undefined)
+      ?.state || DEFAULT_THEME_PREFERENCE;
+
+  const allowedFonts = Object.entries(fontRegistry).map(([key, f]) => ({
+    value: key as keyof typeof fontRegistry,
+    label: f.label,
+  }));
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={cn(libre_franklin.variable, roboto.variable)}>
+    <html
+      className={settings.themeMode === "light" ? "" : "dark"}
+      data-theme-preset={settings.themePreset}
+      lang={locale}
+      style={{
+        // @ts-expect-error
+        "--font-primary": settings.fontPrimary,
+        "--font-heading": settings.fontHeading,
+      }}
+      suppressHydrationWarning
+    >
+      <body className={fontVars}>
         <NextIntlClientProvider locale={locale}>
-          <AuthContext
-            value={{ user: auth?.user ?? null, session: auth?.session ?? null }}
+          <ThemeCustomizerContext
+            allowedFonts={allowedFonts}
+            themeStoreState={settings}
           >
-            <Providers>{children}</Providers>
-          </AuthContext>
+            <AuthContext
+              value={{
+                user: auth?.user ?? null,
+                session: auth?.session ?? null,
+              }}
+            >
+              <Providers>{children}</Providers>
+            </AuthContext>
+          </ThemeCustomizerContext>
         </NextIntlClientProvider>
       </body>
     </html>

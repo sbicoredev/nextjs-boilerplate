@@ -11,7 +11,7 @@ function ScrollArea({
 }: ScrollAreaPrimitive.Root.Props) {
   return (
     <ScrollAreaPrimitive.Root
-      className={cn("relative", className)}
+      className={cn("group/area relative", className)}
       data-slot="scroll-area"
       {...props}
     >
@@ -44,7 +44,7 @@ function ScrollBar({
       {...props}
     >
       <ScrollAreaPrimitive.Thumb
-        className="relative flex-1 rounded-full bg-border"
+        className="relative flex-1 rounded-full bg-transparent group-hover/area:bg-muted"
         data-slot="scroll-area-thumb"
       />
     </ScrollAreaPrimitive.Scrollbar>

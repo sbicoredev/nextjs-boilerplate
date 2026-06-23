@@ -15,7 +15,6 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Field, FieldError, FieldGroup } from "~/components/ui/field";
-import { Heading } from "~/components/ui/heading";
 import {
   InputOTP,
   InputOTPGroup,
@@ -48,7 +47,7 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
       <div className={cn("space-y-6", className)} {...props}>
         <div className="flex flex-col items-center justify-center gap-4 rounded-md">
           <CheckCircleIcon className="size-14 animate-bounce text-green-500" />
-          <Heading>Email verification successfull</Heading>
+          <h3>Email verification successfull</h3>
           <Button nativeButton={false} render={<Link href={AUTH_URI.signin} />}>
             Go to sign in
             <ArrowRightIcon />

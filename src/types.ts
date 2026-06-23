@@ -1,7 +1,31 @@
 import type { ROLES } from "./constants/auth";
+import type {
+  SIDEBAR_COLLAPSIBLE,
+  SIDEBAR_SIDE,
+  SIDEBAR_VARIANT,
+  THEME_PRESETS,
+} from "./constants/theme-customizer";
 import type { table } from "./db/drizzle";
+import type { fontRegistry } from "./lib/fonts";
 
 declare global {
+  type ThemeMode = "light" | "dark" | "system";
+  type ThemePreset = (typeof THEME_PRESETS)[number];
+  type FontKey = keyof typeof fontRegistry;
+  type SidebarSide = (typeof SIDEBAR_SIDE)[number];
+  type SidebarVariant = (typeof SIDEBAR_VARIANT)[number];
+  type SidebarCollapsible = (typeof SIDEBAR_COLLAPSIBLE)[number];
+
+  type ThemeCustomizerField = {
+    themeMode: ThemeMode;
+    themePreset: ThemePreset;
+    fontPrimary: FontKey;
+    fontHeading: FontKey;
+    sidebarSide: SidebarSide;
+    sidebarVariant: SidebarVariant;
+    sidebarCollapsible: SidebarCollapsible;
+  };
+
   type UserRole = (typeof ROLES)[number];
 
   interface AuthUser {

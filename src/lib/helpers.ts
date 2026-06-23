@@ -87,13 +87,32 @@ export function formatBytes(
 }
 
 export function toSentenceCase(str: string) {
-  return str
-    .replace(/_/g, " ")
-    .replace(/([A-Z])/g, " $1")
-    .toLowerCase()
-    .replace(/^\w/, (c) => c.toUpperCase())
-    .replace(/\s+/g, " ")
-    .trim();
+  return (
+    str
+      // Insert space before any uppercase letter (fixes camelCase)
+      .replace(/([A-Z])/g, " $1")
+      // Replace underscores or hyphens with spaces (fixes snake_case/kebab-case)
+      .replace(/[_-]+/g, " ")
+      .trim()
+      .toLowerCase()
+      // Capitalize the first letter
+      .replace(/^\w/, (c) => c.toUpperCase())
+  );
+  // .replace(/\s+/g, " ");
+}
+
+export function toTitleCase(str: string) {
+  return (
+    str
+      // 1. Insert space before any uppercase letter (fixes camelCase)
+      .replace(/([A-Z])/g, " $1")
+      // 2. Replace underscores or hyphens with spaces (fixes snake_case/kebab-case)
+      .replace(/[_-]+/g, " ")
+      // 3. Trim extra spaces from ends
+      .trim()
+      // 4. Capitalize the first letter of every word
+      .replace(/\b\w/g, (char) => char.toUpperCase())
+  );
 }
 
 export function parseCookie(cookieString: string): Record<string, string> {

@@ -2,10 +2,8 @@
 
 import { ArrowRightIcon, MoonIcon, SearchIcon, SunIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
-import React from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { Button } from "~/components/ui/button";
 import {
   Command,
   CommandDialog,
@@ -16,14 +14,18 @@ import {
   CommandList,
   CommandSeparator,
 } from "~/components/ui/command";
+import { SidebarMenuButton } from "~/components/ui/sidebar";
 import { dashboardNav } from "~/configs/dashboard-config";
+import { useThemeCustomizer } from "~/contexts/theme-customizer-context";
 
 export const CommandMenu = () => {
-  const { setTheme } = useTheme();
+  const { store } = useThemeCustomizer();
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  React.useEffect(() => {
+  const setTheme = store.getState().setThemeMode;
+
+  useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -34,7 +36,7 @@ export const CommandMenu = () => {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const handleSelect = React.useCallback(
+  const handleSelect = useCallback(
     (item: {
       title: string;
       url: string;
@@ -56,14 +58,14 @@ export const CommandMenu = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4">
-      <Button className="px-2" onClick={() => setOpen(true)} variant="ghost">
-        <SearchIcon />
+    <>
+      <SidebarMenuButton onClick={() => setOpen(true)}>
+        <SearchIcon className="size-4" />
         <span>Search</span>
         <kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100">
           <span className="text-sm">⌘</span>k
         </kbd>
-      </Button>
+      </SidebarMenuButton>
       <CommandDialog onOpenChange={setOpen} open={open}>
         <Command>
           <CommandInput placeholder="Type a command or search..." />
@@ -110,6 +112,6 @@ export const CommandMenu = () => {
           </CommandList>
         </Command>
       </CommandDialog>
-    </div>
+    </>
   );
 };
