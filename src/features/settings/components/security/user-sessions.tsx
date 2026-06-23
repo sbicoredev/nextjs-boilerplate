@@ -3,8 +3,8 @@
 import { LaptopIcon, Loader2Icon, LogOutIcon, PhoneIcon } from "lucide-react";
 import { UAParser } from "ua-parser-js";
 
+import { ButtonSpinner } from "~/components/button-spinner";
 import { Badge } from "~/components/ui/badge";
-import { ButtonLoading } from "~/components/ui/button-loading";
 import { Separator } from "~/components/ui/separator";
 import { useAuth } from "~/contexts/auth-context";
 
@@ -56,16 +56,16 @@ export const UserSessions = () => {
                   </p>
                 </div>
                 {session.id !== auth?.session?.id && (
-                  <ButtonLoading
+                  <ButtonSpinner
                     className="ml-auto"
-                    loading={isTerminating}
                     onClick={() => revokeSession({ token: session.token })}
                     size="sm"
+                    spin={isTerminating}
                     variant="destructive"
                   >
                     <LogOutIcon className="mr-1 h-4 w-4" />
                     Revoke
-                  </ButtonLoading>
+                  </ButtonSpinner>
                 )}
               </div>
               <Separator className="mt-4" />
@@ -77,15 +77,15 @@ export const UserSessions = () => {
         <p className="text-muted-foreground text-xs">
           Last checked: {new Date().toDateString()}
         </p>
-        <ButtonLoading
+        <ButtonSpinner
           disabled={sessions?.length === 0}
-          loading={isTerminatingAll}
           onClick={() => revokeAllSession()}
           size="sm"
+          spin={isTerminatingAll}
           variant="destructive"
         >
           Revoke All Sessions
-        </ButtonLoading>
+        </ButtonSpinner>
       </div>
     </div>
   );

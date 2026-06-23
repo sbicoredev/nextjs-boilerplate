@@ -1,6 +1,7 @@
 "use client";
 
 import { BellIcon, CreditCardIcon, LogOutIcon, UserIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import type { ReactElement } from "react";
 
 import {
@@ -13,6 +14,8 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { UserAvatar } from "~/components/user-avatar";
+import { AUTH_URI } from "~/constants/auth";
+import { authClient } from "~/services/auth/auth-client";
 
 type Props = {
   user: AuthUser;
@@ -20,48 +23,62 @@ type Props = {
   menuSide: "bottom" | "top" | "right" | "left";
 };
 
-export const UserMenu = ({ user, trigger, menuSide }: Props) => (
-  <DropdownMenu>
-    <DropdownMenuTrigger render={trigger} />
-    <DropdownMenuContent
-      align="end"
-      className="min-w-56 rounded-lg"
-      side={menuSide}
-      sideOffset={4}
-    >
-      <DropdownMenuGroup>
-        <DropdownMenuLabel className="p-0 font-normal">
-          <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-            <UserAvatar alt={user.name} src={user.image} />
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user.name}</span>
-              <span className="truncate text-muted-foreground text-xs">
-                {user.email}
-              </span>
+export const UserMenu = ({ user, trigger, menuSide }: Props) => {
+  const router = useRouter();
+
+  const handleSignout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push(AUTH_URI.signin); // redirect to login page
+        },
+      },
+    });
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger render={trigger} />
+      <DropdownMenuContent
+        align="end"
+        className="min-w-56 rounded-lg"
+        side={menuSide}
+        sideOffset={4}
+      >
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="p-0 font-normal">
+            <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+              <UserAvatar alt={user.name} src={user.image} />
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate text-muted-foreground text-xs">
+                  {user.email}
+                </span>
+              </div>
             </div>
-          </div>
-        </DropdownMenuLabel>
-      </DropdownMenuGroup>
-      <DropdownMenuSeparator />
-      <DropdownMenuGroup>
-        <DropdownMenuItem>
-          <UserIcon />
-          Account
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <UserIcon />
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <CreditCardIcon />
+            Billing
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <BellIcon />
+            Notifications
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleSignout}>
+          <LogOutIcon />
+          Log out
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <CreditCardIcon />
-          Billing
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <BellIcon />
-          Notifications
-        </DropdownMenuItem>
-      </DropdownMenuGroup>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem>
-        <LogOutIcon />
-        Log out
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-);
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};

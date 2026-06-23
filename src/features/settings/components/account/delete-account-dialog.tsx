@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { z } from "zod";
 
+import { ButtonSpinner } from "~/components/button-spinner";
 import { Button } from "~/components/ui/button";
-import { ButtonLoading } from "~/components/ui/button-loading";
 import {
   Dialog,
   DialogClose,
@@ -60,9 +60,9 @@ export const DeleteAccountDialog = () => {
     <Dialog onOpenChange={(v) => setOpen(v)} open={open}>
       <DialogTrigger
         render={
-          <ButtonLoading loading={isPending} variant={"destructive"}>
+          <ButtonSpinner spin={isPending} variant={"destructive"}>
             Delete Account
-          </ButtonLoading>
+          </ButtonSpinner>
         }
       />
 
@@ -122,9 +122,9 @@ export const DeleteAccountDialog = () => {
               Cancel
             </DialogClose>
 
-            <ButtonLoading loading={isPending} variant="destructive">
+            <ButtonSpinner spin={isPending} variant="destructive">
               Delete account
-            </ButtonLoading>
+            </ButtonSpinner>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type * as React from "react";
 
-import { ButtonLoading } from "~/components/ui/button-loading";
+import { ButtonSpinner } from "~/components/button-spinner";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   Field,
@@ -160,9 +160,7 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
               </form.Field>
 
               <Field>
-                <ButtonLoading loading={isPending}>
-                  Reset Password
-                </ButtonLoading>
+                <ButtonSpinner spin={isPending}>Reset Password</ButtonSpinner>
               </Field>
 
               <FieldDescription className="text-center">

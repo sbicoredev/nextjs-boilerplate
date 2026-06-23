@@ -1,5 +1,14 @@
 import Image from "next/image";
 
-export const Logo = (props: { className?: string }) => (
-  <Image alt="Logo" height={40} src="/assets/logo.svg" width={150} {...props} />
+import { cn } from "~/lib/utils";
+
+export const Logo = ({ className }: { className?: string }) => (
+  <Image
+    alt="Logo"
+    className={cn(className, "w-40")}
+    height={40}
+    loading="eager"
+    src="/assets/logo.svg"
+    width={150}
+  />
 );

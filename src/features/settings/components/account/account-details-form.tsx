@@ -4,8 +4,8 @@ import { useForm } from "@tanstack/react-form";
 import { XIcon } from "lucide-react";
 import Image from "next/image";
 
+import { ButtonSpinner } from "~/components/button-spinner";
 import { Button } from "~/components/ui/button";
-import { ButtonLoading } from "~/components/ui/button-loading";
 import {
   Field,
   FieldError,
@@ -98,7 +98,7 @@ export const AccountDetailsForm = () => {
           }}
         </form.Field>
         <Field>
-          <ButtonLoading loading={isUpdating}>Update</ButtonLoading>
+          <ButtonSpinner spin={isUpdating}>Update</ButtonSpinner>
         </Field>
       </FieldGroup>
     </form>

@@ -4,8 +4,8 @@ import { useForm } from "@tanstack/react-form";
 import { ArrowRightIcon, CheckCircleIcon } from "lucide-react";
 import Link from "next/link";
 
+import { ButtonSpinner } from "~/components/button-spinner";
 import { Button } from "~/components/ui/button";
-import { ButtonLoading } from "~/components/ui/button-loading";
 import {
   Card,
   CardContent,
@@ -101,20 +101,20 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
               </form.Field>
 
               <Field>
-                <ButtonLoading className="w-full" loading={isPending}>
+                <ButtonSpinner className="w-full" spin={isPending}>
                   Verify
-                </ButtonLoading>
-                <ButtonLoading
-                  loading={isSendingOTP || isPending}
+                </ButtonSpinner>
+                <ButtonSpinner
                   onClick={() =>
                     resendOTP({ email, type: "email-verification" })
                   }
                   size={"sm"}
+                  spin={isSendingOTP || isPending}
                   type="button"
                   variant={"link"}
                 >
                   Didn't receive a code? Resend
-                </ButtonLoading>
+                </ButtonSpinner>
               </Field>
             </FieldGroup>
           </form>

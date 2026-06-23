@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type * as React from "react";
 
+import { ButtonSpinner } from "~/components/button-spinner";
 import { Button } from "~/components/ui/button";
-import { ButtonLoading } from "~/components/ui/button-loading";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   Field,
@@ -174,9 +174,7 @@ export const SignupForm = ({
               </Field>
 
               <Field>
-                <ButtonLoading loading={isPending}>
-                  Create Account
-                </ButtonLoading>
+                <ButtonSpinner spin={isPending}>Create Account</ButtonSpinner>
               </Field>
 
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">

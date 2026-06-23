@@ -1,6 +1,6 @@
 "use client";
 
-import { ButtonLoading } from "~/components/ui/button-loading";
+import { ButtonSpinner } from "~/components/button-spinner";
 import { Input } from "~/components/ui/input";
 import { useAuth } from "~/contexts/auth-context";
 
@@ -13,7 +13,7 @@ export const EmailSettingsForm = () => {
         <Input disabled={true} value={auth?.user?.email} />
       </div>
       <div className="md:col-span-2">
-        <ButtonLoading loading={false}>Update</ButtonLoading>
+        <ButtonSpinner spin={false}>Update</ButtonSpinner>
       </div>
     </div>
   );

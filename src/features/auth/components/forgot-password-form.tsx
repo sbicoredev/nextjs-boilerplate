@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type * as React from "react";
 
-import { ButtonLoading } from "~/components/ui/button-loading";
+import { ButtonSpinner } from "~/components/button-spinner";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   Field,
@@ -79,9 +79,7 @@ export const ForgotPasswordForm = ({
               </form.Field>
 
               <Field>
-                <ButtonLoading loading={isPending}>
-                  Send Reset Link
-                </ButtonLoading>
+                <ButtonSpinner spin={isPending}>Send Reset Link</ButtonSpinner>
               </Field>
 
               <FieldDescription className="text-center">

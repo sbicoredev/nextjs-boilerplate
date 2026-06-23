@@ -2,7 +2,7 @@
 
 import { useForm } from "@tanstack/react-form";
 
-import { ButtonLoading } from "~/components/ui/button-loading";
+import { ButtonSpinner } from "~/components/button-spinner";
 import {
   Field,
   FieldError,
@@ -103,7 +103,7 @@ export const PasswordUpdateForm = () => {
           }}
         </form.Field>
         <Field>
-          <ButtonLoading loading={isUpdatingPass}>Update</ButtonLoading>
+          <ButtonSpinner spin={isUpdatingPass}>Update</ButtonSpinner>
         </Field>
       </FieldGroup>
     </form>
