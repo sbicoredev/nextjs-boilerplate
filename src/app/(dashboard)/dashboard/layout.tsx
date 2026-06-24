@@ -20,6 +20,7 @@ import {
   DASHBOARD_THEME_COOKIE_NAME,
   DEFAULT_THEME_PREFERENCE,
 } from "~/constants/theme-customizer";
+import { NotificationTrigger } from "~/features/notification/components/notification-trigger";
 import { CustomizerTrigger } from "~/features/theme-customizer/components/customizer-trigger";
 import { authenticate } from "~/services/auth";
 
@@ -58,6 +59,7 @@ export default async function DashboardLayout({ children }: Props) {
             <AppBreadcrumbs />
             <div className="ml-auto inline-flex items-center gap-2">
               <LocaleSwitcher size="icon-sm" variant="ghost" />
+              <NotificationTrigger size="icon-sm" variant="ghost" />
               <ThemeToggle size="icon-sm" variant="ghost" />
               <CustomizerTrigger size="icon-sm" variant="ghost" />
               <Separator className="mr-2" orientation="vertical" />

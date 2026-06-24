@@ -1,6 +1,7 @@
 "use client";
 
 import { BellIcon, CreditCardIcon, LogOutIcon, UserIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ReactElement } from "react";
 
@@ -68,7 +69,10 @@ export const UserMenu = ({ user, trigger, menuSide }: Props) => {
             <CreditCardIcon />
             Billing
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            nativeButton={false}
+            render={<Link href="/dashboard/notifications" />}
+          >
             <BellIcon />
             Notifications
           </DropdownMenuItem>
