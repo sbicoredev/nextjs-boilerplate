@@ -36,6 +36,7 @@ export const NavMain = () => {
                   <SidebarMenuButton
                     isActive={item.url === pathname}
                     render={<Link href={item.url} />}
+                    tooltip={item.title}
                   >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
