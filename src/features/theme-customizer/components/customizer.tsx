@@ -25,9 +25,11 @@ import {
 import { Switch } from "~/components/ui/switch";
 import {
   DEFAULT_THEME_PREFERENCE,
+  PAGE_LAYOUT,
   SIDEBAR_COLLAPSIBLE,
   SIDEBAR_SIDE,
   SIDEBAR_VARIANT,
+  THEME_MODE,
   THEME_PRESETS,
 } from "~/constants/theme-customizer";
 import {
@@ -49,6 +51,7 @@ export function Customizer({ open, onOpenChange }: Props) {
     themePreset,
     fontPrimary,
     fontHeading,
+    pageLayout,
     sidebarSide,
     sidebarVariant,
     sidebarCollapsible,
@@ -56,6 +59,7 @@ export function Customizer({ open, onOpenChange }: Props) {
     setThemePreset,
     setFontPrimary,
     setFontHeading,
+    setPageLayout,
     setSidebarSide,
     setSidebarVariant,
     setSidebarCollapsible,
@@ -95,19 +99,26 @@ export function Customizer({ open, onOpenChange }: Props) {
     []
   );
 
-  const handlePresetChange = (value: ThemePreset) => {
-    document.documentElement.setAttribute("data-theme-preset", value);
-    setThemePreset(value);
+  const handlePresetChange = (v: ThemePreset | null) => {
+    document.documentElement.setAttribute("data-theme-preset", v ?? "");
+    setThemePreset(v ?? DEFAULT_THEME_PREFERENCE.themePreset);
   };
 
-  const onFontPrimaryChange = (value: FontKey) => {
-    document.documentElement.style.setProperty("--font-sans", value);
-    setFontPrimary(value);
+  const handlePrimaryChange = (v: FontKey | null) => {
+    document.documentElement.style.setProperty("--font-sans", v);
+    setFontPrimary(v ?? DEFAULT_THEME_PREFERENCE.fontPrimary);
   };
 
-  const onFontHeadingChange = (value: FontKey) => {
-    document.documentElement.style.setProperty("--font-heading", value);
-    setFontHeading(value);
+  const handleHeadingChange = (v: FontKey | null) => {
+    document.documentElement.style.setProperty("--font-heading", v);
+    setFontHeading(v ?? DEFAULT_THEME_PREFERENCE.fontHeading);
+  };
+
+  const handlePageLayoutChange = (v: PageLayout | null) => {
+    document
+      .querySelector('[data-slot="dashboard-main"]')
+      ?.setAttribute("data-page-layout", v ?? "");
+    setPageLayout(v ?? DEFAULT_THEME_PREFERENCE.pageLayout);
   };
 
   const handleResetDefault = () => {
@@ -121,6 +132,9 @@ export function Customizer({ open, onOpenChange }: Props) {
       "--font-heading",
       DEFAULT_THEME_PREFERENCE.fontHeading
     );
+    document
+      .querySelector('[data-slot="dashboard-main"]')
+      ?.setAttribute("data-page-layout", DEFAULT_THEME_PREFERENCE.pageLayout);
     reset();
   };
 
@@ -151,20 +165,22 @@ export function Customizer({ open, onOpenChange }: Props) {
             <div className="flex items-center justify-between">
               <Label htmlFor="theme-mode">Theme mode</Label>
               <Select
+                items={THEME_MODE.map((v) => ({
+                  label: toTitleCase(v),
+                  value: v,
+                }))}
                 onValueChange={(v) => setThemeMode(v as ThemeMode)}
                 value={themeMode}
               >
-                <SelectTrigger className="w-35" id="theme-mode">
-                  <SelectValue />
+                <SelectTrigger className="w-40" id="theme-mode">
+                  <SelectValue placeholder="Select mode" />
                 </SelectTrigger>
                 <SelectContent className="max-h-60">
-                  {(["light", "dark", "system"] satisfies ThemeMode[]).map(
-                    (v) => (
-                      <SelectItem key={v} value={v}>
-                        {v}
-                      </SelectItem>
-                    )
-                  )}
+                  {THEME_MODE.map((v) => (
+                    <SelectItem key={v} value={v}>
+                      {toTitleCase(v)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -185,14 +201,10 @@ export function Customizer({ open, onOpenChange }: Props) {
               <Label htmlFor="font-primary">Primary Fonts</Label>
               <Select
                 items={fontItems}
-                onValueChange={(v) => onFontPrimaryChange(v as FontKey)}
+                onValueChange={handlePrimaryChange}
                 value={fontPrimary}
               >
-                <SelectTrigger
-                  className="w-35 text-xs"
-                  id="font-primary"
-                  size="sm"
-                >
+                <SelectTrigger className="w-40" id="font-primary">
                   <SelectValue placeholder="Select font" />
                 </SelectTrigger>
                 <SelectContent className="max-h-60">
@@ -214,14 +226,10 @@ export function Customizer({ open, onOpenChange }: Props) {
               <Label htmlFor="font-heading">Heading Fonts</Label>
               <Select
                 items={fontItems}
-                onValueChange={(v) => onFontHeadingChange(v as FontKey)}
+                onValueChange={handleHeadingChange}
                 value={fontHeading}
               >
-                <SelectTrigger
-                  className="w-35 text-xs"
-                  id="font-heading"
-                  size="sm"
-                >
+                <SelectTrigger className="w-40" id="font-heading">
                   <SelectValue placeholder="Select font" />
                 </SelectTrigger>
                 <SelectContent className="max-h-60">
@@ -253,14 +261,43 @@ export function Customizer({ open, onOpenChange }: Props) {
                   label: toTitleCase(v),
                   value: v,
                 }))}
-                onValueChange={(v) => handlePresetChange(v as ThemePreset)}
+                onValueChange={handlePresetChange}
                 value={themePreset}
               >
-                <SelectTrigger className="w-35" id="theme-preset">
+                <SelectTrigger className="w-40" id="theme-preset">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="max-h-60">
                   {THEME_PRESETS.map((v) => (
+                    <SelectItem key={v} value={v}>
+                      {toTitleCase(v)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </Section>
+
+          {/* -------- Page Layout -------- */}
+          <Section
+            icon={<LayoutIcon className="size-4" />}
+            title="Page Content"
+          >
+            <div className="flex items-center justify-between">
+              <Label htmlFor="page-layout">Page Layout</Label>
+              <Select
+                items={PAGE_LAYOUT.map((v) => ({
+                  label: toTitleCase(v),
+                  value: v,
+                }))}
+                onValueChange={handlePageLayoutChange}
+                value={pageLayout}
+              >
+                <SelectTrigger className="w-40" id="page-layout">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="max-h-60">
+                  {PAGE_LAYOUT.map((v) => (
                     <SelectItem key={v} value={v}>
                       {toTitleCase(v)}
                     </SelectItem>
@@ -286,7 +323,7 @@ export function Customizer({ open, onOpenChange }: Props) {
                 onValueChange={(v) => setSidebarSide(v as SidebarSide)}
                 value={sidebarSide}
               >
-                <SelectTrigger className="w-35" id="sidebar-position">
+                <SelectTrigger className="w-40" id="sidebar-position">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="max-h-60">
@@ -306,7 +343,7 @@ export function Customizer({ open, onOpenChange }: Props) {
                 <Label>Sidebar Variant</Label>
                 <p className="mt-1 text-muted-foreground text-xs">
                   {sidebarVariant === "sidebar" &&
-                    "Default: Standard sidebar layout"}
+                    "Sidebar: Standard sidebar layout"}
                   {sidebarVariant === "floating" &&
                     "Floating: Floating sidebar with border"}
                   {sidebarVariant === "inset" &&
@@ -361,7 +398,7 @@ export function Customizer({ open, onOpenChange }: Props) {
                           )}
                         />
                       </div>
-                      <div className="text-center">{v}</div>
+                      <div className="text-center">{toTitleCase(v)}</div>
                     </div>
                   </button>
                 ))}
@@ -430,7 +467,7 @@ export function Customizer({ open, onOpenChange }: Props) {
                           </>
                         )}
                       </div>
-                      <div className="text-center">{v}</div>
+                      <div className="text-center">{toTitleCase(v)}</div>
                     </div>
                   </button>
                 ))}

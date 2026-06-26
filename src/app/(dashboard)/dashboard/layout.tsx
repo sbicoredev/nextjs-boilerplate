@@ -80,7 +80,13 @@ export default async function DashboardLayout({ children }: Props) {
             </div>
           </div>
         </header>
-        <div className="@container/main overflow-auto">{children}</div>
+        <div
+          className="@container/main overflow-auto"
+          data-page-layout={settings.pageLayout}
+          data-slot="dashboard-main"
+        >
+          {children}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

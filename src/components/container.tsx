@@ -10,13 +10,13 @@ const containerVariants = cva("mx-auto p-4 lg:p-6", {
     variant: {
       constrained: "max-w-7xl",
       constrainedNoPadding: "max-w-7xl px-0 lg:px-0",
-      constrainedNoPaddingOnPhone: "max-w-7xl px-0",
-      narrowConstrained: "max-w-4xl",
-      narrowConstrainedNoPadding: "max-w-4xl px-0 lg:px-0",
-      narrowConstrainedNoPaddingOnPhone: "max-w-4xl px-0",
+      constrainedNoPaddingOnPhone: "max-w-7xl px-0 md:px-4 lg:px-6",
+      narrow: "max-w-4xl",
+      narrowNoPadding: "max-w-4xl px-0 lg:px-0",
+      narrowNoPaddingOnPhone: "max-w-4xl px-0 md:px-4 lg:px-6",
       fluid: "",
       fluidNoPadding: "px-0 lg:px-0",
-      fluidNoPaddingOnPhone: "px-0",
+      fluidNoPaddingOnPhone: "px-0 md:px-4 lg:px-6",
       responsive: "!container",
       responsiveNoPadding: "!container px-0",
     },
@@ -41,7 +41,11 @@ const Container = ({
   return useRender({
     defaultTagName: "div",
     render,
-    props: mergeProps<"div">({ className: containerClasses }, props),
+    props: mergeProps<"div">(
+      // @ts-expect-error
+      { className: containerClasses, "data-slot": "container" },
+      props
+    ),
   });
 };
 

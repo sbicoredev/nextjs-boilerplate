@@ -17,13 +17,14 @@ import { createCookieStorage } from "~/lib/zustand-cookie-storage";
 
 type ThemeCustomizerStore = ThemeCustomizerField & {
   _hydrated: boolean;
-  setThemeMode: (m: ThemeMode) => void;
-  setThemePreset: (m: ThemePreset) => void;
-  setFontPrimary: (f: FontKey) => void;
-  setFontHeading: (f: FontKey) => void;
+  setThemeMode: (v: ThemeMode) => void;
+  setThemePreset: (v: ThemePreset) => void;
+  setFontPrimary: (v: FontKey) => void;
+  setFontHeading: (v: FontKey) => void;
+  setPageLayout: (v: PageLayout) => void;
   setSidebarSide: (v: SidebarSide) => void;
   setSidebarVariant: (v: SidebarVariant) => void;
-  setSidebarCollapsible: (c: SidebarCollapsible) => void;
+  setSidebarCollapsible: (v: SidebarCollapsible) => void;
   setHydrated: (v: boolean) => void;
   reset: () => void;
 };
@@ -36,6 +37,7 @@ const createThemeCustomizerStore = (init: ThemeCustomizerField) =>
         themePreset: init.themePreset,
         fontPrimary: init.fontPrimary,
         fontHeading: init.fontHeading,
+        pageLayout: init.pageLayout,
         sidebarSide: init.sidebarSide,
         sidebarVariant: init.sidebarVariant,
         sidebarCollapsible: init.sidebarCollapsible,
@@ -44,6 +46,7 @@ const createThemeCustomizerStore = (init: ThemeCustomizerField) =>
         setThemePreset: (themePreset) => set({ themePreset }),
         setFontPrimary: (fontPrimary) => set({ fontPrimary }),
         setFontHeading: (fontHeading) => set({ fontHeading }),
+        setPageLayout: (pageLayout) => set({ pageLayout }),
         setSidebarSide: (sidebarSide) => set({ sidebarSide }),
         setSidebarVariant: (sidebarVariant) => set({ sidebarVariant }),
         setSidebarCollapsible: (sidebarCollapsible) =>

@@ -201,6 +201,14 @@
   h6 {
     @apply lg:text-lg;
   }
+
+  [data-page-layout="full-width"] [data-slot="container"] {
+    @apply max-w-full!;
+  }
+
+  [data-page-layout="centered"] [data-slot="container"] {
+    @apply max-w-7xl!;
+  }
 }
 
 button:not(:disabled),

@@ -1,17 +1,20 @@
 import type { ROLES } from "./constants/auth";
 import type {
+  PAGE_LAYOUT,
   SIDEBAR_COLLAPSIBLE,
   SIDEBAR_SIDE,
   SIDEBAR_VARIANT,
+  THEME_MODE,
   THEME_PRESETS,
 } from "./constants/theme-customizer";
 import type { table } from "./db/drizzle";
 import type { fontRegistry } from "./lib/fonts";
 
 declare global {
-  type ThemeMode = "light" | "dark" | "system";
+  type ThemeMode = (typeof THEME_MODE)[number];
   type ThemePreset = (typeof THEME_PRESETS)[number];
   type FontKey = keyof typeof fontRegistry;
+  type PageLayout = (typeof PAGE_LAYOUT)[number];
   type SidebarSide = (typeof SIDEBAR_SIDE)[number];
   type SidebarVariant = (typeof SIDEBAR_VARIANT)[number];
   type SidebarCollapsible = (typeof SIDEBAR_COLLAPSIBLE)[number];
@@ -21,6 +24,7 @@ declare global {
     themePreset: ThemePreset;
     fontPrimary: FontKey;
     fontHeading: FontKey;
+    pageLayout: PageLayout;
     sidebarSide: SidebarSide;
     sidebarVariant: SidebarVariant;
     sidebarCollapsible: SidebarCollapsible;
