@@ -26,91 +26,91 @@ import {
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-dm-sans",
 });
 
 const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-fraunces",
 });
 
 const geist = Geist({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-geist",
 });
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-geist-mono",
 });
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-inter",
 });
 
 const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-montserrat",
 });
 
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-noto-serif",
 });
 
 const notoSans = Noto_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-noto-sans",
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "800"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-plus-jakarta-sans",
 });
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
+  weight: ["400", "500", "700", "800"],
   variable: "--font-playfair-display",
 });
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-poppins",
 });
 
 const raleway = Raleway({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-raleway",
 });
 
 const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-roboto",
 });
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
-  weight: ["300", "400", "600", "700"],
+  weight: ["300", "400", "500", "700"],
   variable: "--font-roboto-mono",
 });
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["300", "400", "600", "700"],
+  weight: ["300", "400", "500", "700"],
   variable: "--font-space-grotesk",
 });
 

@@ -47,10 +47,9 @@ export default async function RootLayout({
       lang={locale}
       style={{
         // @ts-expect-error
-        "--font-primary": settings.fontPrimary,
+        "--font-sans": settings.fontPrimary,
         "--font-heading": settings.fontHeading,
       }}
-      suppressHydrationWarning
     >
       <body className={fontVars}>
         <NextIntlClientProvider locale={locale}>

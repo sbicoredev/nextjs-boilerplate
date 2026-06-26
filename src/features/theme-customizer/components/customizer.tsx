@@ -101,7 +101,7 @@ export function Customizer({ open, onOpenChange }: Props) {
   };
 
   const onFontPrimaryChange = (value: FontKey) => {
-    document.documentElement.style.setProperty("--font-primary", value);
+    document.documentElement.style.setProperty("--font-sans", value);
     setFontPrimary(value);
   };
 
@@ -116,10 +116,7 @@ export function Customizer({ open, onOpenChange }: Props) {
       "data-theme-preset",
       DEFAULT_THEME_PREFERENCE.themePreset
     );
-    root.style.setProperty(
-      "--font-primary",
-      DEFAULT_THEME_PREFERENCE.fontPrimary
-    );
+    root.style.setProperty("--font-sans", DEFAULT_THEME_PREFERENCE.fontPrimary);
     root.style.setProperty(
       "--font-heading",
       DEFAULT_THEME_PREFERENCE.fontHeading
@@ -129,11 +126,11 @@ export function Customizer({ open, onOpenChange }: Props) {
 
   return (
     <Sheet onOpenChange={onOpenChange} open={open}>
-      <SheetContent className="overflow-y-auto sm:max-w-md!">
+      <SheetContent className="overflow-y-auto sm:max-w-md! md:max-w-lg!">
         <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <PaletteIcon className="size-5" />
-            Customize Dashboard
+          <SheetTitle className="flex items-center gap-3">
+            <PaletteIcon className="size-6" />
+            Customize Theme
           </SheetTitle>
           <SheetDescription>
             Personalize appearance, layout, typography and brand colors.
