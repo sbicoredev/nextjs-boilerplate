@@ -26,13 +26,13 @@ export const NavUser = ({ user }: { user: AuthUser }) => {
               size="lg"
             >
               <UserAvatar alt={user.name} src={user.image} />
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid flex-1 justify-start text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="truncate text-muted-foreground text-xs">
                   {user.email}
                 </span>
               </div>
-              <ChevronsUpDownIcon className="ml-auto size-4" />
+              <ChevronsUpDownIcon className="size-4" />
             </SidebarMenuButton>
           }
           user={user}

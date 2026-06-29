@@ -12,6 +12,7 @@ export const THEME_PRESETS = [
   "solar-dusk",
 ] as const;
 
+export const PAGE_DIRECTION = ["rtl", "ltr"] as const;
 export const PAGE_LAYOUT = ["full-width", "centered"] as const;
 
 export const SIDEBAR_SIDE = ["left", "right"] as const;
@@ -23,6 +24,7 @@ export const DEFAULT_THEME_PREFERENCE: ThemeCustomizerField = {
   themePreset: "default",
   fontPrimary: "geist",
   fontHeading: "montserrat",
+  pageDirection: "ltr",
   pageLayout: "full-width",
   sidebarSide: "left",
   sidebarVariant: "sidebar",

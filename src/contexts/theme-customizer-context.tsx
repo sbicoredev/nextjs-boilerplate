@@ -21,6 +21,7 @@ type ThemeCustomizerStore = ThemeCustomizerField & {
   setThemePreset: (v: ThemePreset) => void;
   setFontPrimary: (v: FontKey) => void;
   setFontHeading: (v: FontKey) => void;
+  setPageDirection: (v: PageDirection) => void;
   setPageLayout: (v: PageLayout) => void;
   setSidebarSide: (v: SidebarSide) => void;
   setSidebarVariant: (v: SidebarVariant) => void;
@@ -37,6 +38,7 @@ const createThemeCustomizerStore = (init: ThemeCustomizerField) =>
         themePreset: init.themePreset,
         fontPrimary: init.fontPrimary,
         fontHeading: init.fontHeading,
+        pageDirection: init.pageDirection,
         pageLayout: init.pageLayout,
         sidebarSide: init.sidebarSide,
         sidebarVariant: init.sidebarVariant,
@@ -46,6 +48,7 @@ const createThemeCustomizerStore = (init: ThemeCustomizerField) =>
         setThemePreset: (themePreset) => set({ themePreset }),
         setFontPrimary: (fontPrimary) => set({ fontPrimary }),
         setFontHeading: (fontHeading) => set({ fontHeading }),
+        setPageDirection: (pageDirection) => set({ pageDirection }),
         setPageLayout: (pageLayout) => set({ pageLayout }),
         setSidebarSide: (sidebarSide) => set({ sidebarSide }),
         setSidebarVariant: (sidebarVariant) => set({ sidebarVariant }),

@@ -44,6 +44,7 @@ export default async function RootLayout({
     <html
       className={settings.themeMode === "light" ? "" : "dark"}
       data-theme-preset={settings.themePreset}
+      dir={settings.pageDirection}
       lang={locale}
       style={{
         // @ts-expect-error

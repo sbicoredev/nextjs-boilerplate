@@ -45,7 +45,7 @@ export const HeroSection = () => (
         />
 
         <div className="mx-auto max-w-7xl px-6">
-          <div className="text-center sm:mx-auto lg:mt-0 lg:mr-auto">
+          <div className="text-center sm:mx-auto lg:me-auto lg:mt-0">
             <AnimatedGroup variants={transitionVariants}>
               <Link
                 className="group mx-auto flex w-fit items-center gap-4 rounded-full border bg-muted p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 hover:bg-background dark:border-t-white/5 dark:shadow-zinc-950 dark:hover:border-t-border"
@@ -173,7 +173,7 @@ export const HeroSection = () => (
           >
             <span> Meet Our Customers</span>
 
-            <ChevronRightIcon className="ml-1 inline-block size-3" />
+            <ChevronRightIcon className="ms-1 inline-block size-3" />
           </Link>
         </div>
         <div className="mx-auto mt-12 grid max-w-2xl grid-cols-4 gap-x-12 gap-y-8 transition-all duration-500 group-hover:opacity-50 group-hover:blur-xs sm:gap-x-16 sm:gap-y-14">

@@ -4,6 +4,7 @@ import { LayoutIcon, PaletteIcon, SunMoonIcon, TypeIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";
 
 import { Button } from "~/components/ui/button";
+import { ButtonGroup } from "~/components/ui/button-group";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Label } from "~/components/ui/label";
 import {
@@ -25,6 +26,7 @@ import {
 import { Switch } from "~/components/ui/switch";
 import {
   DEFAULT_THEME_PREFERENCE,
+  PAGE_DIRECTION,
   PAGE_LAYOUT,
   SIDEBAR_COLLAPSIBLE,
   SIDEBAR_SIDE,
@@ -51,6 +53,7 @@ export function Customizer({ open, onOpenChange }: Props) {
     themePreset,
     fontPrimary,
     fontHeading,
+    pageDirection,
     pageLayout,
     sidebarSide,
     sidebarVariant,
@@ -59,6 +62,7 @@ export function Customizer({ open, onOpenChange }: Props) {
     setThemePreset,
     setFontPrimary,
     setFontHeading,
+    setPageDirection,
     setPageLayout,
     setSidebarSide,
     setSidebarVariant,
@@ -112,6 +116,11 @@ export function Customizer({ open, onOpenChange }: Props) {
   const handleHeadingChange = (v: FontKey | null) => {
     document.documentElement.style.setProperty("--font-heading", v);
     setFontHeading(v ?? DEFAULT_THEME_PREFERENCE.fontHeading);
+  };
+
+  const handleDirectionChange = (v: PageDirection) => {
+    document.documentElement?.setAttribute("dir", v ?? "ltr");
+    setPageDirection(v ?? DEFAULT_THEME_PREFERENCE.pageDirection);
   };
 
   const handlePageLayoutChange = (v: PageLayout | null) => {
@@ -305,6 +314,22 @@ export function Customizer({ open, onOpenChange }: Props) {
                 </SelectContent>
               </Select>
             </div>
+            <Separator />
+            <div className="flex items-center justify-between">
+              <Label htmlFor="page-direction">Page Direction</Label>
+              <ButtonGroup className="w-40">
+                {PAGE_DIRECTION.map((v) => (
+                  <Button
+                    className="grow uppercase"
+                    key={v}
+                    onClick={() => handleDirectionChange(v)}
+                    variant={v === pageDirection ? "default" : "outline"}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
           </Section>
 
           {/* -------- Sidebar Layout -------- */}
@@ -315,25 +340,18 @@ export function Customizer({ open, onOpenChange }: Props) {
             {/* sidebar position */}
             <div className="flex items-center justify-between">
               <Label htmlFor="sidebar-position">Sidebar Position</Label>
-              <Select
-                items={SIDEBAR_SIDE.map((v) => ({
-                  label: toTitleCase(v),
-                  value: v,
-                }))}
-                onValueChange={(v) => setSidebarSide(v as SidebarSide)}
-                value={sidebarSide}
-              >
-                <SelectTrigger className="w-40" id="sidebar-position">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="max-h-60">
-                  {SIDEBAR_SIDE.map((v) => (
-                    <SelectItem key={v} value={v}>
-                      {toTitleCase(v)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <ButtonGroup className="w-40">
+                {SIDEBAR_SIDE.map((v) => (
+                  <Button
+                    className="grow uppercase"
+                    key={v}
+                    onClick={() => setSidebarSide(v)}
+                    variant={v === sidebarSide ? "default" : "outline"}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </ButtonGroup>
             </div>
             <Separator />
 

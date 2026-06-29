@@ -1,5 +1,6 @@
 import type { ROLES } from "./constants/auth";
 import type {
+  PAGE_DIRECTION,
   PAGE_LAYOUT,
   SIDEBAR_COLLAPSIBLE,
   SIDEBAR_SIDE,
@@ -14,6 +15,7 @@ declare global {
   type ThemeMode = (typeof THEME_MODE)[number];
   type ThemePreset = (typeof THEME_PRESETS)[number];
   type FontKey = keyof typeof fontRegistry;
+  type PageDirection = (typeof PAGE_DIRECTION)[number];
   type PageLayout = (typeof PAGE_LAYOUT)[number];
   type SidebarSide = (typeof SIDEBAR_SIDE)[number];
   type SidebarVariant = (typeof SIDEBAR_VARIANT)[number];
@@ -25,6 +27,7 @@ declare global {
     fontPrimary: FontKey;
     fontHeading: FontKey;
     pageLayout: PageLayout;
+    pageDirection: PageDirection;
     sidebarSide: SidebarSide;
     sidebarVariant: SidebarVariant;
     sidebarCollapsible: SidebarCollapsible;

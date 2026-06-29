@@ -54,7 +54,7 @@ export const NavMain = () => {
                   >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                    <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    <ChevronRightIcon className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>

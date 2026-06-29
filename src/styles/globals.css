@@ -215,3 +215,29 @@ button:not(:disabled),
 [role="button"]:not(:disabled) {
   cursor: pointer;
 }
+
+/* ------ Sidebar position fix */
+[dir="rtl"] [data-side="left"][data-slot="sidebar"] {
+  order: 1;
+}
+[dir="ltr"] [data-side="right"][data-slot="sidebar"] {
+  order: 2;
+}
+@media (min-width: 48rem) {
+  /* Right sidebar inset variant - margin adjustments */
+  [data-side="right"][data-variant="inset"] ~ [data-slot="sidebar-inset"] {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+  }
+  [dir="rtl"]
+    [data-side="left"][data-variant="inset"]
+    ~ [data-slot="sidebar-inset"] {
+    margin-right: 0.5rem !important;
+    margin-left: 0 !important;
+  }
+  /* Right sidebar inset variant - collapsed state margin */
+  [data-side="right"][data-variant="inset"][data-state="collapsed"]
+    ~ [data-slot="sidebar-inset"] {
+    margin-right: 0.5rem !important;
+  }
+}

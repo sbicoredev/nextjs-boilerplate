@@ -89,7 +89,7 @@ export const DeleteAccountDialog = () => {
                     <div className="flex items-center">
                       <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                       <Link
-                        className="ml-auto text-xs underline-offset-2 hover:underline"
+                        className="ms-auto text-blue-500 text-xs underline-offset-2 hover:underline dark:text-blue-500"
                         href={AUTH_URI.forgotPassword}
                       >
                         Forgot your password?

@@ -51,18 +51,18 @@ export default async function DashboardLayout({ children }: Props) {
         side={settings.sidebarSide}
         variant={settings.sidebarVariant}
       />
-      <SidebarInset className="overflow-hidden">
+      <SidebarInset className="overflow-hidden transition-all duration-200">
         <header className="sidebar sticky top-0 z-20 flex h-16 shrink-0 items-center gap-3 border-b bg-background transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="inline-flex w-full items-center gap-3 px-4 lg:px-6">
-            <SidebarTrigger className="-ml-1" />
-            <Separator className="mr-2" orientation="vertical" />
+            <SidebarTrigger className="-ms-1" />
+            <Separator className="me-2" orientation="vertical" />
             <AppBreadcrumbs />
-            <div className="ml-auto inline-flex items-center gap-2">
+            <div className="ms-auto inline-flex items-center gap-2">
               <LocaleSwitcher size="icon-sm" variant="ghost" />
               <NotificationTrigger size="icon-sm" variant="ghost" />
               <ThemeToggle size="icon-sm" variant="ghost" />
               <CustomizerTrigger size="icon-sm" variant="ghost" />
-              <Separator className="mr-2" orientation="vertical" />
+              <Separator className="me-2" orientation="vertical" />
               <UserMenu
                 menuSide="bottom"
                 trigger={

@@ -57,7 +57,7 @@ export const UserSessions = () => {
                 </div>
                 {session.id !== auth?.session?.id && (
                   <ButtonSpinner
-                    className="ml-auto"
+                    className="ms-auto"
                     onClick={() => revokeSession({ token: session.token })}
                     size="sm"
                     spin={isTerminating}

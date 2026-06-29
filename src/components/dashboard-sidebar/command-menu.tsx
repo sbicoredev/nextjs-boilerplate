@@ -62,7 +62,7 @@ export const CommandMenu = () => {
       <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Search">
         <SearchIcon className="size-4" />
         <span>Search</span>
-        <kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100">
+        <kbd className="pointer-events-none ms-auto inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100">
           <span className="text-sm">⌘</span>k
         </kbd>
       </SidebarMenuButton>
