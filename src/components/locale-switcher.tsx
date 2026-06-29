@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { SUPPORTED_LOCALES } from "~/constants/i18n";
+import { useThemeCustomizerStore } from "~/contexts/theme-customizer-context";
 
 import { Button } from "./ui/button";
 
@@ -25,6 +26,12 @@ type Props = {
 export const LocaleSwitcher = ({ variant, size }: Props) => {
   const t = useTranslations("localeSwitcher");
   const locale = useLocale();
+  const setDir = useThemeCustomizerStore((s) => s.setPageDirection);
+
+  const handleLocaleChange = (locale: LocaleConfig) => {
+    setDir(locale.dir);
+    setLocale(locale.code);
+  };
 
   return (
     <DropdownMenu>
@@ -35,12 +42,12 @@ export const LocaleSwitcher = ({ variant, size }: Props) => {
         <DropdownMenuGroup>
           <DropdownMenuLabel>{t("label")}</DropdownMenuLabel>
           <DropdownMenuRadioGroup
-            onValueChange={(v) => setLocale(v)}
+            onValueChange={handleLocaleChange}
             value={locale}
           >
-            {SUPPORTED_LOCALES.map((cur) => (
-              <DropdownMenuRadioItem key={cur} value={cur}>
-                {t("locale", { locale: cur })}
+            {SUPPORTED_LOCALES.map((item) => (
+              <DropdownMenuRadioItem key={item.code} value={item}>
+                {t("locale", { locale: item.code })}
               </DropdownMenuRadioItem>
             ))}
           </DropdownMenuRadioGroup>

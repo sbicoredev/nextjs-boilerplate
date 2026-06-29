@@ -20,6 +20,7 @@ declare global {
   type SidebarSide = (typeof SIDEBAR_SIDE)[number];
   type SidebarVariant = (typeof SIDEBAR_VARIANT)[number];
   type SidebarCollapsible = (typeof SIDEBAR_COLLAPSIBLE)[number];
+  type LocaleConfig = { code: string; name: string; dir: PageDirection };
 
   type ThemeCustomizerField = {
     themeMode: ThemeMode;
