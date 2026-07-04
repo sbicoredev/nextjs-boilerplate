@@ -27,7 +27,7 @@ export const SignupForm = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
-  const { mutateAsync, isPending } = useSignup();
+  const { mutate, isPending } = useSignup();
 
   const form = useForm({
     defaultValues: {
@@ -37,7 +37,7 @@ export const SignupForm = ({
       confirmPassword: "12345678",
     },
     validators: { onSubmit: signupSchema },
-    onSubmit: async ({ value }) => mutateAsync(value),
+    onSubmit: async ({ value }) => mutate(value),
   });
 
   return (

@@ -173,17 +173,18 @@ export function TotalVisitorChart() {
         </CardDescription>
         <CardAction>
           <ToggleGroup
-            className="*:data-[slot=toggle-group-item]:!px-4 @[767px]/card:flex hidden"
-            onValueChange={setTimeRange}
-            type="single"
-            value={timeRange}
+            className="@[767px]/card:flex hidden *:data-[slot=toggle-group-item]:px-4!"
+            defaultValue={[timeRange]}
             variant="outline"
           >
             <ToggleGroupItem value="90d">Last 3 months</ToggleGroupItem>
             <ToggleGroupItem value="30d">Last 30 days</ToggleGroupItem>
             <ToggleGroupItem value="7d">Last 7 days</ToggleGroupItem>
           </ToggleGroup>
-          <Select onValueChange={setTimeRange} value={timeRange}>
+          <Select
+            defaultValue={timeRange}
+            onValueChange={(v) => setTimeRange(v ?? "")}
+          >
             <SelectTrigger
               aria-label="Select a value"
               className="flex @[767px]/card:hidden w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
@@ -207,7 +208,7 @@ export function TotalVisitorChart() {
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
-          className="aspect-auto h-[250px] w-full"
+          className="aspect-auto h-62.5 w-full"
           config={chartConfig}
         >
           <AreaChart data={filteredData}>

@@ -44,11 +44,11 @@ export const auth = betterAuth({
     admin(),
   ],
   hooks: {
+    // biome-ignore lint/suspicious/useAwait: explain
     after: createAuthMiddleware(async (ctx) => {
       if (ctx.context.returned instanceof Error) {
         return;
       }
-      console.log(ctx.path);
 
       // after successfull signup request set a cookie for unverified email
       if (ctx.path.startsWith("/sign-up")) {

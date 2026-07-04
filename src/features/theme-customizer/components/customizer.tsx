@@ -1,7 +1,7 @@
 "use client";
 
 import { LayoutIcon, PaletteIcon, SunMoonIcon, TypeIcon } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import { Button } from "~/components/ui/button";
 import { ButtonGroup } from "~/components/ui/button-group";
@@ -69,30 +69,6 @@ export function Customizer({ open, onOpenChange }: Props) {
     setSidebarCollapsible,
     reset,
   } = useThemeCustomizerStore();
-
-  // --- Apply `dark` class to <html> ---
-  useEffect(() => {
-    if (themeMode !== "system") {
-      setThemeMode(themeMode);
-      const root = document.documentElement;
-      root.classList.toggle("dark", themeMode === "dark");
-      root.style.colorScheme = themeMode === "dark" ? "dark" : "light";
-      return;
-    }
-
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const handler = (e: MediaQueryListEvent) => {
-      const isDark = e.matches;
-      setThemeMode(isDark ? "dark" : "light");
-      const root = document.documentElement;
-      root.classList.toggle("dark", isDark);
-      root.style.colorScheme = isDark ? "dark" : "light";
-    };
-    mq.addEventListener("change", handler);
-    return () => {
-      mq.removeEventListener("change", handler);
-    };
-  }, [themeMode]);
 
   const fontItems = useMemo(
     () =>

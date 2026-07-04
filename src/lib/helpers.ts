@@ -1,5 +1,7 @@
 import { env } from "~/env";
 
+export const removeSlashs = (str: string) => str.replace(/(^\/+)|(\/+$)/g, "");
+
 export function absoluteUrl(path: string) {
   return `${removeSlashs(env.NEXT_PUBLIC_APP_URL)}/${removeSlashs(path)}`;
 }
@@ -11,7 +13,6 @@ export function formatDate(
   if (!date) {
     return "";
   }
-
   try {
     return new Intl.DateTimeFormat("en-US", {
       month: opts.month ?? "long",
@@ -25,16 +26,12 @@ export function formatDate(
   }
 }
 
-export const removeSlashs = (str: string) => str.replace(/(^\/+)|(\/+$)/g, "");
-
 export function throttle(cb: (...args: unknown[]) => unknown, delay = 400) {
   let wait = false;
-
   return (...args: unknown[]) => {
     if (wait) {
       return;
     }
-
     cb(...args);
     wait = true;
     setTimeout(() => {
@@ -49,7 +46,6 @@ export function debounce(cb: (...args: unknown[]) => unknown, delay = 400) {
   return (...args: unknown[]) => {
     // Clear the previous timer to prevent the execution of 'mainFunction'
     clearTimeout(timer);
-
     timer = setTimeout(() => {
       cb(...args);
     }, delay);
@@ -72,7 +68,6 @@ export function formatBytes(
   } = {}
 ) {
   const { decimals = 0, sizeType = "normal" } = opts;
-
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
   const accurateSizes = ["Bytes", "KiB", "MiB", "GiB", "TiB"];
   if (bytes === 0) {

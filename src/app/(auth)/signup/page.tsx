@@ -8,6 +8,6 @@ export const metadata: Metadata = {
 
 export default function SignupPage() {
   return (
-    <SignupForm className="h-screen max-w-xl place-content-center justify-self-center md:max-w-5xl" />
+    <SignupForm className="max-w-xl place-content-center justify-self-center md:max-w-5xl" />
   );
 }

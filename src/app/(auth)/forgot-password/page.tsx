@@ -8,6 +8,6 @@ export const metadata: Metadata = {
 
 export default function ForgotPasswordPage() {
   return (
-    <ForgotPasswordForm className="h-screen max-w-xl place-content-center justify-self-center md:max-w-5xl" />
+    <ForgotPasswordForm className="max-w-xl place-content-center justify-self-center md:max-w-5xl" />
   );
 }

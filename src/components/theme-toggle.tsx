@@ -1,6 +1,7 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
+import { useEffect } from "react";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -13,13 +14,36 @@ import { useThemeCustomizerStore } from "~/contexts/theme-customizer-context";
 import { useCircularTransition } from "~/hooks/use-circular-transition";
 
 type Props = {
-  variant?: "outline" | "ghost" | "secondary";
+  variant?: "outline" | "ghost" | "secondary" | "link";
   size?: "sm" | "lg" | "icon" | "icon-sm";
 };
 
 export const ThemeToggle = ({ variant, size }: Props) => {
-  const setTheme = useThemeCustomizerStore((s) => s.setThemeMode);
-  const { setThemeMode } = useCircularTransition(setTheme);
+  const themeMode = useThemeCustomizerStore((s) => s.themeMode);
+  const setThemeMode = useThemeCustomizerStore((s) => s.setThemeMode);
+  const { trigger } = useCircularTransition(setThemeMode);
+
+  useEffect(() => {
+    if (themeMode !== "system") {
+      setThemeMode(themeMode);
+      const root = document.documentElement;
+      root.classList.toggle("dark", themeMode === "dark");
+      root.style.colorScheme = themeMode === "dark" ? "dark" : "light";
+      return;
+    }
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e: MediaQueryListEvent) => {
+      const isDark = e.matches;
+      setThemeMode(isDark ? "dark" : "light");
+      const root = document.documentElement;
+      root.classList.toggle("dark", isDark);
+      root.style.colorScheme = isDark ? "dark" : "light";
+    };
+    mq.addEventListener("change", handler);
+    return () => {
+      mq.removeEventListener("change", handler);
+    };
+  }, [themeMode, setThemeMode]);
 
   return (
     <DropdownMenu>
@@ -34,13 +58,13 @@ export const ThemeToggle = ({ variant, size }: Props) => {
         <span className="sr-only">Toggle theme</span>
       </Button>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={(e) => setThemeMode(e, "dark")}>
+        <DropdownMenuItem onClick={(e) => trigger(e, "dark")}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={(e) => setThemeMode(e, "light")}>
+        <DropdownMenuItem onClick={(e) => trigger(e, "light")}>
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={(e) => setThemeMode(e, "system")}>
+        <DropdownMenuItem onClick={(e) => trigger(e, "system")}>
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

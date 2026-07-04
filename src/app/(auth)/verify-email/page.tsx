@@ -18,7 +18,7 @@ export default async function VerifyEmailPage() {
 
   return (
     <VerifyEmailForm
-      className="h-screen max-w-xl place-content-center justify-self-center md:max-w-5xl"
+      className="max-w-xl place-content-center justify-self-center md:max-w-5xl"
       email={email}
     />
   );

@@ -5,10 +5,9 @@ import { cn } from "~/lib/utils";
 export const Logo = ({ className }: { className?: string }) => (
   <Image
     alt="Logo"
-    className={cn(className, "w-40")}
-    height={40}
-    loading="eager"
-    src="/assets/logo.svg"
-    width={150}
+    className={cn("size-10", className)}
+    height={100}
+    src="/icon.svg"
+    width={100}
   />
 );

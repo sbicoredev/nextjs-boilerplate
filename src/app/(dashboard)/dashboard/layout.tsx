@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
-import type { StorageValue } from "zustand/middleware";
 
 import { AppBreadcrumbs } from "~/components/app-breadcrumb";
 import { DashboardSidebar } from "~/components/dashboard-sidebar";
@@ -16,21 +14,17 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar";
 import { UserAvatar } from "~/components/user-avatar";
-import {
-  DASHBOARD_THEME_COOKIE_NAME,
-  DEFAULT_THEME_PREFERENCE,
-} from "~/constants/theme-customizer";
 import { NotificationTrigger } from "~/features/notification/components/notification-trigger";
 import { CustomizerTrigger } from "~/features/theme-customizer/components/customizer-trigger";
+import { getThemePreference } from "~/features/theme-customizer/utils";
+import { constructMetadata } from "~/lib/construct-metadata";
 import { authenticate } from "~/services/auth";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata");
-
-  return {
+  return constructMetadata({
     title: `Dashboard | ${t("title")}`,
-    description: t("desc"),
-  };
+  });
 }
 
 type Props = {
@@ -39,17 +33,14 @@ type Props = {
 
 export default async function DashboardLayout({ children }: Props) {
   const { user } = await authenticate();
-  const v = (await cookies()).get(DASHBOARD_THEME_COOKIE_NAME)?.value;
-  const settings =
-    (JSON.parse(v ?? "{}") as StorageValue<ThemeCustomizerField> | undefined)
-      ?.state || DEFAULT_THEME_PREFERENCE;
+  const preference = await getThemePreference();
 
   return (
     <SidebarProvider className="h-screen overflow-hidden">
       <DashboardSidebar
-        collapsible={settings.sidebarCollapsible}
-        side={settings.sidebarSide}
-        variant={settings.sidebarVariant}
+        collapsible={preference.sidebarCollapsible}
+        side={preference.sidebarSide}
+        variant={preference.sidebarVariant}
       />
       <SidebarInset className="overflow-hidden transition-all duration-200">
         <header className="sidebar sticky top-0 z-20 flex h-16 shrink-0 items-center gap-3 border-b bg-background transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
@@ -82,7 +73,7 @@ export default async function DashboardLayout({ children }: Props) {
         </header>
         <div
           className="@container/main overflow-auto"
-          data-page-layout={settings.pageLayout}
+          data-page-layout={preference.pageLayout}
           data-slot="dashboard-main"
         >
           {children}

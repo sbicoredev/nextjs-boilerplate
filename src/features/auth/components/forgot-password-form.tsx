@@ -25,12 +25,12 @@ export const ForgotPasswordForm = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
-  const { mutateAsync, isPending } = useForgotPassword();
+  const { mutate, isPending } = useForgotPassword();
 
   const form = useForm({
     defaultValues: { email: "jhon@mail.com" },
     validators: { onSubmit: forgotPasswordSchema },
-    onSubmit: async ({ value }) => mutateAsync(value),
+    onSubmit: async ({ value }) => mutate(value),
   });
 
   return (

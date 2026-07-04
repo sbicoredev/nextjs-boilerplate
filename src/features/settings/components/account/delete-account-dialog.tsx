@@ -23,7 +23,6 @@ import {
   FieldLabel,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import { AUTH_URI } from "~/constants/auth";
 import { useAuth } from "~/contexts/auth-context";
 
 import { useDeleteAccount } from "../../api/delete-account";
@@ -67,7 +66,7 @@ export const DeleteAccountDialog = () => {
       />
 
       <DialogContent>
-        <DialogTitle>Are you sure you want to delete your account?</DialogTitle>
+        <DialogTitle>Are you sure to delete?</DialogTitle>
         <DialogDescription className="text-justify">
           Once your account is deleted, all of its resources and data will also
           be permanently deleted. Please enter your password to confirm you
@@ -88,12 +87,16 @@ export const DeleteAccountDialog = () => {
                   <Field data-invalid={isInvalid}>
                     <div className="flex items-center">
                       <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                      <Link
-                        className="ms-auto text-blue-500 text-xs underline-offset-2 hover:underline dark:text-blue-500"
-                        href={AUTH_URI.forgotPassword}
+                      <Button
+                        className="ms-auto p-0"
+                        nativeButton={false}
+                        render={<Link href="/dashboard/settings/security" />}
+                        size="xs"
+                        type="button"
+                        variant="link"
                       >
                         Forgot your password?
-                      </Link>
+                      </Button>
                     </div>
                     <Input
                       aria-invalid={isInvalid}

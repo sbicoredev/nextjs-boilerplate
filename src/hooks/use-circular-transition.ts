@@ -2,18 +2,7 @@
 
 import { useCallback, useRef } from "react";
 
-type CircularTransitionHook = {
-  startTransition: (
-    coords: { x: number; y: number },
-    callback: () => void
-  ) => void;
-  setThemeMode: (e: React.MouseEvent, mode: ThemeMode) => void;
-  isTransitioning: () => boolean;
-};
-
-export function useCircularTransition<T, E extends string = string>(
-  cb: (arg: E) => T
-): CircularTransitionHook {
+export function useCircularTransition<T, E extends string>(cb: (arg: E) => T) {
   const isTransitioningRef = useRef(false);
 
   const startTransition = useCallback(
@@ -57,10 +46,10 @@ export function useCircularTransition<T, E extends string = string>(
     []
   );
 
-  const setThemeMode = useCallback(
-    (e: React.MouseEvent, mode: ThemeMode) => {
+  const trigger = useCallback(
+    (e: React.MouseEvent, value: E) => {
       startTransition({ x: e.clientX, y: e.clientY }, () => {
-        cb(mode as E);
+        cb(value);
       });
     },
     [cb, startTransition]
@@ -70,7 +59,7 @@ export function useCircularTransition<T, E extends string = string>(
 
   return {
     startTransition,
-    setThemeMode,
+    trigger,
     isTransitioning,
   };
 }

@@ -6,9 +6,9 @@ type Props = {
 
 export default function AuthLayout({ children }: Props) {
   return (
-    <main className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header />
-      {children}
-    </main>
+      <main className="grid grow">{children}</main>
+    </div>
   );
 }

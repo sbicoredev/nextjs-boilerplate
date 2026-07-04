@@ -32,14 +32,14 @@ type Props = React.ComponentProps<"div"> & {
 };
 
 export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
-  const { mutateAsync, isPending, isSuccess } = useVerifyEmail();
-  const { mutateAsync: resendOTP, isPending: isSendingOTP } =
+  const { mutate, isPending, isSuccess } = useVerifyEmail();
+  const { mutate: resendOTP, isPending: isSendingOTP } =
     useSendVerificationOTP();
 
   const form = useForm({
     defaultValues: { otp: "" },
     validators: { onSubmit: verifyEmailSchema },
-    onSubmit: async ({ value }) => mutateAsync({ email, otp: value.otp }),
+    onSubmit: async ({ value }) => mutate({ email, otp: value.otp }),
   });
 
   if (isSuccess) {

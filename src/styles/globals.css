@@ -163,12 +163,8 @@
     @apply border-border outline-ring/50 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted;
   }
 
-  html {
-    @apply font-sans;
-  }
-
   body {
-    @apply antialiased bg-background text-foreground;
+    @apply antialiased bg-background font-sans text-foreground;
   }
 
   code {

@@ -31,7 +31,8 @@ export const UserMenu = ({ user, trigger, menuSide }: Props) => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push(AUTH_URI.signin); // redirect to login page
+          router.push(AUTH_URI.signin);
+          router.refresh();
         },
       },
     });

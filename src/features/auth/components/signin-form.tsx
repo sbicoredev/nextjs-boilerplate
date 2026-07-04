@@ -27,12 +27,12 @@ export const SigninForm = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
-  const { mutateAsync, isPending } = useSignin();
+  const { mutate, isPending } = useSignin();
 
   const form = useForm({
     defaultValues: { email: "jhon@mail.com", password: "12345678" },
     validators: { onSubmit: signinSchema },
-    onSubmit: async ({ value }) => mutateAsync(value),
+    onSubmit: async ({ value }) => mutate(value),
   });
 
   return (
@@ -88,12 +88,16 @@ export const SigninForm = ({
                     <Field>
                       <div className="flex items-center">
                         <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                        <Link
-                          className="ms-auto text-blue-500 text-sm underline-offset-2 hover:underline dark:text-blue-500"
-                          href={AUTH_URI.forgotPassword}
+                        <Button
+                          className="ms-auto p-0"
+                          nativeButton={false}
+                          render={<Link href={AUTH_URI.forgotPassword} />}
+                          size="xs"
+                          type="button"
+                          variant="link"
                         >
                           Forgot your password?
-                        </Link>
+                        </Button>
                       </div>
                       <Input
                         aria-invalid={isInvalid}

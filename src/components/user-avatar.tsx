@@ -8,8 +8,8 @@ type Props = {
 };
 
 export const UserAvatar = ({ src, alt, className }: Props) => (
-  <Avatar className={cn("size-8 rounded-lg", className)}>
-    <AvatarImage alt={alt || undefined} src={src || undefined} />
-    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+  <Avatar className={cn("overflow-hidden", className)}>
+    <AvatarImage alt={alt || "user"} src={src || "/assets/user-1.jpg"} />
+    <AvatarFallback className="uppercase">{alt?.charAt(0)}</AvatarFallback>
   </Avatar>
 );

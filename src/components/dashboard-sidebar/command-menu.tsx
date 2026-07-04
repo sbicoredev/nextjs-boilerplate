@@ -43,7 +43,6 @@ export const CommandMenu = () => {
       disabled?: boolean;
       external?: boolean;
     }) => {
-      console.log(item);
       if (item.disabled) {
         return;
       }

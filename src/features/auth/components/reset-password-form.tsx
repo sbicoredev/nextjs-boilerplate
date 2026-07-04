@@ -31,7 +31,7 @@ type Props = React.ComponentProps<"div"> & {
 };
 
 export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
-  const { mutateAsync, isPending } = useResetPassword();
+  const { mutate, isPending } = useResetPassword();
 
   const form = useForm({
     defaultValues: {
@@ -41,7 +41,7 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
       confirmPassword: "12345678",
     },
     validators: { onSubmit: resetPasswordSchema },
-    onSubmit: async ({ value }) => mutateAsync(value),
+    onSubmit: async ({ value }) => mutate(value),
   });
 
   return (

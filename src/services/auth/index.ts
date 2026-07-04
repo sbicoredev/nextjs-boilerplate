@@ -2,13 +2,14 @@ import "server-only";
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 
 import { AUTH_URI } from "~/constants/auth";
 
 import { auth } from "./better-auth";
 import { mapAuthSession, mapAuthUser } from "./utils";
 
-export async function checkAuth() {
+export const checkAuth = cache(async () => {
   const result = await auth.api.getSession({ headers: await headers() });
   if (!result) {
     return null;
@@ -17,9 +18,9 @@ export async function checkAuth() {
     user: mapAuthUser(result.user),
     session: mapAuthSession(result.session),
   };
-}
+});
 
-export async function authenticate() {
+export const authenticate = cache(async () => {
   const data = await auth.api.getSession({ headers: await headers() });
   if (!(data?.user && data.session)) {
     return redirect(AUTH_URI.signin);
@@ -28,4 +29,4 @@ export async function authenticate() {
     user: mapAuthUser(data.user),
     session: mapAuthSession(data.session),
   };
-}
+});
