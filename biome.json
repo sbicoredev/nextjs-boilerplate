@@ -30,6 +30,7 @@
       },
       "performance": {
         "noBarrelFile": "warn",
+        "noJsxPropsBind": "warn",
         "useTopLevelRegex": "warn",
         "noNamespaceImport": "warn"
       },
@@ -41,7 +42,9 @@
         "useAwait": "warn",
         "noArrayIndexKey": "warn",
         "noDocumentCookie": "warn",
-        "noEmptyBlockStatements": "warn"
+        "noEmptyBlockStatements": "warn",
+        "noLeakedRender": "warn",
+        "noShadow": "warn"
       },
       "correctness": {
         "useExhaustiveDependencies": "off"
@@ -69,6 +72,7 @@
   "assist": {
     "actions": {
       "source": {
+        "useSortedKeys": "off",
         "useSortedInterfaceMembers": "off",
         "organizeImports": {
           "level": "on",
