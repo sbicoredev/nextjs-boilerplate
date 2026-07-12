@@ -1,10 +1,10 @@
-import { env } from "~/env";
+const REGEX_SLASHS = /(^\/+)|(\/+$)/g;
+const REGEX_A_Z = /([A-Z])/g;
+const REGEX_UNDERSCORE_HYPHENS = /[_-]+/g;
+const REGEX_FIRST_WORD = /^\w/;
+const REGEX_FIRST_LETTER_OF_EVERY_WORD = /\b\w/g;
 
-export const removeSlashs = (str: string) => str.replace(/(^\/+)|(\/+$)/g, "");
-
-export function absoluteUrl(path: string) {
-  return `${removeSlashs(env.NEXT_PUBLIC_APP_URL)}/${removeSlashs(path)}`;
-}
+export const removeSlashs = (str: string) => str.replace(REGEX_SLASHS, "");
 
 export function formatDate(
   date: Date | string | number | undefined,
@@ -52,7 +52,7 @@ export function debounce(cb: (...args: unknown[]) => unknown, delay = 400) {
   };
 }
 
-export function wait(time = 1000) {
+export function sleep(time = 1000) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -85,13 +85,13 @@ export function toSentenceCase(str: string) {
   return (
     str
       // Insert space before any uppercase letter (fixes camelCase)
-      .replace(/([A-Z])/g, " $1")
+      .replace(REGEX_A_Z, " $1")
       // Replace underscores or hyphens with spaces (fixes snake_case/kebab-case)
-      .replace(/[_-]+/g, " ")
+      .replace(REGEX_UNDERSCORE_HYPHENS, " ")
       .trim()
       .toLowerCase()
       // Capitalize the first letter
-      .replace(/^\w/, (c) => c.toUpperCase())
+      .replace(REGEX_FIRST_WORD, (c) => c.toUpperCase())
   );
   // .replace(/\s+/g, " ");
 }
@@ -99,14 +99,14 @@ export function toSentenceCase(str: string) {
 export function toTitleCase(str: string) {
   return (
     str
-      // 1. Insert space before any uppercase letter (fixes camelCase)
-      .replace(/([A-Z])/g, " $1")
-      // 2. Replace underscores or hyphens with spaces (fixes snake_case/kebab-case)
-      .replace(/[_-]+/g, " ")
-      // 3. Trim extra spaces from ends
+      // Insert space before any uppercase letter (fixes camelCase)
+      .replace(REGEX_A_Z, " $1")
+      // Replace underscores or hyphens with spaces (fixes snake_case/kebab-case)
+      .replace(REGEX_UNDERSCORE_HYPHENS, " ")
       .trim()
-      // 4. Capitalize the first letter of every word
-      .replace(/\b\w/g, (char) => char.toUpperCase())
+      .toLowerCase()
+      // Capitalize the first letter of every word
+      .replace(REGEX_FIRST_LETTER_OF_EVERY_WORD, (char) => char.toUpperCase())
   );
 }
 

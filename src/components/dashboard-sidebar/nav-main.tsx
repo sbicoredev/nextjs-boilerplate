@@ -38,7 +38,7 @@ export const NavMain = () => {
                     render={<Link href={item.url} />}
                     tooltip={item.title}
                   >
-                    {item.icon && <item.icon />}
+                    {!!item.icon && <item.icon />}
                     <span>{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -52,7 +52,7 @@ export const NavMain = () => {
                   <CollapsibleTrigger
                     render={<SidebarMenuButton tooltip={item.title} />}
                   >
-                    {item.icon && <item.icon />}
+                    {!!item.icon && <item.icon />}
                     <span>{item.title}</span>
                     <ChevronRightIcon className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                   </CollapsibleTrigger>

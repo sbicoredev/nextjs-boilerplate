@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
-import { useThemeCustomizerStore } from "~/contexts/theme-customizer-context";
+import { useThemeCustomizerStore } from "~/contexts/theme-context";
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const theme = useThemeCustomizerStore((s) => s.themeMode);

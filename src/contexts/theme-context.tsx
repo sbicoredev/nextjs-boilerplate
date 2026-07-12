@@ -12,11 +12,12 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import {
   DASHBOARD_THEME_COOKIE_NAME,
   DEFAULT_THEME_PREFERENCE,
-} from "~/constants/theme-customizer";
+} from "~/constants/theme";
 import { createCookieStorage } from "~/lib/zustand-cookie-storage";
 
-type ThemeCustomizerStore = ThemeCustomizerField & {
+type ThemeCustomizerStore = ThemePreference & {
   _hydrated: boolean;
+  setCustomizerOpen: (v: boolean) => void;
   setThemeMode: (v: ThemeMode) => void;
   setThemePreset: (v: ThemePreset) => void;
   setFontPrimary: (v: FontKey) => void;
@@ -30,10 +31,11 @@ type ThemeCustomizerStore = ThemeCustomizerField & {
   reset: () => void;
 };
 
-const createThemeCustomizerStore = (init: ThemeCustomizerField) =>
+const createThemeCustomizerStore = (init: ThemePreference) =>
   createStore<ThemeCustomizerStore>()(
     persist(
       (set) => ({
+        isCustomizerOpen: false,
         themeMode: init.themeMode,
         themePreset: init.themePreset,
         fontPrimary: init.fontPrimary,
@@ -44,6 +46,7 @@ const createThemeCustomizerStore = (init: ThemeCustomizerField) =>
         sidebarVariant: init.sidebarVariant,
         sidebarCollapsible: init.sidebarCollapsible,
         _hydrated: false,
+        setCustomizerOpen: (open) => set({ isCustomizerOpen: open }),
         setThemeMode: (themeMode) => set({ themeMode }),
         setThemePreset: (themePreset) => set({ themePreset }),
         setFontPrimary: (fontPrimary) => set({ fontPrimary }),
@@ -84,7 +87,7 @@ export const ThemeCustomizerContext = ({
   allowedFonts,
   themeStoreState,
 }: PropsWithChildren<{
-  themeStoreState: ThemeCustomizerField;
+  themeStoreState: ThemePreference;
   allowedFonts: { value: string; label: string }[];
 }>) => {
   const [store] = useState(() => createThemeCustomizerStore(themeStoreState));

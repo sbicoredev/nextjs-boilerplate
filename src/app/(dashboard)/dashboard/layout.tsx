@@ -15,8 +15,9 @@ import {
 } from "~/components/ui/sidebar";
 import { UserAvatar } from "~/components/user-avatar";
 import { NotificationTrigger } from "~/features/notification/components/notification-trigger";
-import { CustomizerTrigger } from "~/features/theme-customizer/components/customizer-trigger";
-import { getThemePreference } from "~/features/theme-customizer/utils";
+import { CustomizerTrigger } from "~/features/theme/components/customizer-trigger";
+import { ThemeCustomizer } from "~/features/theme/components/theme-customizer";
+import { getThemePreference } from "~/features/theme/utils";
 import { constructMetadata } from "~/lib/construct-metadata";
 import { authenticate } from "~/services/auth";
 
@@ -79,6 +80,7 @@ export default async function DashboardLayout({ children }: Props) {
           {children}
         </div>
       </SidebarInset>
+      <ThemeCustomizer />
     </SidebarProvider>
   );
 }

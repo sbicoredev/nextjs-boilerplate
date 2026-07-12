@@ -90,5 +90,3 @@ export function Overview() {
     </Card>
   );
 }
-
-export default Overview;

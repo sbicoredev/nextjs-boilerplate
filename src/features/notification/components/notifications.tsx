@@ -1,22 +1,13 @@
 "use client";
 
 import { BellIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 import { useNotificationStore } from "~/store/notification-store";
 
 import { NotificationCard } from "./notification-card";
 
-const actionRoutes: Record<string, string> = {
-  view: "/dashboard/overview",
-  billing: "/dashboard/overview",
-  open: "/dashboard/kanban",
-  "open-chat": "/dashboard/chat",
-};
-
 export const Notifications = () => {
-  const { notifications, markAsRead } = useNotificationStore();
-  const router = useRouter();
+  const notifications = useNotificationStore((s) => s.notifications);
 
   return (
     <>
@@ -34,14 +25,6 @@ export const Notifications = () => {
               createdAt={notification.createdAt}
               id={notification.id}
               key={notification.id}
-              onAction={(notifId, actionId) => {
-                const route = actionRoutes[actionId];
-                if (route) {
-                  markAsRead(notifId);
-                  router.push(route);
-                }
-              }}
-              onMarkAsRead={markAsRead}
               status={notification.status}
               title={notification.title}
             />

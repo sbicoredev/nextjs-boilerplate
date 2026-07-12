@@ -4,8 +4,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 
 import { Providers } from "~/components/providers";
 import { AuthContext } from "~/contexts/auth-context";
-import { ThemeCustomizerContext } from "~/contexts/theme-customizer-context";
-import { getThemePreference } from "~/features/theme-customizer/utils";
+import { ThemeCustomizerContext } from "~/contexts/theme-context";
+import { getThemePreference } from "~/features/theme/utils";
 import { constructMetadata } from "~/lib/construct-metadata";
 import { fontRegistry, fontVars } from "~/lib/fonts";
 import { checkAuth } from "~/services/auth";

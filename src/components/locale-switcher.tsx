@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { SUPPORTED_LOCALES } from "~/constants/i18n";
-import { useThemeCustomizerStore } from "~/contexts/theme-customizer-context";
+import { useThemeCustomizerStore } from "~/contexts/theme-context";
 
 import { Button } from "./ui/button";
 

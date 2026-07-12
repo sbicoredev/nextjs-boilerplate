@@ -11,7 +11,7 @@ import {
   SidebarRail,
 } from "~/components/ui/sidebar";
 import { useAuth } from "~/contexts/auth-context";
-import { useThemeCustomizerStore } from "~/contexts/theme-customizer-context";
+import { useThemeCustomizerStore } from "~/contexts/theme-context";
 
 import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
@@ -53,7 +53,7 @@ export const DashboardSidebar = ({
         <NavMain />
         <NavSecondary />
       </SidebarContent>
-      <SidebarFooter>{user && <NavUser user={user} />}</SidebarFooter>
+      <SidebarFooter>{!!user && <NavUser user={user} />}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

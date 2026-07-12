@@ -19,7 +19,8 @@ export const SIDEBAR_SIDE = ["left", "right"] as const;
 export const SIDEBAR_VARIANT = ["sidebar", "floating", "inset"] as const;
 export const SIDEBAR_COLLAPSIBLE = ["offcanvas", "icon", "none"] as const;
 
-export const DEFAULT_THEME_PREFERENCE: ThemeCustomizerField = {
+export const DEFAULT_THEME_PREFERENCE: ThemePreference = {
+  isCustomizerOpen: true,
   themeMode: "system",
   themePreset: "default",
   fontPrimary: "geist",

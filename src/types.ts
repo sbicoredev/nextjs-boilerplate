@@ -7,7 +7,7 @@ import type {
   SIDEBAR_VARIANT,
   THEME_MODE,
   THEME_PRESETS,
-} from "./constants/theme-customizer";
+} from "./constants/theme";
 import type { table } from "./db/drizzle";
 import type { fontRegistry } from "./lib/fonts";
 
@@ -22,7 +22,8 @@ declare global {
   type SidebarCollapsible = (typeof SIDEBAR_COLLAPSIBLE)[number];
   type LocaleConfig = { code: string; name: string; dir: PageDirection };
 
-  type ThemeCustomizerField = {
+  type ThemePreference = {
+    isCustomizerOpen: boolean;
     themeMode: ThemeMode;
     themePreset: ThemePreset;
     fontPrimary: FontKey;

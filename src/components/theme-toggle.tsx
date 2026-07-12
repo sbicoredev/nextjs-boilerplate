@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { useThemeCustomizerStore } from "~/contexts/theme-customizer-context";
+import { useThemeCustomizerStore } from "~/contexts/theme-context";
 import { useCircularTransition } from "~/hooks/use-circular-transition";
 
 type Props = {

@@ -6,9 +6,11 @@ import {
   ClockIcon,
   ExternalLinkIcon,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { ButtonSpinner } from "~/components/button-spinner";
 import { cn } from "~/lib/utils";
+import { useNotificationStore } from "~/store/notification-store";
 
 export type NotificationStatus = "unread" | "read" | "archived";
 export type ActionType = "redirect" | "api_call" | "workflow" | "modal";
@@ -29,14 +31,15 @@ type Props = {
   status: NotificationStatus;
   createdAt?: string | Date;
   actions?: NotificationAction[];
-  onMarkAsRead?(id: string): void;
-  onAction?(
-    notificationId: string,
-    actionId: string,
-    actionType: ActionType
-  ): void;
   loadingActionId?: string;
   className?: string;
+};
+
+const actionRoutes: Record<string, string> = {
+  view: "/dashboard/overview",
+  billing: "/dashboard/overview",
+  open: "/dashboard/kanban",
+  "open-chat": "/dashboard/chat",
 };
 
 export const NotificationCard = ({
@@ -46,12 +49,20 @@ export const NotificationCard = ({
   status = "unread",
   createdAt,
   actions = [],
-  onMarkAsRead,
-  onAction,
   loadingActionId,
   className,
 }: Props) => {
+  const router = useRouter();
+  const markAsRead = useNotificationStore((s) => s.markAsRead);
   const isUnread = status === "unread";
+
+  const onAction = (notifId: string, actionId: string) => {
+    const route = actionRoutes[actionId];
+    if (route) {
+      markAsRead(notifId);
+      router.push(route);
+    }
+  };
 
   return (
     <div
@@ -80,14 +91,14 @@ export const NotificationCard = ({
             <p className="text-muted-foreground text-xs">{body}</p>
           </div>
 
-          {isUnread && onMarkAsRead && (
+          {isUnread && (
             <button
               aria-label="Mark as read"
               className={cn(
                 "rounded-lg p-1.5 transition-colors",
                 "text-muted-foreground hover:bg-accent hover:text-foreground"
               )}
-              onClick={() => onMarkAsRead(id)}
+              onClick={() => markAsRead(id)}
               type="button"
             >
               <CheckIcon size={16} />
@@ -111,7 +122,7 @@ export const NotificationCard = ({
                     )}
                     disabled={isLoading || isExecuted}
                     key={action.id}
-                    onClick={() => onAction?.(id, action.id, action.type)}
+                    onClick={() => onAction(id, action.id)}
                     size="xs"
                     spin={showLoading}
                     type="button"

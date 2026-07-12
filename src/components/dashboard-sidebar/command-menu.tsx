@@ -16,7 +16,7 @@ import {
 } from "~/components/ui/command";
 import { SidebarMenuButton } from "~/components/ui/sidebar";
 import { dashboardNav } from "~/configs/dashboard-config";
-import { useThemeCustomizer } from "~/contexts/theme-customizer-context";
+import { useThemeCustomizer } from "~/contexts/theme-context";
 
 export const CommandMenu = () => {
   const { store } = useThemeCustomizer();

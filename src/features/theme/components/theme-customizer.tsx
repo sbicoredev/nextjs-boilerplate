@@ -33,22 +33,18 @@ import {
   SIDEBAR_VARIANT,
   THEME_MODE,
   THEME_PRESETS,
-} from "~/constants/theme-customizer";
+} from "~/constants/theme";
 import {
   useThemeCustomizer,
   useThemeCustomizerStore,
-} from "~/contexts/theme-customizer-context";
+} from "~/contexts/theme-context";
 import { toTitleCase } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
 
-type Props = {
-  open: boolean;
-  onOpenChange(v: boolean): void;
-};
-
-export function Customizer({ open, onOpenChange }: Props) {
+export function ThemeCustomizer() {
   const { allowedFonts } = useThemeCustomizer();
   const {
+    isCustomizerOpen: open,
     themeMode,
     themePreset,
     fontPrimary,
@@ -58,6 +54,7 @@ export function Customizer({ open, onOpenChange }: Props) {
     sidebarSide,
     sidebarVariant,
     sidebarCollapsible,
+    setCustomizerOpen,
     setThemeMode,
     setThemePreset,
     setFontPrimary,
@@ -124,7 +121,7 @@ export function Customizer({ open, onOpenChange }: Props) {
   };
 
   return (
-    <Sheet onOpenChange={onOpenChange} open={open}>
+    <Sheet onOpenChange={setCustomizerOpen} open={open}>
       <SheetContent className="overflow-y-auto sm:max-w-md! md:max-w-lg!">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-3">
