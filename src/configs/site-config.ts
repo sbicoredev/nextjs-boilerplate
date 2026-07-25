@@ -8,7 +8,7 @@ export const siteConfig = {
   url: env.NEXT_PUBLIC_APP_URL,
   locale: "en-US",
   language: "en-us",
-  description: "A simple next.js boilerplate",
+  description: "A simple Next.js boilerplate",
   copywriteYears:
     currentYear === websiteLaunchYear
       ? currentYear

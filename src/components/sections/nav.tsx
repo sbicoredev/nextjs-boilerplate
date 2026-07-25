@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
-import { AUTH_URI } from "~/constants/auth";
+import { AUTH_ROUTES } from "~/constants/auth";
 import { useAuth } from "~/contexts/auth-context";
 
 const menuItems = [
@@ -59,14 +59,14 @@ export const Nav = () => {
                 <>
                   <Button
                     nativeButton={false}
-                    render={<Link href={AUTH_URI.signin} />}
+                    render={<Link href={AUTH_ROUTES.signIn} />}
                     size="sm"
                   >
                     Login
                   </Button>
                   <Button
                     nativeButton={false}
-                    render={<Link href={AUTH_URI.signup} />}
+                    render={<Link href={AUTH_ROUTES.signUp} />}
                     size="sm"
                   >
                     Sign Up

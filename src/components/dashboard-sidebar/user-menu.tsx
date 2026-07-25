@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { UserAvatar } from "~/components/user-avatar";
-import { AUTH_URI } from "~/constants/auth";
+import { AUTH_ROUTES } from "~/constants/auth";
 import { authClient } from "~/services/auth/auth-client";
 
 type Props = {
@@ -31,7 +31,7 @@ export const UserMenu = ({ user, trigger, menuSide }: Props) => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push(AUTH_URI.signin);
+          router.push(AUTH_ROUTES.signIn);
           router.refresh();
         },
       },

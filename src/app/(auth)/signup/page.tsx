@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
-import { SignupForm } from "~/features/auth/components/signup-form";
+import { SignUpForm } from "~/features/auth/components/signup-form";
 
 export const metadata: Metadata = {
-  title: "Sign up",
+  title: "Sign Up",
 };
 
-export default function SignupPage() {
+export default function SignUpPage() {
   return (
-    <SignupForm className="max-w-xl place-content-center justify-self-center md:max-w-5xl" />
+    <SignUpForm className="max-w-xl place-content-center justify-self-center md:max-w-5xl" />
   );
 }

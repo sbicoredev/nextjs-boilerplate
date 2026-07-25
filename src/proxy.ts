@@ -2,12 +2,12 @@ import { getSessionCookie } from "better-auth/cookies";
 import { type NextRequest, NextResponse } from "next/server";
 
 import {
-  AUTH_URI,
+  AUTH_REDIRECT_PATHS,
+  AUTH_ROUTES,
   CALLBACK_QUERY_NAME,
-  DEFAULT_LOGIN_REDIRECT,
 } from "./constants/auth";
 
-const authRoutes: string[] = Object.values(AUTH_URI);
+const authRoutes: string[] = Object.values(AUTH_ROUTES);
 const protectedUrl = ["/dashboard"];
 
 // biome-ignore lint/suspicious/useAwait: explain
@@ -20,7 +20,7 @@ export async function proxy(request: NextRequest) {
     // if already login prevent access to auth page
     if (sessionCookie) {
       return NextResponse.redirect(
-        new URL(DEFAULT_LOGIN_REDIRECT, request.nextUrl)
+        new URL(AUTH_REDIRECT_PATHS.afterSignIn, request.nextUrl)
       );
     }
     return NextResponse.next({ headers });
@@ -34,7 +34,7 @@ export async function proxy(request: NextRequest) {
     if (!sessionCookie) {
       return NextResponse.redirect(
         new URL(
-          `${AUTH_URI.signin}?${CALLBACK_QUERY_NAME}=${callbackUrl}`,
+          `${AUTH_ROUTES.signIn}?${CALLBACK_QUERY_NAME}=${callbackUrl}`,
           request.nextUrl
         )
       );

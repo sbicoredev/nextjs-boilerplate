@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 
+import { toast } from "~/components/ui/toast";
 import { authClient } from "~/services/auth/auth-client";
 
 type Input = {
@@ -20,7 +20,7 @@ export const useDeleteAccount = () => {
       return data;
     },
     onSuccess: () => {
-      toast.success("Account deleted successfully");
+      toast.add({ type: "success", description: "Account deleted." });
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
     },
   });

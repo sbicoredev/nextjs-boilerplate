@@ -88,10 +88,9 @@ export const DeleteAccountDialog = () => {
                     <div className="flex items-center">
                       <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                       <Button
-                        className="ms-auto p-0"
+                        className="ms-auto h-4 p-0"
                         nativeButton={false}
                         render={<Link href="/dashboard/settings/security" />}
-                        size="xs"
                         type="button"
                         variant="link"
                       >

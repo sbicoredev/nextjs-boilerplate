@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { toast } from "sonner";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -15,6 +14,7 @@ import {
 } from "~/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Separator } from "~/components/ui/separator";
+import { toast } from "~/components/ui/toast";
 
 import {
   type UpdateNotificationPayload,
@@ -36,11 +36,14 @@ export const NotificationSettings = () => {
   });
 
   function onSubmit(data: Partial<UpdateNotificationPayload>) {
-    toast.info(
-      <pre className="mt-2 w-85 rounded-md bg-slate-950 p-4">
-        <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-      </pre>
-    );
+    toast.add({
+      type: "success",
+      description: (
+        <pre className="mt-2 w-85 rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    });
   }
 
   return (

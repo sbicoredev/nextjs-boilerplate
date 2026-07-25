@@ -1,10 +1,16 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { ArrowRightIcon, CheckCircleIcon } from "lucide-react";
+import {
+  AlertTriangleIcon,
+  ArrowRightIcon,
+  CheckCircleIcon,
+} from "lucide-react";
 import Link from "next/link";
+import router from "next/router";
 
 import { ButtonSpinner } from "~/components/button-spinner";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -20,11 +26,12 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "~/components/ui/input-otp";
-import { AUTH_URI } from "~/constants/auth";
+import { AUTH_ROUTES } from "~/constants/auth";
+import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
 
-import { useSendVerificationOTP } from "../api/send-verification-otp";
-import { useVerifyEmail } from "../api/verify-email";
+import { useSendVerificationOTP } from "../hooks/use-send-verification-otp";
+import { useVerifyEmail } from "../hooks/use-verify-email";
 import { verifyEmailSchema } from "../schemas";
 
 type Props = React.ComponentProps<"div"> & {
@@ -32,14 +39,31 @@ type Props = React.ComponentProps<"div"> & {
 };
 
 export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
-  const { mutate, isPending, isSuccess } = useVerifyEmail();
+  const { mutateAsync, isPending, isSuccess } = useVerifyEmail();
   const { mutate: resendOTP, isPending: isSendingOTP } =
     useSendVerificationOTP();
 
   const form = useForm({
     defaultValues: { otp: "" },
-    validators: { onSubmit: verifyEmailSchema },
-    onSubmit: async ({ value }) => mutate({ email, otp: value.otp }),
+    validators: { onSubmit: verifyEmailSchema.omit({ email: true }) },
+    onSubmit: async ({ value, formApi }) => {
+      const { validationErrors, serverError } = await mutateAsync({
+        email,
+        otp: value.otp,
+      });
+      if (validationErrors) {
+        formApi.setErrorMap({
+          onSubmit: {
+            form: "Validation failed!",
+            fields: mapToFormError(validationErrors.fieldErrors),
+          },
+        });
+      } else if (serverError) {
+        formApi.setErrorMap({ onSubmit: { form: serverError, fields: {} } });
+      } else {
+        router.push("/");
+      }
+    },
   });
 
   if (isSuccess) {
@@ -48,7 +72,10 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
         <div className="flex flex-col items-center justify-center gap-4 rounded-md">
           <CheckCircleIcon className="size-14 animate-bounce text-green-500" />
           <h3>Email verification successfull</h3>
-          <Button nativeButton={false} render={<Link href={AUTH_URI.signin} />}>
+          <Button
+            nativeButton={false}
+            render={<Link href={AUTH_ROUTES.signIn} />}
+          >
             Go to sign in
             <ArrowRightIcon />
           </Button>
@@ -72,10 +99,23 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               form.handleSubmit();
             }}
           >
             <FieldGroup>
+              <form.Subscribe selector={(state) => state.errorMap.onSubmit}>
+                {(errors) =>
+                  errors && isSuccess ? (
+                    <Alert className="border border-red-500/20 bg-red-500/10">
+                      <AlertTriangleIcon />
+                      <AlertTitle>Request Error</AlertTitle>
+                      <AlertDescription>{errors.toString()}</AlertDescription>
+                    </Alert>
+                  ) : null
+                }
+              </form.Subscribe>
+
               <form.Field name="otp">
                 {(field) => {
                   const isInvalid =
@@ -100,10 +140,17 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
                 }}
               </form.Field>
 
+              <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+              >
+                {([canSubmit, isSubmitting]) => (
+                  <ButtonSpinner disabled={!canSubmit} spin={isSubmitting}>
+                    {isSubmitting ? "Verifing…" : "Verify"}
+                  </ButtonSpinner>
+                )}
+              </form.Subscribe>
+
               <Field>
-                <ButtonSpinner className="w-full" spin={isPending}>
-                  Verify
-                </ButtonSpinner>
                 <ButtonSpinner
                   onClick={() =>
                     resendOTP({ email, type: "email-verification" })
@@ -123,7 +170,7 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
           <Button
             className="font-normal"
             nativeButton={false}
-            render={<Link href={AUTH_URI.signup} />}
+            render={<Link href={AUTH_ROUTES.signUp} />}
             size="sm"
             variant="link"
           >

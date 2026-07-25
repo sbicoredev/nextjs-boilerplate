@@ -4,7 +4,7 @@ import { Button, type buttonVariants } from "./ui/button";
 import { Spinner } from "./ui/spinner";
 
 type Props = {
-  spin: boolean;
+  spin?: boolean;
   children: React.ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants>;
@@ -15,7 +15,7 @@ export const ButtonSpinner = ({
   type = "submit",
   ...props
 }: Props) => (
-  <Button disabled={spin} type={type} {...props}>
+  <Button disabled={props.disabled ?? spin} type={type} {...props}>
     {spin && <Spinner data-icon="inline-start" />}
     {children}
   </Button>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { AUTH_URI, SIGNUP_EMAIL_COOKIE } from "~/constants/auth";
+import { AUTH_ROUTES, SIGNUP_EMAIL_COOKIE } from "~/constants/auth";
 import { VerifyEmailForm } from "~/features/auth/components/verify-email-form";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default async function VerifyEmailPage() {
   const cookie = await cookies();
   const email = cookie.get(SIGNUP_EMAIL_COOKIE)?.value;
   if (!email) {
-    return redirect(AUTH_URI.signup);
+    return redirect(AUTH_ROUTES.signUp);
   }
 
   return (

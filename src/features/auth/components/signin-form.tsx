@@ -1,11 +1,13 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
+import { AlertTriangleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type * as React from "react";
 
 import { ButtonSpinner } from "~/components/button-spinner";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import {
@@ -17,22 +19,35 @@ import {
   FieldSeparator,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import { AUTH_URI } from "~/constants/auth";
+import { AUTH_ROUTES } from "~/constants/auth";
+import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
 
-import { useSignin } from "../api/signin";
-import { signinSchema } from "../schemas";
+import { useSignIn } from "../hooks/use-signin";
+import { signInSchema } from "../schemas";
 
-export const SigninForm = ({
+export const SignInForm = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
-  const { mutate, isPending } = useSignin();
+  const { mutateAsync, isSuccess } = useSignIn();
 
   const form = useForm({
-    defaultValues: { email: "jhon@mail.com", password: "12345678" },
-    validators: { onSubmit: signinSchema },
-    onSubmit: async ({ value }) => mutate(value),
+    defaultValues: { email: "", password: "" },
+    validators: { onSubmit: signInSchema },
+    onSubmit: async ({ value, formApi }) => {
+      const { validationErrors, serverError } = await mutateAsync(value);
+      if (validationErrors) {
+        formApi.setErrorMap({
+          onSubmit: {
+            form: "Validation failed!",
+            fields: mapToFormError(validationErrors.fieldErrors),
+          },
+        });
+      } else if (serverError) {
+        formApi.setErrorMap({ onSubmit: { form: serverError, fields: {} } });
+      }
+    },
   });
 
   return (
@@ -43,16 +58,29 @@ export const SigninForm = ({
             className="p-6 md:p-8"
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               form.handleSubmit();
             }}
           >
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="font-bold text-2xl">Welcome back</h1>
+                <h2 className="text-2xl">Welcome back</h2>
                 <p className="text-balance text-muted-foreground">
-                  Login to your Acme Inc account
+                  Login to your account
                 </p>
               </div>
+
+              <form.Subscribe selector={(state) => state.errorMap.onSubmit}>
+                {(errors) =>
+                  errors && isSuccess ? (
+                    <Alert className="border border-red-500/20 bg-red-500/10">
+                      <AlertTriangleIcon />
+                      <AlertTitle>Request Error</AlertTitle>
+                      <AlertDescription>{errors.toString()}</AlertDescription>
+                    </Alert>
+                  ) : null
+                }
+              </form.Subscribe>
 
               <form.Field name="email">
                 {(field) => {
@@ -67,14 +95,12 @@ export const SigninForm = ({
                         name={field.name}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="jhon@mail.com"
+                        placeholder="Enter your email"
                         required
                         type="email"
                         value={field.state.value}
                       />
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
+                      <FieldError errors={field.state.meta.errors} />
                     </Field>
                   );
                 }}
@@ -89,10 +115,9 @@ export const SigninForm = ({
                       <div className="flex items-center">
                         <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                         <Button
-                          className="ms-auto p-0"
+                          className="ms-auto h-4 p-0"
                           nativeButton={false}
-                          render={<Link href={AUTH_URI.forgotPassword} />}
-                          size="xs"
+                          render={<Link href={AUTH_ROUTES.forgotPassword} />}
                           type="button"
                           variant="link"
                         >
@@ -105,21 +130,26 @@ export const SigninForm = ({
                         name={field.name}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="Enter your password"
                         required
                         type="password"
                         value={field.state.value}
                       />
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
+                      <FieldError errors={field.state.meta.errors} />
                     </Field>
                   );
                 }}
               </form.Field>
 
-              <Field>
-                <ButtonSpinner spin={isPending}>Login</ButtonSpinner>
-              </Field>
+              <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+              >
+                {([canSubmit, isSubmitting]) => (
+                  <ButtonSpinner disabled={!canSubmit} spin={isSubmitting}>
+                    {isSubmitting ? "Signing in…" : "Sign in"}
+                  </ButtonSpinner>
+                )}
+              </form.Subscribe>
 
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
@@ -157,7 +187,7 @@ export const SigninForm = ({
 
               <FieldDescription className="text-center">
                 Don&apos;t have an account?{" "}
-                <Link href={AUTH_URI.signup}>Sign up</Link>
+                <Link href={AUTH_ROUTES.signUp}>Sign up</Link>
               </FieldDescription>
             </FieldGroup>
           </form>

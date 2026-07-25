@@ -1,11 +1,14 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
+import { AlertTriangleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type * as React from "react";
 
 import { ButtonSpinner } from "~/components/button-spinner";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   Field,
@@ -20,10 +23,11 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "~/components/ui/input-otp";
-import { AUTH_URI } from "~/constants/auth";
+import { AUTH_ROUTES } from "~/constants/auth";
+import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
 
-import { useResetPassword } from "../api/reset-password";
+import { useResetPassword } from "../hooks/use-reset-password";
 import { resetPasswordSchema } from "../schemas";
 
 type Props = React.ComponentProps<"div"> & {
@@ -31,17 +35,32 @@ type Props = React.ComponentProps<"div"> & {
 };
 
 export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
-  const { mutate, isPending } = useResetPassword();
+  const router = useRouter();
+  const { mutateAsync, isSuccess } = useResetPassword();
 
   const form = useForm({
     defaultValues: {
       email,
       otp: "",
-      password: "12345678",
-      confirmPassword: "12345678",
+      password: "",
+      confirmPassword: "",
     },
     validators: { onSubmit: resetPasswordSchema },
-    onSubmit: async ({ value }) => mutate(value),
+    onSubmit: async ({ value, formApi }) => {
+      const { validationErrors, serverError } = await mutateAsync(value);
+      if (validationErrors) {
+        formApi.setErrorMap({
+          onSubmit: {
+            form: "Validation failed!",
+            fields: mapToFormError(validationErrors.fieldErrors),
+          },
+        });
+      } else if (serverError) {
+        formApi.setErrorMap({ onSubmit: { form: serverError, fields: {} } });
+      } else {
+        router.push(AUTH_ROUTES.signIn);
+      }
+    },
   });
 
   return (
@@ -52,16 +71,29 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
             className="content-center p-6 md:p-8"
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               form.handleSubmit();
             }}
           >
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="font-bold text-2xl">Enter new Password</h1>
+                <h2 className="text-2xl">Enter new Password</h2>
                 <p className="text-balance text-muted-foreground">
                   Update your password
                 </p>
               </div>
+
+              <form.Subscribe selector={(state) => state.errorMap.onSubmit}>
+                {(errors) =>
+                  errors && isSuccess ? (
+                    <Alert className="border border-red-500/20 bg-red-500/10">
+                      <AlertTriangleIcon />
+                      <AlertTitle>Request Error</AlertTitle>
+                      <AlertDescription>{errors.toString()}</AlertDescription>
+                    </Alert>
+                  ) : null
+                }
+              </form.Subscribe>
 
               <form.Field name="otp">
                 {(field) => {
@@ -117,6 +149,7 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
                         name={field.name}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="Enter your password"
                         required
                         type="password"
                         value={field.state.value}
@@ -147,6 +180,7 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
                         name={field.name}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="Enter your password"
                         required
                         type="password"
                         value={field.state.value}
@@ -159,12 +193,18 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
                 }}
               </form.Field>
 
-              <Field>
-                <ButtonSpinner spin={isPending}>Reset Password</ButtonSpinner>
-              </Field>
+              <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+              >
+                {([canSubmit, isSubmitting]) => (
+                  <ButtonSpinner disabled={!canSubmit} spin={isSubmitting}>
+                    {isSubmitting ? "Updating…" : "Update Password"}
+                  </ButtonSpinner>
+                )}
+              </form.Subscribe>
 
               <FieldDescription className="text-center">
-                Back to <Link href={AUTH_URI.signin}>Sign in</Link>
+                Back to <Link href={AUTH_ROUTES.signIn}>Sign in</Link>
               </FieldDescription>
             </FieldGroup>
           </form>

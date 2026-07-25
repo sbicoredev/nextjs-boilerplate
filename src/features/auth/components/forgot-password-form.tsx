@@ -1,11 +1,14 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
+import { AlertTriangleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type * as React from "react";
 
 import { ButtonSpinner } from "~/components/button-spinner";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   Field,
@@ -15,22 +18,38 @@ import {
   FieldLabel,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import { AUTH_URI } from "~/constants/auth";
+import { AUTH_ROUTES } from "~/constants/auth";
+import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
 
-import { useForgotPassword } from "../api/forgot-password";
+import { useForgotPassword } from "../hooks/use-forgot-password";
 import { forgotPasswordSchema } from "../schemas";
 
 export const ForgotPasswordForm = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
-  const { mutate, isPending } = useForgotPassword();
+  const router = useRouter();
+  const { mutateAsync, isSuccess } = useForgotPassword();
 
   const form = useForm({
-    defaultValues: { email: "jhon@mail.com" },
+    defaultValues: { email: "" },
     validators: { onSubmit: forgotPasswordSchema },
-    onSubmit: async ({ value }) => mutate(value),
+    onSubmit: async ({ value, formApi }) => {
+      const { validationErrors, serverError } = await mutateAsync(value);
+      if (validationErrors) {
+        formApi.setErrorMap({
+          onSubmit: {
+            form: "Validation failed!",
+            fields: mapToFormError(validationErrors.fieldErrors),
+          },
+        });
+      } else if (serverError) {
+        formApi.setErrorMap({ onSubmit: { form: serverError, fields: {} } });
+      } else {
+        router.push(AUTH_ROUTES.resetPassword);
+      }
+    },
   });
 
   return (
@@ -41,16 +60,29 @@ export const ForgotPasswordForm = ({
             className="content-center p-6 md:p-8"
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               form.handleSubmit();
             }}
           >
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="font-bold text-2xl">Forgot your password?</h1>
+                <h2 className="text-2xl">Forgot your password?</h2>
                 <p className="text-balance text-muted-foreground">
                   Reset using your email
                 </p>
               </div>
+
+              <form.Subscribe selector={(state) => state.errorMap.onSubmit}>
+                {(errors) =>
+                  errors && isSuccess ? (
+                    <Alert className="border border-red-500/20 bg-red-500/10">
+                      <AlertTriangleIcon />
+                      <AlertTitle>Request Error</AlertTitle>
+                      <AlertDescription>{errors.toString()}</AlertDescription>
+                    </Alert>
+                  ) : null
+                }
+              </form.Subscribe>
 
               <form.Field name="email">
                 {(field) => {
@@ -65,7 +97,7 @@ export const ForgotPasswordForm = ({
                         name={field.name}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="jhon@mail.com"
+                        placeholder="Enter your email"
                         required
                         type="email"
                         value={field.state.value}
@@ -78,12 +110,18 @@ export const ForgotPasswordForm = ({
                 }}
               </form.Field>
 
-              <Field>
-                <ButtonSpinner spin={isPending}>Send Reset Link</ButtonSpinner>
-              </Field>
+              <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+              >
+                {([canSubmit, isSubmitting]) => (
+                  <ButtonSpinner disabled={!canSubmit} spin={isSubmitting}>
+                    {isSubmitting ? "Sending…" : "Send Request"}
+                  </ButtonSpinner>
+                )}
+              </form.Subscribe>
 
               <FieldDescription className="text-center">
-                Back to <Link href={AUTH_URI.signin}>Sign in</Link>
+                Back to <Link href={AUTH_ROUTES.signIn}>Sign in</Link>
               </FieldDescription>
             </FieldGroup>
           </form>

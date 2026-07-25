@@ -10,6 +10,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "~/components/ui/sidebar";
+import { siteConfig } from "~/configs/site-config";
 import { useAuth } from "~/contexts/auth-context";
 import { useThemeCustomizerStore } from "~/contexts/theme-context";
 
@@ -46,7 +47,7 @@ export const DashboardSidebar = ({
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
             <GalleryVerticalEndIcon className="size-4" />
           </div>
-          <h3>Acme Inc</h3>
+          <h3>{siteConfig.name}</h3>
         </Link>
       </SidebarHeader>
       <SidebarContent>

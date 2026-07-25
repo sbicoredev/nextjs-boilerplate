@@ -24,7 +24,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { UserAvatar } from "~/components/user-avatar";
 import { siteConfig } from "~/configs/site-config";
-import { AUTH_URI } from "~/constants/auth";
+import { AUTH_ROUTES } from "~/constants/auth";
 import { useAuth } from "~/contexts/auth-context";
 import { authClient } from "~/services/auth/auth-client";
 
@@ -36,7 +36,7 @@ export const Header = () => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push(AUTH_URI.signin);
+          router.push(AUTH_ROUTES.signIn);
           router.refresh();
         },
       },
@@ -109,7 +109,7 @@ export const Header = () => {
           <ThemeToggle size="icon-sm" variant="link" />
           <Button
             nativeButton={false}
-            render={<Link href={user ? "/dashboard" : AUTH_URI.signin} />}
+            render={<Link href={user ? "/dashboard" : AUTH_ROUTES.signIn} />}
             size="sm"
           >
             {user ? "Dashboard" : "Get Started"}

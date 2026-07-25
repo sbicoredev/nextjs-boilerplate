@@ -1,32 +1,39 @@
 services:
   postgres:
-    image: postgres:alpine
-    restart: always
-    container_name: nextjs-boilerplate-db
+    container_name: ${APP_PREFIX}-db
+    image: postgres:18.4-alpine
     shm_size: 128mb
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - 5432:5432
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - db-data:/var/lib/postgresql
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    ports:
+      - ${DB_PORT}:5432
     networks:
-      - nextjs-boilerplate
+      - backend
 
   mailpit:
-    image: axllent/mailpit
-    restart: always
-    container_name: nextjs-boilerplate-mail
+    container_name: ${APP_PREFIX}-mail
+    image: axllent/mailpit:v1.30
+    restart: unless-stopped
     ports:
       - 8025:8025
       - 1025:1025
     networks:
-      - nextjs-boilerplate
+      - backend
 
 volumes:
-  db-data:
+  postgres-data:
 
 networks:
-  nextjs-boilerplate:
+  backend:
+    driver: bridge

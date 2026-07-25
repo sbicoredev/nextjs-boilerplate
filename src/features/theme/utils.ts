@@ -13,5 +13,8 @@ export const getThemePreference = async () => {
   if (!v) {
     return DEFAULT_THEME_PREFERENCE;
   }
-  return (JSON.parse(v) as StorageValue<ThemePreference>).state;
+  return (
+    (JSON.parse(v) as Nullable<StorageValue<ThemePreference>>)?.state ||
+    DEFAULT_THEME_PREFERENCE
+  );
 };

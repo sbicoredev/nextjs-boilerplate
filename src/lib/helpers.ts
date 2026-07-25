@@ -127,3 +127,12 @@ export function parseCookie(cookieString: string): Record<string, string> {
   }
   return cookies;
 }
+
+export function mapToFormError(fieldErr: Record<string, string[]>) {
+  return Object.fromEntries(
+    Object.keys(fieldErr).map((i) => [
+      i,
+      [{ message: fieldErr[i]?.[0] ?? fieldErr[i] }],
+    ])
+  );
+}

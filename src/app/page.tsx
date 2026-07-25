@@ -5,7 +5,7 @@ import { Footer } from "~/components/sections/footer";
 import { Header } from "~/components/sections/header";
 import { Button } from "~/components/ui/button";
 import { siteConfig } from "~/configs/site-config";
-import { AUTH_URI } from "~/constants/auth";
+import { AUTH_ROUTES } from "~/constants/auth";
 import { cn } from "~/lib/utils";
 import { checkAuth } from "~/services/auth";
 
@@ -57,7 +57,7 @@ export default async function HomePage() {
               className="hidden sm:flex"
               nativeButton={false}
               render={
-                <Link href={auth?.user ? "/dashboard" : AUTH_URI.signin} />
+                <Link href={auth?.user ? "/dashboard" : AUTH_ROUTES.signIn} />
               }
               size="sm"
             >

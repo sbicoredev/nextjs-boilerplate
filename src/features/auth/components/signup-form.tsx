@@ -1,11 +1,14 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
+import { AlertTriangleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type * as React from "react";
 
 import { ButtonSpinner } from "~/components/button-spinner";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import {
@@ -17,27 +20,43 @@ import {
   FieldSeparator,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import { AUTH_URI } from "~/constants/auth";
+import { AUTH_ROUTES } from "~/constants/auth";
+import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
 
-import { useSignup } from "../api/signup";
-import { signupSchema } from "../schemas";
+import { useSignUp } from "../hooks/use-signup";
+import { signUpSchema } from "../schemas";
 
-export const SignupForm = ({
+export const SignUpForm = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
-  const { mutate, isPending } = useSignup();
+  const router = useRouter();
+  const { mutateAsync, isSuccess } = useSignUp();
 
   const form = useForm({
     defaultValues: {
-      name: "Jhon Doe",
-      email: "jhon@mail.com",
-      password: "12345678",
-      confirmPassword: "12345678",
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
-    validators: { onSubmit: signupSchema },
-    onSubmit: async ({ value }) => mutate(value),
+    validators: { onSubmit: signUpSchema },
+    onSubmit: async ({ value, formApi }) => {
+      const { validationErrors, serverError } = await mutateAsync(value);
+      if (validationErrors) {
+        formApi.setErrorMap({
+          onSubmit: {
+            form: "Validation failed!",
+            fields: mapToFormError(validationErrors.fieldErrors),
+          },
+        });
+      } else if (serverError) {
+        formApi.setErrorMap({ onSubmit: { form: serverError, fields: {} } });
+      } else {
+        router.push(AUTH_ROUTES.signIn);
+      }
+    },
   });
 
   return (
@@ -48,16 +67,29 @@ export const SignupForm = ({
             className="p-6 md:p-8"
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               form.handleSubmit();
             }}
           >
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="font-bold text-2xl">Create your account</h1>
+                <h2 className="text-2xl">Create your account</h2>
                 <p className="text-balance text-muted-foreground text-sm">
                   Enter your email below to create your account
                 </p>
               </div>
+
+              <form.Subscribe selector={(state) => state.errorMap.onSubmit}>
+                {(errors) =>
+                  errors && isSuccess ? (
+                    <Alert className="border border-red-500/20 bg-red-500/10">
+                      <AlertTriangleIcon />
+                      <AlertTitle>Request Error</AlertTitle>
+                      <AlertDescription>{errors.toString()}</AlertDescription>
+                    </Alert>
+                  ) : null
+                }
+              </form.Subscribe>
 
               <form.Field name="name">
                 {(field) => {
@@ -72,7 +104,7 @@ export const SignupForm = ({
                         name={field.name}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="Jhon Doe"
+                        placeholder="Enter your full name"
                         required
                         value={field.state.value}
                       />
@@ -97,7 +129,7 @@ export const SignupForm = ({
                         name={field.name}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="jhon@mail.com"
+                        placeholder="Enter your email"
                         required
                         type="email"
                         value={field.state.value}
@@ -129,6 +161,7 @@ export const SignupForm = ({
                             name={field.name}
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
+                            placeholder="Enter your password"
                             required
                             type="password"
                             value={field.state.value}
@@ -156,6 +189,7 @@ export const SignupForm = ({
                             name={field.name}
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
+                            placeholder="Enter your password"
                             required
                             type="password"
                             value={field.state.value}
@@ -173,10 +207,15 @@ export const SignupForm = ({
                 </FieldDescription>
               </Field>
 
-              <Field>
-                <ButtonSpinner spin={isPending}>Create Account</ButtonSpinner>
-              </Field>
-
+              <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+              >
+                {([canSubmit, isSubmitting]) => (
+                  <ButtonSpinner disabled={!canSubmit} spin={isSubmitting}>
+                    {isSubmitting ? "Signing up…" : "Sign up"}
+                  </ButtonSpinner>
+                )}
+              </form.Subscribe>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
               </FieldSeparator>
@@ -213,7 +252,7 @@ export const SignupForm = ({
 
               <FieldDescription className="text-center">
                 Already have an account?{" "}
-                <Link href={AUTH_URI.signin}>Sign in</Link>
+                <Link href={AUTH_ROUTES.signIn}>Sign in</Link>
               </FieldDescription>
             </FieldGroup>
           </form>

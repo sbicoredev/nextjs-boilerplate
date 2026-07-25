@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
-import { SigninForm } from "~/features/auth/components/signin-form";
+import { SignInForm } from "~/features/auth/components/signin-form";
 
 export const metadata: Metadata = {
   title: "Sign in",
 };
 
-export default function SigninPage() {
+export default function SignInPage() {
   return (
-    <SigninForm className="max-w-xl place-content-center justify-self-center md:max-w-5xl" />
+    <SignInForm className="max-w-xl place-content-center justify-self-center md:max-w-5xl" />
   );
 }

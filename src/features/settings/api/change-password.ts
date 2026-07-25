@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
 
+import { toast } from "~/components/ui/toast";
 import { authClient } from "~/services/auth/auth-client";
 
 type Input = {
@@ -22,6 +22,6 @@ export const useChangePassword = () =>
       return data;
     },
     onSuccess: () => {
-      toast.success("password updated!");
+      toast.add({ type: "success", description: "Password updated." });
     },
   });

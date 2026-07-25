@@ -4,7 +4,7 @@ import "server-only";
 import { env } from "~/env";
 
 export const authConfig = {
-  enableSignup: true,
+  enableSignUp: true,
   email: {
     enabled: true,
     requiredVerification: true,

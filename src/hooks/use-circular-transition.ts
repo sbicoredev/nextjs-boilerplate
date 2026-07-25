@@ -7,6 +7,7 @@ export function useCircularTransition<T, E extends string>(cb: (arg: E) => T) {
 
   const startTransition = useCallback(
     (coords: { x: number; y: number }, callback: () => void) => {
+      // biome-ignore lint/suspicious/noUnnecessaryConditions: explain
       if (isTransitioningRef.current) {
         return;
       }

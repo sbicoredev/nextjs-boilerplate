@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 
+import { toast } from "~/components/ui/toast";
 import { authClient } from "~/services/auth/auth-client";
 
 type Input = {
@@ -18,7 +18,7 @@ export const useAllRevokeSession = () => {
       return data;
     },
     onSuccess: () => {
-      toast.success("All Sessions terminated successfully");
+      toast.add({ type: "success", description: "All Sessions terminated." });
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
     },
   });
@@ -35,7 +35,7 @@ export const useRevokeSession = () => {
       return data;
     },
     onSuccess: () => {
-      toast.success("Session terminated successfully");
+      toast.add({ type: "success", description: "Session terminated." });
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
     },
   });

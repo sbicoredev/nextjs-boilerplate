@@ -12,9 +12,9 @@ export const env = createEnv({
       .default("development"),
     // db
     DB_URL: z.url(),
-    POSTGRES_USER: z.string(),
-    POSTGRES_DB: z.string(),
-    POSTGRES_PASSWORD: z.string(),
+    DB_USER: z.string(),
+    DB_NAME: z.string(),
+    DB_PASSWORD: z.string(),
     // auth
     AUTH_OTP_EXPIRES: z.coerce.number().default(300),
     AUTH_OTP_ALLOWED_ATTEMPT: z.coerce.number().default(3),
