@@ -3,6 +3,9 @@ export const ErrorMessaage = {
     default: "Something went wrong. Please try again.",
     internal: "Internal server error.",
   },
+  rateLimit: {
+    tooManyRequest: "Too many requests. Please try again later.",
+  },
   auth: {
     unauthorized: "Unauthorized!",
     forbidden: "Forbidden!",
