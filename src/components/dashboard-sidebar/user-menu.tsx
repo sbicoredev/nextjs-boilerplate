@@ -2,7 +2,6 @@
 
 import { BellIcon, CreditCardIcon, LogOutIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import type { ReactElement } from "react";
 
 import {
@@ -15,8 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { UserAvatar } from "~/components/user-avatar";
-import { AUTH_ROUTES } from "~/constants/auth";
-import { authClient } from "~/services/auth/auth-client";
+import { useSignOut } from "~/features/auth/hooks/use-signout";
 
 type Props = {
   user: AuthUser;
@@ -25,18 +23,7 @@ type Props = {
 };
 
 export const UserMenu = ({ user, trigger, menuSide }: Props) => {
-  const router = useRouter();
-
-  const handleSignout = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push(AUTH_ROUTES.signIn);
-          router.refresh();
-        },
-      },
-    });
-  };
+  const { mutate: signOut } = useSignOut();
 
   return (
     <DropdownMenu>
@@ -79,7 +66,7 @@ export const UserMenu = ({ user, trigger, menuSide }: Props) => {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleSignout}>
+        <DropdownMenuItem onClick={() => signOut()}>
           <LogOutIcon />
           Log out
         </DropdownMenuItem>

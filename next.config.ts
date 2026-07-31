@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
-import "./src/env";
+import "./src/env/server";
+import "./src/env/client";
 
 const config: NextConfig = {};
 

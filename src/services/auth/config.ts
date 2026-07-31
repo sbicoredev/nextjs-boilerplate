@@ -1,15 +1,15 @@
 import type { SocialProviders } from "better-auth";
 import "server-only";
 
-import { env } from "~/env";
+import { serverEnv } from "~/env/server";
 
 export const authConfig = {
   enableSignUp: true,
   email: {
     enabled: true,
     requiredVerification: true,
-    otpExpiresIn: env.AUTH_OTP_EXPIRES,
-    otpAllowedAttempts: env.AUTH_OTP_ALLOWED_ATTEMPT,
+    otpExpiresIn: serverEnv.AUTH_OTP_EXPIRES,
+    otpAllowedAttempts: serverEnv.AUTH_OTP_ALLOWED_ATTEMPT,
   },
   magicLink: {
     enabeld: false,

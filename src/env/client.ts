@@ -1,33 +1,7 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
-export const env = createEnv({
-  /**
-   * Specify your server-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars.
-   */
-  server: {
-    NODE_ENV: z
-      .enum(["development", "test", "production"])
-      .default("development"),
-    // db
-    DB_URL: z.url(),
-    DB_USER: z.string(),
-    DB_NAME: z.string(),
-    DB_PASSWORD: z.string(),
-    // auth
-    AUTH_OTP_EXPIRES: z.coerce.number().default(300),
-    AUTH_OTP_ALLOWED_ATTEMPT: z.coerce.number().default(3),
-    // email
-    SMTP_SERVER_HOST: z.string(),
-    SMTP_SERVER_PORT: z.coerce.number(),
-    SMTP_SERVER_USERNAME: z.string(),
-    SMTP_SERVER_PASSWORD: z.string(),
-    SUPPORT_MAIL_ADDRESS: z.string(),
-    MAIL_FROM_ADDRESS: z.string(),
-    MAIL_FROM_NAME: z.string(),
-  },
-
+export const clientEnv = createEnv({
   /**
    * Specify your client-side environment variables schema here. This way you can ensure the app
    * isn't built with invalid env vars. To expose them to the client, prefix them with
@@ -38,7 +12,7 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_NAME: z.string(),
   },
   // For Next.js >= 13.4.4, you only need to destructure client variables:
-  experimental__runtimeEnv: {
+  runtimeEnv: {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
   },

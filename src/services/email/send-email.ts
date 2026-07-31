@@ -2,16 +2,16 @@ import { render } from "@react-email/components";
 import nodemailer from "nodemailer";
 import type { JSX } from "react";
 
-import { env } from "~/env";
+import { serverEnv } from "~/env/server";
 
 const transporter = nodemailer.createTransport({
-  host: env.SMTP_SERVER_HOST,
-  port: env.SMTP_SERVER_PORT,
-  secure: env.NODE_ENV === "production",
-  ignoreTLS: env.NODE_ENV !== "production",
+  host: serverEnv.SMTP_SERVER_HOST,
+  port: serverEnv.SMTP_SERVER_PORT,
+  secure: serverEnv.NODE_ENV === "production",
+  ignoreTLS: serverEnv.NODE_ENV !== "production",
   auth: {
-    user: env.SMTP_SERVER_USERNAME,
-    pass: env.SMTP_SERVER_PASSWORD,
+    user: serverEnv.SMTP_SERVER_USERNAME,
+    pass: serverEnv.SMTP_SERVER_PASSWORD,
   },
 });
 
@@ -31,15 +31,15 @@ export async function sendEmail({
   } catch (error) {
     console.error(
       "Something Went Wrong",
-      env.SMTP_SERVER_USERNAME,
-      env.SMTP_SERVER_PASSWORD,
+      serverEnv.SMTP_SERVER_USERNAME,
+      serverEnv.SMTP_SERVER_PASSWORD,
       error
     );
     return;
   }
 
   const info = await transporter.sendMail({
-    from: env.MAIL_FROM_ADDRESS,
+    from: serverEnv.EMAIL_FROM,
     to: sendTo,
     subject,
     html,

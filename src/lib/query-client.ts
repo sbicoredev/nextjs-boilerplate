@@ -1,8 +1,13 @@
 import {
   defaultShouldDehydrateQuery,
   environmentManager,
+  MutationCache,
+  QueryCache,
   QueryClient,
 } from "@tanstack/react-query";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
+
+import { toast } from "~/components/ui/toast";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -25,6 +30,26 @@ function makeQueryClient() {
         },
       },
     },
+    queryCache: new QueryCache({
+      onError(error, query) {
+        if (query.meta?.skipGlobalHandler) {
+          return;
+        }
+        if (!isRedirectError(error)) {
+          toast.add({ type: "error", description: error.message });
+        }
+      },
+    }),
+    mutationCache: new MutationCache({
+      onError(error, _, __, mutation) {
+        if (mutation.meta?.skipGlobalHandler) {
+          return;
+        }
+        if (!isRedirectError(error)) {
+          toast.add({ type: "error", description: error.message });
+        }
+      },
+    }),
   });
 }
 
@@ -43,4 +68,15 @@ export function getQueryClient() {
     browserQueryClient = makeQueryClient();
   }
   return browserQueryClient;
+}
+
+declare module "@tanstack/react-query" {
+  interface Register {
+    queryMeta: {
+      skipGlobalHandler?: boolean;
+    };
+    mutationMeta: {
+      skipGlobalHandler?: boolean;
+    };
+  }
 }

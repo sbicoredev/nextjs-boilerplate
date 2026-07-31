@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
-import { env } from "~/env";
+import { serverEnv } from "~/env/server";
 
 import * as schema from "./schemas";
 
@@ -14,9 +14,9 @@ const globalForDb = globalThis as unknown as {
 };
 
 export const client =
-  globalForDb.client ?? new Pool({ connectionString: env.DB_URL });
+  globalForDb.client ?? new Pool({ connectionString: serverEnv.DB_URL });
 
-if (env.NODE_ENV !== "production") {
+if (serverEnv.NODE_ENV !== "production") {
   globalForDb.client = client;
 }
 

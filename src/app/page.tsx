@@ -42,14 +42,14 @@ export default async function HomePage() {
           <h1 className="text-center font-bold text-6xl text-primary leading-tight md:text-7xl lg:leading-tight">
             Production Ready
             <br />
-            SaaS Stack for Nextjs
+            Stack for Nextjs
           </h1>
           <p className="max-w-3xl text-center text-lg text-muted-foreground leading-normal md:text-xl">
             Launch in hours with a modern{" "}
             <span className="font-medium text-primary">
               Production-Ready Stack
             </span>
-            <br className="hidden lg:inline-block" /> Stripe integration.
+            <br className="hidden lg:inline-block" /> integration.
             Next.js-powered. Open Source.
           </p>
           <div className="mt-2 flex w-full items-center justify-center gap-2">

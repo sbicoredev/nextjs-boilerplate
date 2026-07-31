@@ -12,7 +12,7 @@ import {
   signUpSchema,
   verifyEmailSchema,
 } from "~/features/auth/schemas";
-import { actionClient } from "~/lib/safe-action";
+import { authRoutesActionClient } from "~/lib/safe-action";
 import { getSafeRedirectPath } from "~/lib/safe-redirect";
 
 import {
@@ -24,7 +24,7 @@ import {
   verifyEmailOtp,
 } from "../services/auth-service";
 
-export const signInWithPasswordAction = actionClient
+export const signInWithPasswordAction = authRoutesActionClient
   .metadata({ actionName: "signInWithPasswordAction" })
   .bindArgsSchemas([z.string().optional()])
   .inputSchema(signInSchema)
@@ -35,7 +35,7 @@ export const signInWithPasswordAction = actionClient
     }
   });
 
-export const signUpWithPasswordAction = actionClient
+export const signUpWithPasswordAction = authRoutesActionClient
   .metadata({ actionName: "signUpWithPasswordAction" })
   .inputSchema(signUpSchema)
   .action(async ({ parsedInput }) => {
@@ -45,22 +45,32 @@ export const signUpWithPasswordAction = actionClient
     }
   });
 
-export const verifyEmailOtpAction = actionClient
+export const verifyEmailOtpAction = authRoutesActionClient
   .metadata({ actionName: "verifyEmailOtpAction" })
   .inputSchema(verifyEmailSchema)
   .action(async ({ parsedInput }) => verifyEmailOtp(parsedInput));
 
-export const sendVerificationOtpAction = actionClient
+export const sendVerificationOtpAction = authRoutesActionClient
   .metadata({ actionName: "sendVerificationOtpAction" })
   .inputSchema(sendVerificationOtpSchema)
   .action(async ({ parsedInput }) => sendVerificationOtp(parsedInput));
 
-export const requestPasswordResetOtpAction = actionClient
+export const requestPasswordResetOtpAction = authRoutesActionClient
   .metadata({ actionName: "requestPasswordResetOtpAction" })
   .inputSchema(forgotPasswordSchema)
-  .action(async ({ parsedInput }) => requestPasswordResetOtp(parsedInput));
+  .action(async ({ parsedInput }) => {
+    const res = await requestPasswordResetOtp(parsedInput);
+    if (res.success) {
+      redirect(AUTH_REDIRECT_PATHS.afterRequestResetPass);
+    }
+  });
 
-export const resetPasswordAction = actionClient
+export const resetPasswordAction = authRoutesActionClient
   .metadata({ actionName: "resetPasswordAction" })
   .inputSchema(resetPasswordSchema)
-  .action(async ({ parsedInput }) => resetPassword(parsedInput));
+  .action(async ({ parsedInput }) => {
+    const res = await resetPassword(parsedInput);
+    if (res.success) {
+      redirect(AUTH_REDIRECT_PATHS.afterPassReset);
+    }
+  });

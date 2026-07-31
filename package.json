@@ -6,7 +6,7 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "^22.13.0 || >=24.18.0",
+    "node": ">=22.13.0",
     "pnpm": ">=11.13"
   },
   "scripts": {
@@ -22,6 +22,9 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
+    "docker:up": "docker compose --env-file .env.docker up -d",
+    "docker:down": "docker compose --env-file .env.docker down",
+    "upstash:dev": "URS_TOKEN=your-secret-token npx @humanwhocodes/upstash-redis-server",
     "ui:add": "pnpm dlx shadcn@latest add",
     "prepare": "husky"
   },

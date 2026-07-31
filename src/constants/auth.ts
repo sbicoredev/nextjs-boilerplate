@@ -14,7 +14,10 @@ export const AUTH_ROUTES = {
 export const AUTH_REDIRECT_PATHS = {
   afterSignIn: "/",
   afterSignOut: AUTH_ROUTES.signIn,
-  afterSignUp: "/",
+  afterSignUp: AUTH_ROUTES.verifyEmail,
+  afterEmailVerified: AUTH_ROUTES.signIn,
+  afterRequestResetPass: AUTH_ROUTES.resetPassword,
+  afterPassReset: AUTH_ROUTES.signIn,
 } as const;
 
 export const OAUTH_PROVIDERS = ["google", "github"] as const;

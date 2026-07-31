@@ -1,12 +1,17 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
+import { serverEnv } from "~/env/server";
+
 export const redis = Redis.fromEnv();
 
 // General API rate limit
 export const generalRateLimit = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(100, "1 m"), // 100 req / minute
+  limiter: Ratelimit.slidingWindow(
+    serverEnv.RATE_LIMIT_MAX,
+    `${serverEnv.RATE_LIMIT_TTL} s`
+  ), // req / seconds
   analytics: true,
   prefix: "@ratelimit/general",
 });
@@ -14,7 +19,7 @@ export const generalRateLimit = new Ratelimit({
 // Stricter for auth endpoints
 export const authRoutesRateLimit = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(10, "5 m"), // 10 attempts / 5 min
+  limiter: Ratelimit.slidingWindow(20, "10 m"), // 20 attempts / 10 min
   analytics: true,
   prefix: "@ratelimit/auth",
 });
@@ -23,7 +28,10 @@ export const authRoutesRateLimit = new Ratelimit({
 export function createUserRateLimit(userId: string) {
   return new Ratelimit({
     redis,
-    limiter: Ratelimit.slidingWindow(30, "1 m"),
+    limiter: Ratelimit.slidingWindow(
+      serverEnv.RATE_LIMIT_MAX,
+      `${serverEnv.RATE_LIMIT_TTL} s`
+    ),
     prefix: `@ratelimit/user/${userId}`,
   });
 }

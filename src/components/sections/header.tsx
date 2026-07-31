@@ -8,7 +8,7 @@ import {
   UserIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { Logo } from "~/components/logo";
 import { ThemeToggle } from "~/components/theme-toggle";
@@ -26,22 +26,18 @@ import { UserAvatar } from "~/components/user-avatar";
 import { siteConfig } from "~/configs/site-config";
 import { AUTH_ROUTES } from "~/constants/auth";
 import { useAuth } from "~/contexts/auth-context";
-import { authClient } from "~/services/auth/auth-client";
+import { useSignOut } from "~/features/auth/hooks/use-signout";
 
 export const Header = () => {
-  const router = useRouter();
-  const { user } = useAuth();
+  const { user, needSignOut } = useAuth();
+  const { mutate: signOut } = useSignOut();
 
-  const handleSignout = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push(AUTH_ROUTES.signIn);
-          router.refresh();
-        },
-      },
-    });
-  };
+  // incase db session revoked and session cookies left in browser
+  useEffect(() => {
+    if (needSignOut) {
+      signOut();
+    }
+  }, [needSignOut]);
 
   return (
     <header>
@@ -159,7 +155,7 @@ export const Header = () => {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignout}>
+                <DropdownMenuItem onClick={() => signOut()}>
                   <LogOutIcon />
                   Log out
                 </DropdownMenuItem>

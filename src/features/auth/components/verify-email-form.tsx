@@ -7,7 +7,6 @@ import {
   CheckCircleIcon,
 } from "lucide-react";
 import Link from "next/link";
-import router from "next/router";
 
 import { ButtonSpinner } from "~/components/button-spinner";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
@@ -60,13 +59,11 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
         });
       } else if (serverError) {
         formApi.setErrorMap({ onSubmit: { form: serverError, fields: {} } });
-      } else {
-        router.push("/");
       }
     },
   });
 
-  if (isSuccess) {
+  if (isSuccess && !form.state.errorMap.onSubmit) {
     return (
       <div className={cn("space-y-6", className)} {...props}>
         <div className="flex flex-col items-center justify-center gap-4 rounded-md">

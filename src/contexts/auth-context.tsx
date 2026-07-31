@@ -5,11 +5,13 @@ import { createContext, useContext } from "react";
 type AuthContext = {
   user: AuthUser | null;
   session: AuthSession | null;
+  needSignOut?: boolean;
 };
 
 export const AuthContext = createContext<AuthContext>({
   user: null,
   session: null,
+  needSignOut: false,
 });
 
 export const useAuth = () => {

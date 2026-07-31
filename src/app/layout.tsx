@@ -1,4 +1,6 @@
+import { getSessionCookie } from "better-auth/cookies";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 
@@ -24,8 +26,15 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({
   children,
 }: React.PropsWithChildren) {
-  const locale = await getLocale();
+  // incase db session revoked and session cookies left in browser
+  let needSignOut = false;
   const auth = await checkAuth();
+  const sessionCookie = getSessionCookie(await headers());
+  if (!auth?.user && sessionCookie) {
+    needSignOut = true;
+  }
+
+  const locale = await getLocale();
   const preference = await getThemePreference();
   const allowedFonts = Object.entries(fontRegistry).map(([key, f]) => ({
     value: key as keyof typeof fontRegistry,
@@ -54,6 +63,7 @@ export default async function RootLayout({
               value={{
                 user: auth?.user ?? null,
                 session: auth?.session ?? null,
+                needSignOut,
               }}
             >
               <Providers>{children}</Providers>

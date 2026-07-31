@@ -4,7 +4,6 @@ import { useForm } from "@tanstack/react-form";
 import { AlertTriangleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import type * as React from "react";
 
 import { ButtonSpinner } from "~/components/button-spinner";
@@ -29,7 +28,6 @@ export const ForgotPasswordForm = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
-  const router = useRouter();
   const { mutateAsync, isSuccess } = useForgotPassword();
 
   const form = useForm({
@@ -46,8 +44,6 @@ export const ForgotPasswordForm = ({
         });
       } else if (serverError) {
         formApi.setErrorMap({ onSubmit: { form: serverError, fields: {} } });
-      } else {
-        router.push(AUTH_ROUTES.resetPassword);
       }
     },
   });

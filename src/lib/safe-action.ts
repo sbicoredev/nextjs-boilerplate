@@ -1,14 +1,20 @@
 import "server-only";
 
-import { headers } from "next/headers";
+import { isAPIError } from "better-auth/api";
 import { createMiddleware, createSafeActionClient } from "next-safe-action";
 import z from "zod";
 
 import { ErrorMessaage } from "~/constants/error-message";
-import { auth } from "~/services/auth/better-auth";
+import { serverEnv } from "~/env/server";
+import { checkAuth } from "~/services/auth";
 
 import { reportError } from "./error-reporter";
-import { createUserRateLimit, generalRateLimit } from "./rate-limit";
+import { getIP } from "./get-ip";
+import {
+  authRoutesRateLimit,
+  createUserRateLimit,
+  generalRateLimit,
+} from "./rate-limit";
 
 const loggingMiddleware = createMiddleware().define(
   async ({ next, metadata }) => {
@@ -19,22 +25,12 @@ const loggingMiddleware = createMiddleware().define(
   }
 );
 
-const generalRatelimitMiddleware = createMiddleware().define(
-  async ({ next }) => {
-    const headersList = await headers();
-    const forwardedFor = headersList.get("x-forwarded-for")?.split(",")[0];
-    const ip = forwardedFor ?? "anonymous";
-    const { success } = await generalRateLimit.limit(ip);
-    if (!success) {
-      throw new Error(ErrorMessaage.rateLimit.tooManyRequest);
-    }
-    return await next();
-  }
-);
-
 // Base client: error handling, logging, metadata
 export const actionClient = createSafeActionClient({
   handleServerError(e) {
+    if (isAPIError(e)) {
+      return e.message;
+    }
     reportError(e);
     return ErrorMessaage.server.internal;
   },
@@ -47,31 +43,62 @@ export const actionClient = createSafeActionClient({
   defaultValidationErrorsShape: "flattened",
 }).use(loggingMiddleware);
 
-// Action client with rate limit middleware
-export const rateLimitActionClient = actionClient.use(
-  generalRatelimitMiddleware
+/** Action client with rate limit configured */
+export const actionClientWithRateLimit = actionClient.use(
+  createMiddleware().define(async ({ next }) => {
+    if (serverEnv.RATE_LIMIT_ENABLED) {
+      const ip = await getIP();
+      const { success } = await generalRateLimit.limit(ip);
+      if (!success) {
+        throw new Error(ErrorMessaage.rateLimit.tooManyRequest);
+      }
+      return await next();
+    }
+    return await next();
+  })
 );
 
-// Authenticated client: requires valid session
-export const authActionClient = actionClient.use(async ({ next, metadata }) => {
-  const session = await auth.api.getSession();
-  if (!session?.user) {
-    throw new Error(ErrorMessaage.auth.unauthorized);
-  }
-  const { success } = await createUserRateLimit(session.user.id).limit(
-    metadata.actionName
-  );
-  if (!success) {
-    throw new Error(ErrorMessaage.rateLimit.tooManyRequest);
-  }
-  return next({ ctx: { session } });
-});
+/** Action client for auth routes with rate limit configured */
+export const authRoutesActionClient = actionClient.use(
+  createMiddleware().define(async ({ next }) => {
+    if (serverEnv.RATE_LIMIT_ENABLED) {
+      const ip = await getIP();
+      const { success } = await authRoutesRateLimit.limit(ip);
+      if (!success) {
+        throw new Error(ErrorMessaage.rateLimit.tooManyRequest);
+      }
+      return await next();
+    }
+    return await next();
+  })
+);
 
-// Admin client: requires admin role
-export const adminActionClient = authActionClient.use(async ({ next, ctx }) => {
-  // ctx.user is available here (typed!) from the auth middleware
-  if (ctx.session.user.role !== "admin") {
-    throw new Error(ErrorMessaage.auth.forbidden);
+/** Authenticated client: requires valid session */
+export const authnActionClient = actionClient.use(
+  async ({ next, metadata }) => {
+    const auth = await checkAuth();
+    if (!auth?.user) {
+      throw new Error(ErrorMessaage.auth.unauthorized);
+    }
+    if (serverEnv.RATE_LIMIT_ENABLED) {
+      const { success } = await createUserRateLimit(auth.user.id).limit(
+        metadata.actionName
+      );
+      if (!success) {
+        throw new Error(ErrorMessaage.rateLimit.tooManyRequest);
+      }
+    }
+    return next({ ctx: { user: auth.user } });
   }
-  return next({ ctx: { isAdmin: true } });
-});
+);
+
+/** Admin client: requires admin role */
+export const adminActionClient = authnActionClient.use(
+  async ({ next, ctx }) => {
+    // ctx.user is available here (typed!) from the auth middleware
+    if (ctx.user.role !== "admin") {
+      throw new Error(ErrorMessaage.auth.forbidden);
+    }
+    return next({ ctx: { isAdmin: true } });
+  }
+);

@@ -6,7 +6,8 @@ import {
   AUTH_ROUTES,
   CALLBACK_QUERY_NAME,
 } from "./constants/auth";
-import { authRoutesRateLimit, generalRateLimit } from "./lib/rate-limit";
+import { serverEnv } from "./env/server";
+import { generalRateLimit } from "./lib/rate-limit";
 
 const authRoutes: string[] = Object.values(AUTH_ROUTES);
 const protectedUrl = ["/dashboard"];
@@ -19,25 +20,26 @@ export async function proxy(request: NextRequest) {
   const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0];
   // @ts-expect-error - request.ip is available on Vercel/Node runtimes
   const ip = request.ip ?? forwardedFor ?? "anonymous";
-  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
-  const ratelimit = isAuthRoute ? authRoutesRateLimit : generalRateLimit;
 
-  try {
-    const { success, limit, remaining, reset } = await ratelimit.limit(ip);
-    if (!success) {
-      return new NextResponse("Too Many Requests, Please try again later.", {
-        status: 429,
-        headers: {
-          "X-RateLimit-Limit": limit.toString(),
-          "X-RateLimit-Remaining": remaining.toString(),
-          "X-RateLimit-Reset": reset.toString(),
-          "Retry-After": Math.ceil((reset - Date.now()) / 1000).toString(),
-        },
-      });
+  if (serverEnv.RATE_LIMIT_ENABLED) {
+    try {
+      const { success, limit, remaining, reset } =
+        await generalRateLimit.limit(ip);
+      if (!success) {
+        return new NextResponse("Too Many Requests, Please try again later.", {
+          status: 429,
+          headers: {
+            "X-RateLimit-Limit": limit.toString(),
+            "X-RateLimit-Remaining": remaining.toString(),
+            "X-RateLimit-Reset": reset.toString(),
+            "Retry-After": Math.ceil((reset - Date.now()) / 1000).toString(),
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Rate limit check failed, blocking request:", error);
+      return new NextResponse("Service Unavailable", { status: 503 });
     }
-  } catch (error) {
-    console.error("Rate limit check failed, blocking request:", error);
-    return new NextResponse("Service Unavailable", { status: 503 });
   }
 
   const headers = new Headers(request.headers);
