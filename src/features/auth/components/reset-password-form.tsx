@@ -23,8 +23,8 @@ import {
   InputOTPSlot,
 } from "~/components/ui/input-otp";
 import { AUTH_ROUTES } from "~/constants/auth";
-import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
+import { mapToFormError } from "~/lib/utils/form";
 
 import { useResetPassword } from "../hooks/use-reset-password";
 import { resetPasswordSchema } from "../schemas";
@@ -124,9 +124,7 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
                           </InputOTPGroup>
                         </InputOTPGroup>
                       </InputOTP>
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
+                      <FieldError errors={field.state.meta.errors} />
                     </Field>
                   );
                 }}
@@ -150,9 +148,7 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
                         type="password"
                         value={field.state.value}
                       />
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
+                      <FieldError errors={field.state.meta.errors} />
                       <FieldDescription>
                         Must be at least 8 characters long.
                       </FieldDescription>
@@ -181,9 +177,7 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
                         type="password"
                         value={field.state.value}
                       />
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
+                      <FieldError errors={field.state.meta.errors} />
                     </Field>
                   );
                 }}

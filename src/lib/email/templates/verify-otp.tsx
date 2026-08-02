@@ -1,3 +1,6 @@
+// @ts-expect-error
+// biome-ignore lint/correctness/noUnusedImports: explain
+import React from "react";
 import {
   Body,
   Container,
@@ -10,10 +13,7 @@ import {
   Section,
   Tailwind,
   Text,
-} from "@react-email/components";
-// @ts-expect-error
-// biome-ignore lint/correctness/noUnusedImports: explain
-import React from "react";
+} from "react-email";
 
 type Props = {
   appName: string;
@@ -36,7 +36,7 @@ const VerifyOTPEmail = ({
     <Preview>{code} is your verfication code</Preview>
     <Tailwind>
       <Body className="bg-gray-100 p-6 font-sans text-primary-foreground">
-        <Container className="mx-auto max-w-[600px] rounded bg-white p-8">
+        <Container className="mx-auto max-w-150 rounded bg-white p-8">
           <Section className="mb-10">
             <Img
               alt="logo"

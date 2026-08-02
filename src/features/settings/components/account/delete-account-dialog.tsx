@@ -42,10 +42,10 @@ export const DeleteAccountDialog = () => {
       password: "123456",
     },
     validators: { onSubmit: schema },
-    onSubmit: async ({ value }) => handleDelete(value.password),
+    onSubmit: ({ value }) => handleDelete(value.password),
   });
 
-  const handleDelete = async (password: string) => {
+  const handleDelete = (password: string) => {
     if (!auth?.session?.token) {
       return;
     }
@@ -107,9 +107,7 @@ export const DeleteAccountDialog = () => {
                       type="password"
                       value={field.state.value}
                     />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
+                    <FieldError errors={field.state.meta.errors} />
                   </Field>
                 );
               }}

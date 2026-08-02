@@ -80,7 +80,7 @@ export const NotificationSettings = () => {
                     onValueChange={field.handleChange}
                     value={field.state.value}
                   >
-                    <Field data-invalid orientation="horizontal">
+                    <Field data-invalid={isInvalid} orientation="horizontal">
                       <RadioGroupItem
                         aria-invalid
                         id="invalid-email"
@@ -93,7 +93,7 @@ export const NotificationSettings = () => {
                         Email only
                       </FieldLabel>
                     </Field>
-                    <Field data-invalid orientation="horizontal">
+                    <Field data-invalid={isInvalid} orientation="horizontal">
                       <RadioGroupItem
                         aria-invalid
                         id="invalid-sms"
@@ -103,7 +103,7 @@ export const NotificationSettings = () => {
                         SMS only
                       </FieldLabel>
                     </Field>
-                    <Field data-invalid orientation="horizontal">
+                    <Field data-invalid={isInvalid} orientation="horizontal">
                       <RadioGroupItem
                         aria-invalid
                         id="invalid-both"
@@ -117,7 +117,7 @@ export const NotificationSettings = () => {
                       </FieldLabel>
                     </Field>
                   </RadioGroup>
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  <FieldError errors={field.state.meta.errors} />
                 </FieldSet>
               );
             }}

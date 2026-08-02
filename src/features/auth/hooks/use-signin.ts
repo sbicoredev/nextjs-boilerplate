@@ -9,7 +9,7 @@ import type { SignInPayload } from "../schemas";
 export const useSignIn = () => {
   const searchParams = useSearchParams();
   return useMutation({
-    mutationFn: async (input: SignInPayload) => {
+    mutationFn: (input: SignInPayload) => {
       const rediretTo = searchParams.get(CALLBACK_QUERY_NAME) ?? undefined;
       return signInWithPasswordAction.bind(null, rediretTo)(input);
     },

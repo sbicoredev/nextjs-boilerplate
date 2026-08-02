@@ -1,6 +1,6 @@
-import { render } from "@react-email/components";
 import nodemailer from "nodemailer";
 import type { JSX } from "react";
+import { render } from "react-email";
 
 import { serverEnv } from "~/env/server";
 

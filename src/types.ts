@@ -1,40 +1,7 @@
 import type { ROLES } from "./constants/auth";
-import type {
-  PAGE_DIRECTION,
-  PAGE_LAYOUT,
-  SIDEBAR_COLLAPSIBLE,
-  SIDEBAR_SIDE,
-  SIDEBAR_VARIANT,
-  THEME_MODE,
-  THEME_PRESETS,
-} from "./constants/theme";
 import type { table } from "./db/drizzle";
-import type { fontRegistry } from "./lib/fonts";
 
 declare global {
-  type ThemeMode = (typeof THEME_MODE)[number];
-  type ThemePreset = (typeof THEME_PRESETS)[number];
-  type FontKey = keyof typeof fontRegistry;
-  type PageDirection = (typeof PAGE_DIRECTION)[number];
-  type PageLayout = (typeof PAGE_LAYOUT)[number];
-  type SidebarSide = (typeof SIDEBAR_SIDE)[number];
-  type SidebarVariant = (typeof SIDEBAR_VARIANT)[number];
-  type SidebarCollapsible = (typeof SIDEBAR_COLLAPSIBLE)[number];
-  type LocaleConfig = { code: string; name: string; dir: PageDirection };
-
-  type ThemePreference = {
-    isCustomizerOpen: boolean;
-    themeMode: ThemeMode;
-    themePreset: ThemePreset;
-    fontPrimary: FontKey;
-    fontHeading: FontKey;
-    pageLayout: PageLayout;
-    pageDirection: PageDirection;
-    sidebarSide: SidebarSide;
-    sidebarVariant: SidebarVariant;
-    sidebarCollapsible: SidebarCollapsible;
-  };
-
   type UserRole = (typeof ROLES)[number];
 
   interface AuthUser {

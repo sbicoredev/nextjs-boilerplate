@@ -3,13 +3,13 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { admin, emailOTP } from "better-auth/plugins";
 
+import { authConfig } from "~/configs/auth-config";
 import { siteConfig } from "~/configs/site-config";
 import { db } from "~/db/drizzle";
 import { serverEnv } from "~/env/server";
 
 import { sendEmail } from "../email/send-email";
 import VerifyOTPEmail from "../email/templates/verify-otp";
-import { authConfig } from "./config";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, { provider: "pg", usePlural: false }),

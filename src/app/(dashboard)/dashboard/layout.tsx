@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
 
 import { AppBreadcrumbs } from "~/components/app-breadcrumb";
 import { DashboardSidebar } from "~/components/dashboard-sidebar";
 import { UserMenu } from "~/components/dashboard-sidebar/user-menu";
-import { LocaleSwitcher } from "~/components/locale-switcher";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
@@ -14,17 +13,18 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar";
 import { UserAvatar } from "~/components/user-avatar";
+import { siteConfig } from "~/configs/site-config";
+import { AUTH_ROUTES } from "~/constants/auth";
 import { NotificationTrigger } from "~/features/notification/components/notification-trigger";
 import { CustomizerTrigger } from "~/features/theme/components/customizer-trigger";
 import { ThemeCustomizer } from "~/features/theme/components/theme-customizer";
 import { getThemePreference } from "~/features/theme/utils";
+import { getCurrentSession } from "~/lib/auth/get-current-session";
 import { constructMetadata } from "~/lib/construct-metadata";
-import { authenticate } from "~/services/auth";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("metadata");
   return constructMetadata({
-    title: `Dashboard | ${t("title")}`,
+    title: `Dashboard | ${siteConfig.name}`,
   });
 }
 
@@ -33,7 +33,10 @@ type Props = {
 };
 
 export default async function DashboardLayout({ children }: Props) {
-  const { user } = await authenticate();
+  const auth = await getCurrentSession();
+  if (!auth?.user) {
+    return redirect(AUTH_ROUTES.signIn);
+  }
   const preference = await getThemePreference();
 
   return (
@@ -50,7 +53,6 @@ export default async function DashboardLayout({ children }: Props) {
             <Separator className="me-2" orientation="vertical" />
             <AppBreadcrumbs />
             <div className="ms-auto inline-flex items-center gap-2">
-              <LocaleSwitcher size="icon-sm" variant="ghost" />
               <NotificationTrigger size="icon-sm" variant="ghost" />
               <ThemeToggle size="icon-sm" variant="ghost" />
               <CustomizerTrigger size="icon-sm" variant="ghost" />
@@ -64,10 +66,10 @@ export default async function DashboardLayout({ children }: Props) {
                     suppressHydrationWarning
                     variant="ghost"
                   >
-                    <UserAvatar alt={user.name} src={user.image} />
+                    <UserAvatar alt={auth.user.name} src={auth.user.image} />
                   </Button>
                 }
-                user={user}
+                user={auth.user}
               />
             </div>
           </div>

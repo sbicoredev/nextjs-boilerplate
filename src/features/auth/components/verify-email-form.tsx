@@ -26,8 +26,8 @@ import {
   InputOTPSlot,
 } from "~/components/ui/input-otp";
 import { AUTH_ROUTES } from "~/constants/auth";
-import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
+import { mapToFormError } from "~/lib/utils/form";
 
 import { useSendVerificationOTP } from "../hooks/use-send-verification-otp";
 import { useVerifyEmail } from "../hooks/use-verify-email";
@@ -129,9 +129,7 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
                           <InputOTPSlot index={5} />
                         </InputOTPGroup>
                       </InputOTP>
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
+                      <FieldError errors={field.state.meta.errors} />
                     </Field>
                   );
                 }}

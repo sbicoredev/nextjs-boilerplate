@@ -1,3 +1,5 @@
+import type { ThemePreference } from "~/contexts/theme-context";
+
 export const DASHBOARD_THEME_COOKIE_NAME = "dashboard-theme";
 
 export const THEME_MODE = ["system", "dark", "light"] as const;

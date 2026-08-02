@@ -9,7 +9,7 @@ import { AUTH_ROUTES } from "~/constants/auth";
 import { auth } from "./better-auth";
 import { mapAuthSession, mapAuthUser } from "./utils";
 
-export const checkAuth = cache(async () => {
+export const getCurrentSession = cache(async () => {
   const result = await auth.api.getSession({ headers: await headers() });
   if (!result) {
     return null;

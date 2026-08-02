@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { toast } from "~/components/ui/toast";
-import { authClient } from "~/services/auth/auth-client";
+import { authClient } from "~/lib/auth/auth-client";
 
 type Input = {
   image?: string;

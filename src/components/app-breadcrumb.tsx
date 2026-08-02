@@ -42,7 +42,7 @@ export const AppBreadcrumbs = (props: {
           const label = path in values ? values[path] : unslugify(path);
 
           return (
-            <Fragment key={index}>
+            <Fragment key={path}>
               <BreadcrumbItem className={"capitalize lg:text-xs"}>
                 {index < visiblePaths.length - 1 ? (
                   <BreadcrumbLink
@@ -58,12 +58,12 @@ export const AppBreadcrumbs = (props: {
                 )}
               </BreadcrumbItem>
 
-              {index === 0 && showEllipsis && (
+              {index === 0 && showEllipsis ? (
                 <>
                   <BreadcrumbSeparator />
                   {Ellipsis}
                 </>
-              )}
+              ) : null}
 
               {index !== visiblePaths.length - 1 && <BreadcrumbSeparator />}
             </Fragment>

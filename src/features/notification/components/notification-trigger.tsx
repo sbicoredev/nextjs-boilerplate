@@ -30,11 +30,11 @@ export const NotificationTrigger = ({ variant, size }: Props) => {
         render={
           <Button className="relative" size={size} variant={variant}>
             <BellIcon />
-            {count > 0 && (
+            {count > 0 ? (
               <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 font-medium text-destructive-foreground text-xs leading-0">
                 {count > 9 ? "9+" : count}
               </span>
-            )}
+            ) : null}
             <span className="sr-only">Notifications</span>
           </Button>
         }

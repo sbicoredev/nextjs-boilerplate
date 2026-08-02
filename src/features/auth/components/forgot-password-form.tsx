@@ -18,8 +18,8 @@ import {
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { AUTH_ROUTES } from "~/constants/auth";
-import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
+import { mapToFormError } from "~/lib/utils/form";
 
 import { useForgotPassword } from "../hooks/use-forgot-password";
 import { forgotPasswordSchema } from "../schemas";
@@ -98,9 +98,7 @@ export const ForgotPasswordForm = ({
                         type="email"
                         value={field.state.value}
                       />
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
+                      <FieldError errors={field.state.meta.errors} />
                     </Field>
                   );
                 }}

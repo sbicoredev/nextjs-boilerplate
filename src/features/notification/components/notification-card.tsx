@@ -84,14 +84,14 @@ export const NotificationCard = ({
               >
                 {title}
               </h3>
-              {isUnread && (
+              {isUnread ? (
                 <div className="size-2 shrink-0 rounded-full bg-sky-500" />
-              )}
+              ) : null}
             </div>
             <p className="text-muted-foreground text-xs">{body}</p>
           </div>
 
-          {isUnread && (
+          {isUnread ? (
             <button
               aria-label="Mark as read"
               className={cn(
@@ -103,11 +103,11 @@ export const NotificationCard = ({
             >
               <CheckIcon size={16} />
             </button>
-          )}
+          ) : null}
         </div>
 
         <div className="mt-3 flex items-end justify-between">
-          {actions.length > 0 && (
+          {actions.length > 0 ? (
             <div className="flex flex-wrap items-center gap-2">
               {actions.map((action) => {
                 const isLoading = loadingActionId === action.id;
@@ -146,15 +146,15 @@ export const NotificationCard = ({
                 );
               })}
             </div>
-          )}
-          {createdAt && (
+          ) : null}
+          {createdAt ? (
             <span
               className="inline-block text-[11px] text-muted-foreground/60"
               suppressHydrationWarning
             >
               {formatDate(createdAt)}
             </span>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

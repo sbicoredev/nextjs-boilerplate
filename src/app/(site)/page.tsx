@@ -6,11 +6,11 @@ import { Header } from "~/components/sections/header";
 import { Button } from "~/components/ui/button";
 import { siteConfig } from "~/configs/site-config";
 import { AUTH_ROUTES } from "~/constants/auth";
+import { getCurrentSession } from "~/lib/auth/get-current-session";
 import { cn } from "~/lib/utils";
-import { checkAuth } from "~/services/auth";
 
 export default async function HomePage() {
-  const auth = await checkAuth();
+  const auth = await getCurrentSession();
   return (
     <div className="relative flex h-full min-h-screen w-full flex-col bg-card">
       <Header />
@@ -25,6 +25,7 @@ export default async function HomePage() {
             <span className="flex items-center font-medium text-primary/60">
               Introducing
               <svg
+                aria-label="Site Logo"
                 className="mx-1 h-3.5 w-3.5 text-primary"
                 strokeLinejoin="round"
                 viewBox="0 0 16 16"

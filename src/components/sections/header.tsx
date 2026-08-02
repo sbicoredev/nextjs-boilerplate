@@ -61,6 +61,7 @@ export const Header = () => {
               variant="link"
             >
               <svg
+                aria-label="Github Icon"
                 className="size-6"
                 fill="currentColor"
                 viewBox="0 0 24 24"
@@ -90,6 +91,7 @@ export const Header = () => {
             variant="link"
           >
             <svg
+              aria-label="X Icon"
               className="size-4 text-primary"
               strokeLinejoin="round"
               viewBox="0 0 16 16"
@@ -110,7 +112,7 @@ export const Header = () => {
           >
             {user ? "Dashboard" : "Get Started"}
           </Button>
-          {user && (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <UserAvatar alt={user.name} src={user.image} />
@@ -161,7 +163,7 @@ export const Header = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          )}
+          ) : null}
         </div>
       </div>
     </header>

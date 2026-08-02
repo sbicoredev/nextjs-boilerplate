@@ -16,7 +16,7 @@ export const ButtonSpinner = ({
   ...props
 }: Props) => (
   <Button disabled={props.disabled ?? spin} type={type} {...props}>
-    {spin && <Spinner data-icon="inline-start" />}
+    {spin ? <Spinner data-icon="inline-start" /> : null}
     {children}
   </Button>
 );

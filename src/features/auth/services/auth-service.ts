@@ -11,7 +11,7 @@ import type {
   SignUpPayload,
   VerifyEmailPayload,
 } from "~/features/auth/schemas";
-import { auth } from "~/services/auth/better-auth";
+import { auth } from "~/lib/auth/better-auth";
 
 export async function signInWithPassword(
   input: SignInPayload & { rememberMe?: boolean }

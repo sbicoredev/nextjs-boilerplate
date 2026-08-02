@@ -1,6 +1,5 @@
 import { BellIcon, LockIcon, WrenchIcon } from "lucide-react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
 
 import { Container } from "~/components/container";
 import { SettingsNav } from "~/features/settings/components/settings-nav";
@@ -23,14 +22,9 @@ const settingsNavItem = [
   },
 ];
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("metadata");
-
-  return {
-    title: `Settings - Dashboard | ${t("title")}`,
-    description: t("desc"),
-  };
-}
+export const metadata: Metadata = {
+  title: "Settings",
+};
 
 type Props = {
   children: React.ReactNode;

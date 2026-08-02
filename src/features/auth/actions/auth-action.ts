@@ -13,7 +13,7 @@ import {
   verifyEmailSchema,
 } from "~/features/auth/schemas";
 import { authRoutesActionClient } from "~/lib/safe-action";
-import { getSafeRedirectPath } from "~/lib/safe-redirect";
+import { getSafeRedirectPath } from "~/lib/utils/safe-redirect";
 
 import {
   requestPasswordResetOtp,

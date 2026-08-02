@@ -75,6 +75,7 @@ export const Footer = () => (
           target="_blank"
         >
           <svg
+            aria-label="X Icon"
             className="size-6"
             height="1em"
             viewBox="0 0 24 24"

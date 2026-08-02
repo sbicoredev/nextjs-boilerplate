@@ -35,11 +35,16 @@ import {
   THEME_PRESETS,
 } from "~/constants/theme";
 import {
+  type FontKey,
+  type PageDirection,
+  type PageLayout,
+  type ThemeMode,
+  type ThemePreset,
   useThemeCustomizer,
   useThemeCustomizerStore,
 } from "~/contexts/theme-context";
-import { toTitleCase } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
+import { toTitleCase } from "~/lib/utils/string";
 
 export function ThemeCustomizer() {
   const { allowedFonts } = useThemeCustomizer();
@@ -75,6 +80,9 @@ export function ThemeCustomizer() {
       })),
     []
   );
+  const handleThemeModeChange = (v: ThemeMode | null) => {
+    setThemeMode(v ?? "system");
+  };
 
   const handlePresetChange = (v: ThemePreset | null) => {
     document.documentElement.setAttribute("data-theme-preset", v ?? "");
@@ -151,7 +159,7 @@ export function ThemeCustomizer() {
                   label: toTitleCase(v),
                   value: v,
                 }))}
-                onValueChange={(v) => setThemeMode(v as ThemeMode)}
+                onValueChange={handleThemeModeChange}
                 value={themeMode}
               >
                 <SelectTrigger className="w-40" id="theme-mode">

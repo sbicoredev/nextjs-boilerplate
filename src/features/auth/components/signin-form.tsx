@@ -1,3 +1,4 @@
+// biome-ignore-all lint/a11y/noSvgWithoutTitle: explain
 "use client";
 
 import { useForm } from "@tanstack/react-form";
@@ -20,8 +21,8 @@ import {
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { AUTH_ROUTES } from "~/constants/auth";
-import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
+import { mapToFormError } from "~/lib/utils/form";
 
 import { useSignIn } from "../hooks/use-signin";
 import { signInSchema } from "../schemas";

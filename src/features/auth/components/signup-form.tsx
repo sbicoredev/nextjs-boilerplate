@@ -1,3 +1,4 @@
+// biome-ignore-all lint/a11y/noSvgWithoutTitle: explain
 "use client";
 
 import { useForm } from "@tanstack/react-form";
@@ -20,8 +21,8 @@ import {
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { AUTH_ROUTES } from "~/constants/auth";
-import { mapToFormError } from "~/lib/helpers";
 import { cn } from "~/lib/utils";
+import { mapToFormError } from "~/lib/utils/form";
 
 import { useSignUp } from "../hooks/use-signup";
 import { signUpSchema } from "../schemas";
@@ -104,9 +105,7 @@ export const SignUpForm = ({
                         required
                         value={field.state.value}
                       />
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
+                      <FieldError errors={field.state.meta.errors} />
                     </Field>
                   );
                 }}
@@ -130,9 +129,7 @@ export const SignUpForm = ({
                         type="email"
                         value={field.state.value}
                       />
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
+                      <FieldError errors={field.state.meta.errors} />
                       <FieldDescription>
                         We&apos;ll use this to contact you. We will not share
                         your email with anyone else.
@@ -162,9 +159,7 @@ export const SignUpForm = ({
                             type="password"
                             value={field.state.value}
                           />
-                          {isInvalid && (
-                            <FieldError errors={field.state.meta.errors} />
-                          )}
+                          <FieldError errors={field.state.meta.errors} />
                         </Field>
                       );
                     }}
@@ -190,9 +185,7 @@ export const SignUpForm = ({
                             type="password"
                             value={field.state.value}
                           />
-                          {isInvalid && (
-                            <FieldError errors={field.state.meta.errors} />
-                          )}
+                          <FieldError errors={field.state.meta.errors} />
                         </Field>
                       );
                     }}

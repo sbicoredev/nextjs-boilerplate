@@ -25,13 +25,11 @@
     "rules": {
       "style": {
         "noNestedTernary": "off",
-        "useConsistentTypeDefinitions": "off",
-        "useFilenamingConvention": "off"
+        "useConsistentTypeDefinitions": "off"
       },
       "performance": {
         "noBarrelFile": "warn",
         "noJsxPropsBind": "warn",
-        "useTopLevelRegex": "warn",
         "noNamespaceImport": "warn"
       },
       "complexity": {
@@ -39,15 +37,13 @@
         "noForEach": "off"
       },
       "suspicious": {
-        "useAwait": "warn",
         "noArrayIndexKey": "warn",
         "noDocumentCookie": "warn",
-        "noEmptyBlockStatements": "warn",
         "noLeakedRender": "warn",
         "noShadow": "warn"
       },
       "correctness": {
-        "useExhaustiveDependencies": "off"
+        "useExhaustiveDependencies": "warn"
       },
       "nursery": {
         "useSortedClasses": {
@@ -60,7 +56,6 @@
       },
       "a11y": {
         "noLabelWithoutControl": "off",
-        "noSvgWithoutTitle": "off",
         "noNoninteractiveElementInteractions": "warn",
         "useAriaPropsForRole": "warn",
         "useFocusableInteractive": "warn",

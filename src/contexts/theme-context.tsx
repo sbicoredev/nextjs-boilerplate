@@ -12,8 +12,38 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import {
   DASHBOARD_THEME_COOKIE_NAME,
   DEFAULT_THEME_PREFERENCE,
+  type PAGE_DIRECTION,
+  type PAGE_LAYOUT,
+  type SIDEBAR_COLLAPSIBLE,
+  type SIDEBAR_SIDE,
+  type SIDEBAR_VARIANT,
+  type THEME_MODE,
+  type THEME_PRESETS,
 } from "~/constants/theme";
+import type { fontRegistry } from "~/lib/fonts";
 import { createCookieStorage } from "~/lib/zustand-cookie-storage";
+
+export type ThemeMode = (typeof THEME_MODE)[number];
+export type ThemePreset = (typeof THEME_PRESETS)[number];
+export type FontKey = keyof typeof fontRegistry;
+export type PageDirection = (typeof PAGE_DIRECTION)[number];
+export type PageLayout = (typeof PAGE_LAYOUT)[number];
+export type SidebarSide = (typeof SIDEBAR_SIDE)[number];
+export type SidebarVariant = (typeof SIDEBAR_VARIANT)[number];
+export type SidebarCollapsible = (typeof SIDEBAR_COLLAPSIBLE)[number];
+
+export type ThemePreference = {
+  isCustomizerOpen: boolean;
+  themeMode: ThemeMode;
+  themePreset: ThemePreset;
+  fontPrimary: FontKey;
+  fontHeading: FontKey;
+  pageLayout: PageLayout;
+  pageDirection: PageDirection;
+  sidebarSide: SidebarSide;
+  sidebarVariant: SidebarVariant;
+  sidebarCollapsible: SidebarCollapsible;
+};
 
 type ThemeCustomizerStore = ThemePreference & {
   _hydrated: boolean;

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { authClient } from "~/services/auth/auth-client";
-import { mapAuthSession, mapAuthUser } from "~/services/auth/utils";
+import { authClient } from "~/lib/auth/auth-client";
+import { mapAuthSession, mapAuthUser } from "~/lib/auth/utils";
 
 export const useSession = () =>
   useQuery({

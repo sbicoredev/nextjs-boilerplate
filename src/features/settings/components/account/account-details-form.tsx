@@ -92,7 +92,7 @@ export const AccountDetailsForm = () => {
                   required
                   value={field.state.value}
                 />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                <FieldError errors={field.state.meta.errors} />
               </Field>
             );
           }}

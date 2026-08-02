@@ -6,8 +6,8 @@ import z from "zod";
 
 import { ErrorMessaage } from "~/constants/error-message";
 import { serverEnv } from "~/env/server";
-import { checkAuth } from "~/services/auth";
 
+import { getCurrentSession } from "./auth/get-current-session";
 import { reportError } from "./error-reporter";
 import { getIP } from "./get-ip";
 import {
@@ -76,7 +76,7 @@ export const authRoutesActionClient = actionClient.use(
 /** Authenticated client: requires valid session */
 export const authnActionClient = actionClient.use(
   async ({ next, metadata }) => {
-    const auth = await checkAuth();
+    const auth = await getCurrentSession();
     if (!auth?.user) {
       throw new Error(ErrorMessaage.auth.unauthorized);
     }
@@ -93,12 +93,10 @@ export const authnActionClient = actionClient.use(
 );
 
 /** Admin client: requires admin role */
-export const adminActionClient = authnActionClient.use(
-  async ({ next, ctx }) => {
-    // ctx.user is available here (typed!) from the auth middleware
-    if (ctx.user.role !== "admin") {
-      throw new Error(ErrorMessaage.auth.forbidden);
-    }
-    return next({ ctx: { isAdmin: true } });
+export const adminActionClient = authnActionClient.use(({ next, ctx }) => {
+  // ctx.user is available here (typed!) from the auth middleware
+  if (ctx.user.role !== "admin") {
+    throw new Error(ErrorMessaage.auth.forbidden);
   }
-);
+  return next({ ctx: { isAdmin: true } });
+});
