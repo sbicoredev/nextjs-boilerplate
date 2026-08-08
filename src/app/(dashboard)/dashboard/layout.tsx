@@ -15,12 +15,14 @@ import {
 import { UserAvatar } from "~/components/user-avatar";
 import { siteConfig } from "~/configs/site-config";
 import { AUTH_ROUTES } from "~/constants/auth";
-import { NotificationTrigger } from "~/features/notification/components/notification-trigger";
-import { CustomizerTrigger } from "~/features/theme/components/customizer-trigger";
-import { ThemeCustomizer } from "~/features/theme/components/theme-customizer";
-import { getThemePreference } from "~/features/theme/utils";
-import { getCurrentSession } from "~/lib/auth/get-current-session";
+import { NotificationTrigger } from "~/features/notification";
+import {
+  CustomizerTrigger,
+  getThemePreference,
+  ThemeCustomizer,
+} from "~/features/theme";
 import { constructMetadata } from "~/lib/construct-metadata";
+import { getCurrentSession } from "~/server/auth/get-current-session";
 
 export async function generateMetadata(): Promise<Metadata> {
   return constructMetadata({

@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { AUTH_ROUTES, EMAIL_OTP_COOKIE } from "~/constants/auth";
-import { ResetPasswordForm } from "~/features/auth/components/reset-password-form";
+import { ResetPasswordForm } from "~/features/auth";
 
 export const metadata: Metadata = {
   title: "Reset password",

@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { AUTH_ROUTES, SIGNUP_EMAIL_COOKIE } from "~/constants/auth";
-import { VerifyEmailForm } from "~/features/auth/components/verify-email-form";
+import { VerifyEmailForm } from "~/features/auth";
 
 export const metadata: Metadata = {
   title: "Verify email",

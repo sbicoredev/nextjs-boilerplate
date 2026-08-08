@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { SecuritySettings } from "~/features/settings/components/security";
+import { SecuritySettings } from "~/features/settings";
 
 export const metadata: Metadata = {
   title: "Security",

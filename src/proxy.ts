@@ -5,9 +5,10 @@ import {
   AUTH_REDIRECT_PATHS,
   AUTH_ROUTES,
   CALLBACK_QUERY_NAME,
-} from "./constants/auth";
-import { serverEnv } from "./env/server";
-import { generalRateLimit } from "./lib/rate-limit";
+} from "~/constants/auth";
+import { serverEnv } from "~/env/server";
+
+import { generalRateLimit } from "./server/rate-limit/policies";
 
 const authRoutes: string[] = Object.values(AUTH_ROUTES);
 const protectedUrl = ["/dashboard"];

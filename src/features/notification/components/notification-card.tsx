@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 import { ButtonSpinner } from "~/components/button-spinner";
 import { cn } from "~/lib/utils";
-import { useNotificationStore } from "~/store/notification-store";
+import { useNotificationStore } from "~/stores/notification-store";
 
 export type NotificationStatus = "unread" | "read" | "archived";
 export type ActionType = "redirect" | "api_call" | "workflow" | "modal";

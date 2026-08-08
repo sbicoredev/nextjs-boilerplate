@@ -1,5 +1,5 @@
 import { ThemeCustomizerContext } from "~/contexts/theme-context";
-import { getThemePreference } from "~/features/theme/utils";
+import { getThemePreference } from "~/features/theme";
 import { fontRegistry, fontVars } from "~/lib/fonts";
 
 export default async function DashboardGroupLayout({

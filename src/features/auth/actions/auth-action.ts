@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import z from "zod";
 
 import { AUTH_REDIRECT_PATHS } from "~/constants/auth";
+import { authRoutesActionClient } from "~/server/actions/client";
+import { getSafeRedirectPath } from "~/utils/safe-redirect";
+
 import {
   forgotPasswordSchema,
   resetPasswordSchema,
@@ -11,10 +14,7 @@ import {
   signInSchema,
   signUpSchema,
   verifyEmailSchema,
-} from "~/features/auth/schemas";
-import { authRoutesActionClient } from "~/lib/safe-action";
-import { getSafeRedirectPath } from "~/lib/utils/safe-redirect";
-
+} from "../schemas";
 import {
   requestPasswordResetOtp,
   resetPassword,
@@ -22,7 +22,7 @@ import {
   signInWithPassword,
   signUpWithPassword,
   verifyEmailOtp,
-} from "../services/auth-service";
+} from "../server/auth-service";
 
 export const signInWithPasswordAction = authRoutesActionClient
   .metadata({ actionName: "signInWithPasswordAction" })

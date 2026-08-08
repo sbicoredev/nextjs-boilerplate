@@ -5,11 +5,11 @@ import { headers } from "next/headers";
 import { Providers } from "~/components/providers";
 import { AuthContext } from "~/contexts/auth-context";
 import { ThemeCustomizerContext } from "~/contexts/theme-context";
-import { getThemePreference } from "~/features/theme/utils";
+import { getThemePreference } from "~/features/theme";
 import { constructMetadata } from "~/lib/construct-metadata";
+import { getCurrentSession } from "~/server/auth/get-current-session";
 
 import "../styles/globals.css";
-import { getCurrentSession } from "~/lib/auth/get-current-session";
 
 export async function generateMetadata(): Promise<Metadata> {
   return constructMetadata({
@@ -32,8 +32,8 @@ export default async function RootLayout({
   return (
     <AuthContext
       value={{
-        user: auth?.user ?? null,
-        session: auth?.session ?? null,
+        user: auth?.user || null,
+        session: auth?.session || null,
         needSignOut,
       }}
     >

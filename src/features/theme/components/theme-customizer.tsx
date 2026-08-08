@@ -44,7 +44,7 @@ import {
   useThemeCustomizerStore,
 } from "~/contexts/theme-context";
 import { cn } from "~/lib/utils";
-import { toTitleCase } from "~/lib/utils/string";
+import { toTitleCase } from "~/utils/string";
 
 export function ThemeCustomizer() {
   const { allowedFonts } = useThemeCustomizer();

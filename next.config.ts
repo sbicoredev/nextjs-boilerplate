@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
-import "./src/env/server";
-import "./src/env/client";
+import "./src/shared/env/server";
+import "./src/shared/env/client";
 
 const config: NextConfig = {
   output: "standalone",

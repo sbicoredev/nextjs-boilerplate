@@ -2,7 +2,7 @@ import { BellIcon, LockIcon, WrenchIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 import { Container } from "~/components/container";
-import { SettingsNav } from "~/features/settings/components/settings-nav";
+import { SettingsNav } from "~/features/settings";
 
 const settingsNavItem = [
   {

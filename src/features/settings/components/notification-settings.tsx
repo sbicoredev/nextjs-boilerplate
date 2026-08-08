@@ -17,11 +17,11 @@ import { Separator } from "~/components/ui/separator";
 import { toast } from "~/components/ui/toast";
 
 import {
-  type UpdateNotificationPayload,
+  type UpdateNotificationInput,
   updateNotificationSchema,
 } from "../schemas";
 
-const defaultValues: Partial<UpdateNotificationPayload> = {
+const defaultValues: Partial<UpdateNotificationInput> = {
   communication_emails: false,
   marketing_emails: false,
   social_emails: true,
@@ -35,7 +35,7 @@ export const NotificationSettings = () => {
     onSubmit: async ({ value }) => onSubmit(value),
   });
 
-  function onSubmit(data: Partial<UpdateNotificationPayload>) {
+  function onSubmit(data: Partial<UpdateNotificationInput>) {
     toast.add({
       type: "success",
       description: (

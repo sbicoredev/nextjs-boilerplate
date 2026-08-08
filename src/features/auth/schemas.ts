@@ -1,52 +1,44 @@
 import * as z from "zod";
 
-export const signInSchema = z.object({
-  email: z.email(),
-  password: z.string().min(8),
-});
-export type SignInPayload = z.infer<typeof signInSchema>;
+import {
+  confirmPasswordSchema,
+  emailValidator,
+  passwordValidator,
+} from "~/lib/validators/common";
 
-export const signUpSchema = z
-  .object({
-    name: z.string().min(3),
-    email: z.email(),
-    password: z.string().min(8),
-    confirmPassword: z.string().min(8),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-export type SignUpPayload = z.infer<typeof signUpSchema>;
+export const signInSchema = z.object({
+  email: emailValidator,
+  password: passwordValidator,
+});
+export type SignInInput = z.infer<typeof signInSchema>;
+
+export const signUpSchema = confirmPasswordSchema.extend({
+  name: z.string().min(3),
+  email: emailValidator,
+});
+export type SignUpInput = z.infer<typeof signUpSchema>;
 
 export const verifyEmailSchema = z.object({
   otp: z.string().min(6),
-  email: z.email(),
+  email: emailValidator,
 });
-export type VerifyEmailPayload = z.infer<typeof verifyEmailSchema>;
+export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
 
 export const sendVerificationOtpSchema = z.object({
-  email: z.email(),
   type: z.enum(["sign-in", "email-verification", "forget-password"]),
+  email: emailValidator,
 });
-export type SendVerificationOtpPayload = z.infer<
+export type SendVerificationOtpInput = z.infer<
   typeof sendVerificationOtpSchema
 >;
 
 export const forgotPasswordSchema = z.object({
-  email: z.email(),
+  email: emailValidator,
 });
-export type ForgotPasswordPayload = z.infer<typeof forgotPasswordSchema>;
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 
-export const resetPasswordSchema = z
-  .object({
-    otp: z.string(),
-    email: z.email(),
-    password: z.string().min(8),
-    confirmPassword: z.string().min(8),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-export type ResetPasswordPayload = z.infer<typeof resetPasswordSchema>;
+export const resetPasswordSchema = confirmPasswordSchema.extend({
+  otp: z.string(),
+  email: emailValidator,
+});
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;

@@ -11,7 +11,7 @@ import {
 } from "~/components/ui/popover";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Separator } from "~/components/ui/separator";
-import { useNotificationStore } from "~/store/notification-store";
+import { useNotificationStore } from "~/stores/notification-store";
 
 import { Notifications } from "./notifications";
 

@@ -24,7 +24,7 @@ import {
 } from "~/components/ui/input-otp";
 import { AUTH_ROUTES } from "~/constants/auth";
 import { cn } from "~/lib/utils";
-import { mapToFormError } from "~/lib/utils/form";
+import { mapToFormError } from "~/utils/form";
 
 import { useResetPassword } from "../hooks/use-reset-password";
 import { resetPasswordSchema } from "../schemas";

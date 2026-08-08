@@ -27,7 +27,7 @@ import {
 } from "~/components/ui/input-otp";
 import { AUTH_ROUTES } from "~/constants/auth";
 import { cn } from "~/lib/utils";
-import { mapToFormError } from "~/lib/utils/form";
+import { mapToFormError } from "~/utils/form";
 
 import { useSendVerificationOTP } from "../hooks/use-send-verification-otp";
 import { useVerifyEmail } from "../hooks/use-verify-email";

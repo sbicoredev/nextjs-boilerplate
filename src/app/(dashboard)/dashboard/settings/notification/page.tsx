@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { NotificationSettings } from "~/features/settings/components/notification-settings";
+import { NotificationSettings } from "~/features/settings";
 
 export const metadata: Metadata = {
   title: "Notification",

@@ -17,7 +17,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { useAuth } from "~/contexts/auth-context";
 
 import { useUpdateProfile } from "../../api/update-profile";
-import { type UpdateProfilePayload, updateProfileSchema } from "../../schemas";
+import { type UpdateProfileInput, updateProfileSchema } from "../../schemas";
 
 export const AccountDetailsForm = () => {
   const auth = useAuth();
@@ -33,7 +33,7 @@ export const AccountDetailsForm = () => {
     onSubmit: async ({ value }) => handleSubmit(value),
   });
 
-  const handleSubmit = (data: UpdateProfilePayload) => {
+  const handleSubmit = (data: UpdateProfileInput) => {
     updateProfile({
       name: data.name || undefined,
       image: data.image || undefined,

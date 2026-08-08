@@ -6,8 +6,8 @@ import { Header } from "~/components/sections/header";
 import { Button } from "~/components/ui/button";
 import { siteConfig } from "~/configs/site-config";
 import { AUTH_ROUTES } from "~/constants/auth";
-import { getCurrentSession } from "~/lib/auth/get-current-session";
 import { cn } from "~/lib/utils";
+import { getCurrentSession } from "~/server/auth/get-current-session";
 
 export default async function HomePage() {
   const auth = await getCurrentSession();

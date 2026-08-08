@@ -19,7 +19,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { AUTH_ROUTES } from "~/constants/auth";
 import { cn } from "~/lib/utils";
-import { mapToFormError } from "~/lib/utils/form";
+import { mapToFormError } from "~/utils/form";
 
 import { useForgotPassword } from "../hooks/use-forgot-password";
 import { forgotPasswordSchema } from "../schemas";

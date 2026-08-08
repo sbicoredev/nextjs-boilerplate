@@ -14,7 +14,7 @@ export const updateAppearanceSchema = z.object({
   theme: z.string(),
   font: z.string(),
 });
-export type UpdateAppearancePayload = z.infer<typeof updateAppearanceSchema>;
+export type UpdateAppearanceInput = z.infer<typeof updateAppearanceSchema>;
 
 export const updateNotificationSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {
@@ -26,15 +26,13 @@ export const updateNotificationSchema = z.object({
   marketing_emails: z.boolean().default(false).optional(),
   security_emails: z.boolean(),
 });
-export type UpdateNotificationPayload = z.infer<
-  typeof updateNotificationSchema
->;
+export type UpdateNotificationInput = z.infer<typeof updateNotificationSchema>;
 
 export const updateProfileSchema = z.object({
   name: z.string().min(2).max(30),
   image: z.string(),
 });
-export type UpdateProfilePayload = z.infer<typeof updateProfileSchema>;
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
 
 export const updatePasswordSchema = z
   .object({
@@ -49,4 +47,4 @@ export const updatePasswordSchema = z
       path: ["confirmPassword"],
     }
   );
-export type UpdatePasswordPayload = z.infer<typeof updatePasswordSchema>;
+export type UpdatePasswordInput = z.infer<typeof updatePasswordSchema>;

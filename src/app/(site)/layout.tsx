@@ -1,6 +1,6 @@
 import { Geist, Montserrat } from "next/font/google";
 
-import { getThemePreference } from "~/features/theme/utils";
+import { getThemePreference } from "~/features/theme";
 import { cn } from "~/lib/utils";
 
 const geist = Geist({

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-import { authClient } from "~/lib/auth/auth-client";
+import { authClient } from "~/server/auth/auth-client";
 
 export const useSignOut = (rediretTo = "/") => {
   const router = useRouter();

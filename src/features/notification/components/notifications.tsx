@@ -2,7 +2,7 @@
 
 import { BellIcon } from "lucide-react";
 
-import { useNotificationStore } from "~/store/notification-store";
+import { useNotificationStore } from "~/stores/notification-store";
 
 import { NotificationCard } from "./notification-card";
 

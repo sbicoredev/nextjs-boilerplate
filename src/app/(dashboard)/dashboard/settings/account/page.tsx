@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { AccountSettings } from "~/features/settings/components/account";
+import { AccountSettings } from "~/features/settings";
 
 export const metadata: Metadata = {
   title: "Account",

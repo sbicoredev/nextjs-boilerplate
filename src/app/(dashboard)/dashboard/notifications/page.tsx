@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { Container } from "~/components/container";
-import { Notifications } from "~/features/notification/components/notifications";
+import { Notifications } from "~/features/notification";
 
 export const metadata: Metadata = {
   title: "Notifications | Dashboard",

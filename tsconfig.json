@@ -35,6 +35,14 @@
     "noEmit": true,
     "plugins": [{ "name": "next" }],
     "paths": {
+      "~/components/*": ["./src/shared/components/*"],
+      "~/constants/*": ["./src/shared/constants/*"],
+      "~/contexts/*": ["./src/shared/contexts/*"],
+      "~/env/*": ["./src/shared/env/*"],
+      "~/hooks/*": ["./src/shared/hooks/*"],
+      "~/lib/*": ["./src/shared/lib/*"],
+      "~/stores/*": ["./src/shared/stores/*"],
+      "~/utils/*": ["./src/shared/utils/*"],
       "~/*": ["./src/*"]
     }
   },
