@@ -1,8 +1,10 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
+import { AlertTriangleIcon } from "lucide-react";
 
 import { ButtonSpinner } from "~/components/button-spinner";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import {
   Field,
   FieldError,
@@ -10,32 +12,58 @@ import {
   FieldLabel,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
+import { ErrorMessaage } from "~/constants/error-message";
+import { mapToFormError } from "~/utils/form";
 
-import { useChangePassword } from "../../api/change-password";
-import { updatePasswordSchema } from "../../schemas";
+import { useChangePassword } from "../../hooks/use-change-password";
+import { updatePasswordSchema } from "../../schemas/profile-schema";
 
 export const PasswordUpdateForm = () => {
-  const { mutate: changePassword, isPending: isUpdatingPass } =
-    useChangePassword();
+  const { mutateAsync, isSuccess } = useChangePassword();
 
   const form = useForm({
     defaultValues: {
-      currentPassword: "12345678",
-      newPassword: "12345678",
-      confirmPassword: "12345678",
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     },
     validators: { onSubmit: updatePasswordSchema },
-    onSubmit: async ({ value }) => changePassword(value),
+    onSubmit: async ({ value, formApi }) => {
+      const { validationErrors, serverError } = await mutateAsync(value);
+      if (validationErrors) {
+        formApi.setErrorMap({
+          onSubmit: {
+            form: ErrorMessaage.validation.failed,
+            fields: mapToFormError(validationErrors.fieldErrors),
+          },
+        });
+      } else if (serverError) {
+        formApi.setErrorMap({ onSubmit: { form: serverError, fields: {} } });
+      }
+    },
   });
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        e.stopPropagation();
         form.handleSubmit();
       }}
     >
       <FieldGroup>
+        <form.Subscribe selector={(state) => state.errorMap.onSubmit}>
+          {(errors) =>
+            errors && isSuccess ? (
+              <Alert className="border border-red-500/20 bg-red-500/10">
+                <AlertTriangleIcon />
+                <AlertTitle>Request Error</AlertTitle>
+                <AlertDescription>{errors.toString()}</AlertDescription>
+              </Alert>
+            ) : null
+          }
+        </form.Subscribe>
+
         <form.Field name="currentPassword">
           {(field) => {
             const isInvalid =
@@ -51,13 +79,14 @@ export const PasswordUpdateForm = () => {
                   onChange={(e) => field.handleChange(e.target.value)}
                   required
                   type="password"
-                  value={field.state.value ?? ""}
+                  value={field.state.value}
                 />
                 <FieldError errors={field.state.meta.errors} />
               </Field>
             );
           }}
         </form.Field>
+
         <form.Field name="newPassword">
           {(field) => {
             const isInvalid =
@@ -73,13 +102,14 @@ export const PasswordUpdateForm = () => {
                   onChange={(e) => field.handleChange(e.target.value)}
                   required
                   type="password"
-                  value={field.state.value ?? ""}
+                  value={field.state.value}
                 />
                 <FieldError errors={field.state.meta.errors} />
               </Field>
             );
           }}
         </form.Field>
+
         <form.Field name="confirmPassword">
           {(field) => {
             const isInvalid =
@@ -95,16 +125,23 @@ export const PasswordUpdateForm = () => {
                   onChange={(e) => field.handleChange(e.target.value)}
                   required
                   type="password"
-                  value={field.state.value ?? ""}
+                  value={field.state.value}
                 />
                 <FieldError errors={field.state.meta.errors} />
               </Field>
             );
           }}
         </form.Field>
-        <Field>
-          <ButtonSpinner spin={isUpdatingPass}>Update</ButtonSpinner>
-        </Field>
+
+        <form.Subscribe
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
+        >
+          {([canSubmit, isSubmitting]) => (
+            <ButtonSpinner disabled={!canSubmit} spin={isSubmitting}>
+              {isSubmitting ? "Updating..." : "Update"}
+            </ButtonSpinner>
+          )}
+        </form.Subscribe>
       </FieldGroup>
     </form>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
+import z from "zod";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -16,10 +17,17 @@ import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Separator } from "~/components/ui/separator";
 import { toast } from "~/components/ui/toast";
 
-import {
-  type UpdateNotificationInput,
-  updateNotificationSchema,
-} from "../schemas";
+export const updateNotificationSchema = z.object({
+  type: z.enum(["all", "mentions", "none"], {
+    error: "You need to select a notification type.",
+  }),
+  mobile: z.boolean().default(false).optional(),
+  communication_emails: z.boolean().default(false).optional(),
+  social_emails: z.boolean().default(false).optional(),
+  marketing_emails: z.boolean().default(false).optional(),
+  security_emails: z.boolean(),
+});
+export type UpdateNotificationInput = z.infer<typeof updateNotificationSchema>;
 
 const defaultValues: Partial<UpdateNotificationInput> = {
   communication_emails: false,
@@ -59,6 +67,7 @@ export const NotificationSettings = () => {
         className="space-y-8"
         onSubmit={(e) => {
           e.preventDefault();
+          e.stopPropagation();
           form.handleSubmit();
         }}
       >

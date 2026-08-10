@@ -1,14 +1,43 @@
-import { Header } from "~/components/sections/header";
+import { Geist, Montserrat } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 
-type Props = {
-  children: React.ReactNode;
-};
+import { cn } from "~/lib/utils";
 
-export default function AuthLayout({ children }: Props) {
+const geist = Geist({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700", "800"],
+  variable: "--font-geist",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700", "800"],
+  variable: "--font-montserrat",
+});
+
+export default function AuthLayout({ children }: React.PropsWithChildren) {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-      <main className="grid grow">{children}</main>
-    </div>
+    <html
+      lang="en"
+      style={{
+        // @ts-expect-error
+        "--font-sans": "geist",
+        "--font-heading": "montserrat",
+      }}
+      suppressHydrationWarning
+    >
+      <body className={cn(geist.variable, montserrat.variable)}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+        >
+          <div className="flex min-h-screen flex-col">
+            <main className="grid grow">{children}</main>
+          </div>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

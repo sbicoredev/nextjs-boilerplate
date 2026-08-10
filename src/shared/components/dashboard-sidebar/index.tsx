@@ -54,7 +54,9 @@ export const DashboardSidebar = ({
         <NavMain />
         <NavSecondary />
       </SidebarContent>
-      <SidebarFooter>{!!user && <NavUser user={user} />}</SidebarFooter>
+      <SidebarFooter>
+        <NavUser user={user} />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

@@ -8,6 +8,8 @@ import {
 } from "~/constants/auth";
 import { serverEnv } from "~/env/server";
 
+import { resolveIp } from "./server/get-ip";
+import { checkRateLimit } from "./server/rate-limit/check";
 import { generalRateLimit } from "./server/rate-limit/policies";
 
 const authRoutes: string[] = Object.values(AUTH_ROUTES);
@@ -15,30 +17,26 @@ const protectedUrl = ["/dashboard"];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  // request.ip is set by the trusted upstream proxy (Vercel, Cloudflare, etc.)
-  // and can't be spoofed by the client. x-forwarded-for can be spoofed when
-  // there's no trusted proxy, so we only use it as a secondary signal.
-  const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0];
   // @ts-expect-error - request.ip is available on Vercel/Node runtimes
-  const ip = request.ip ?? forwardedFor ?? "anonymous";
+  const ip = resolveIp(request.headers, request.ip);
 
   if (serverEnv.RATE_LIMIT_ENABLED) {
-    try {
-      const { success, limit, remaining, reset } =
-        await generalRateLimit.limit(ip);
-      if (!success) {
-        return new NextResponse("Too Many Requests, Please try again later.", {
-          status: 429,
-          headers: {
-            "X-RateLimit-Limit": limit.toString(),
-            "X-RateLimit-Remaining": remaining.toString(),
-            "X-RateLimit-Reset": reset.toString(),
-            "Retry-After": Math.ceil((reset - Date.now()) / 1000).toString(),
-          },
-        });
-      }
-    } catch (error) {
-      console.error("Rate limit check failed, blocking request:", error);
+    const outcome = await checkRateLimit(generalRateLimit, ip);
+    if (!outcome.ok && outcome.reason === "rate_limited") {
+      const { limit, remaining, reset } = outcome.result;
+      return new NextResponse("Too Many Requests, Please try again later.", {
+        status: 429,
+        headers: {
+          "X-RateLimit-Limit": limit.toString(),
+          "X-RateLimit-Remaining": remaining.toString(),
+          "X-RateLimit-Reset": reset.toString(),
+          "Retry-After": Math.ceil((reset - Date.now()) / 1000).toString(),
+        },
+      });
+    }
+    if (!outcome.ok && outcome.reason === "backend_unavailable") {
+      // checkRateLimit already reported the error; fail-closed policy is
+      // decided once, in one place — see server/rate-limit/check.ts.
       return new NextResponse("Service Unavailable", { status: 503 });
     }
   }

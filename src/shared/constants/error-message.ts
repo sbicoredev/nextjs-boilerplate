@@ -6,6 +6,9 @@ export const ErrorMessaage = {
   rateLimit: {
     tooManyRequest: "Too many requests. Please try again later.",
   },
+  validation: {
+    failed: "Validation failed!",
+  },
   auth: {
     unauthorized: "Unauthorized!",
     forbidden: "Forbidden!",

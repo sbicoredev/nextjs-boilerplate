@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Footer } from "~/components/sections/footer";
-import { Header } from "~/components/sections/header";
+import { SiteFooter } from "~/components/sections/site-footer";
+import { SiteHeader } from "~/components/sections/site-header";
 import { Button } from "~/components/ui/button";
 import { siteConfig } from "~/configs/site-config";
 import { AUTH_ROUTES } from "~/constants/auth";
@@ -13,7 +13,7 @@ export default async function HomePage() {
   const auth = await getCurrentSession();
   return (
     <div className="relative flex h-full min-h-screen w-full flex-col bg-card">
-      <Header />
+      <SiteHeader />
       <div className="z-10 mx-auto flex w-full max-w-5xl flex-col gap-4 px-6">
         <div className="z-10 flex h-full w-full flex-col items-center justify-center gap-4 p-12 md:p-24">
           <Button
@@ -82,7 +82,7 @@ export default async function HomePage() {
           </div>
         </div>
       </div>
-      <Footer />
+      <SiteFooter />
 
       <Image
         alt="Hero"

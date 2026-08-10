@@ -1,5 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
+
+import { reportError } from "~/lib/error-reporter";
+
 export default function GlobalError({
   error,
   reset,
@@ -7,6 +11,13 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  // This is the one boundary guaranteed to catch errors that escaped every
+  // other error.tsx in the tree — the most important place to log, and
+  // previously the one place that didn't.
+  useEffect(() => {
+    reportError(error, { boundary: "global", digest: error.digest });
+  }, [error]);
+
   return (
     <html lang="en">
       <body>

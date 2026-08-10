@@ -1,45 +1,31 @@
-import { getSessionCookie } from "better-auth/cookies";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 
 import { Providers } from "~/components/providers";
-import { AuthContext } from "~/contexts/auth-context";
-import { ThemeCustomizerContext } from "~/contexts/theme-context";
-import { getThemePreference } from "~/features/theme";
 import { constructMetadata } from "~/lib/construct-metadata";
-import { getCurrentSession } from "~/server/auth/get-current-session";
 
 import "../styles/globals.css";
 
-export async function generateMetadata(): Promise<Metadata> {
-  return constructMetadata({
-    keywords: ["Next.js", "React", "Shadcn", "Better Auth"],
-  });
-}
+export const metadata: Metadata = constructMetadata({
+  keywords: ["Next.js", "React", "Shadcn", "Better Auth"],
+});
 
-export default async function RootLayout({
-  children,
-}: React.PropsWithChildren) {
-  // incase db session revoked and session cookies left in browser
-  let needSignOut = false;
-  const auth = await getCurrentSession();
-  const sessionCookie = getSessionCookie(await headers());
-  if (!auth?.user && sessionCookie) {
-    needSignOut = true;
-  }
-  const preference = await getThemePreference();
-
-  return (
-    <AuthContext
-      value={{
-        user: auth?.user || null,
-        session: auth?.session || null,
-        needSignOut,
-      }}
-    >
-      <ThemeCustomizerContext allowedFonts={[]} themeStoreState={preference}>
-        <Providers>{children}</Providers>
-      </ThemeCustomizerContext>
-    </AuthContext>
-  );
+/**
+ * Intentionally does NOT read `cookies()`/`headers()` or fetch the session.
+ *
+ * Reading request data (cookies/headers) in the root layout opts the ENTIRE
+ * app out of static rendering, because Next.js determines a route's
+ * static/dynamic status from its whole layout tree. Session- and
+ * theme-cookie-dependent data now lives in the route-group layouts that
+ * actually need it:
+ *   - `(dashboard)/dashboard/layout.tsx` — real, DB-verified session check,
+ *     already dynamic because it's an authenticated area.
+ *   - `(site)` / `(auth)` — auth-aware UI (Header/Nav) reads the session
+ *     client-side via `authClient.useSession()` instead, so these routes
+ *     stay eligible for static rendering / ISR.
+ *
+ * `<Providers>` only sets up client-side context (TanStack Query, tooltips,
+ * toasts) — it does not read any request data.
+ */
+export default function RootLayout({ children }: React.PropsWithChildren) {
+  return <Providers>{children}</Providers>;
 }

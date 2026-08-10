@@ -1,11 +1,12 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
+import { AlertTriangleIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { z } from "zod";
 
 import { ButtonSpinner } from "~/components/button-spinner";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -23,37 +24,41 @@ import {
   FieldLabel,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
+import { ErrorMessaage } from "~/constants/error-message";
 import { useAuth } from "~/contexts/auth-context";
+import { mapToFormError } from "~/utils/form";
 
-import { useDeleteAccount } from "../../api/delete-account";
-
-const schema = z.object({
-  password: z.string().min(6),
-});
+import { useDeleteAccount } from "../../hooks/use-delete-account";
+import { deleteAccountSchema } from "../../schemas/profile-schema";
 
 export const DeleteAccountDialog = () => {
+  const { session } = useAuth();
+  const { mutateAsync, isPending, isSuccess } = useDeleteAccount();
   const [open, setOpen] = useState(false);
-  const auth = useAuth();
-
-  const { mutate: deleteAccoount, isPending } = useDeleteAccount();
 
   const form = useForm({
-    defaultValues: {
-      password: "123456",
+    defaultValues: { password: "" },
+    validators: { onSubmit: deleteAccountSchema.omit({ token: true }) },
+    onSubmit: async ({ value, formApi }) => {
+      if (!session.token) {
+        return;
+      }
+      const { validationErrors, serverError } = await mutateAsync({
+        token: session.token,
+        password: value.password,
+      });
+      if (validationErrors) {
+        formApi.setErrorMap({
+          onSubmit: {
+            form: ErrorMessaage.validation.failed,
+            fields: mapToFormError(validationErrors.fieldErrors),
+          },
+        });
+      } else if (serverError) {
+        formApi.setErrorMap({ onSubmit: { form: serverError, fields: {} } });
+      }
     },
-    validators: { onSubmit: schema },
-    onSubmit: ({ value }) => handleDelete(value.password),
   });
-
-  const handleDelete = (password: string) => {
-    if (!auth?.session?.token) {
-      return;
-    }
-    deleteAccoount({
-      token: auth.session.token,
-      password,
-    });
-  };
 
   return (
     <Dialog onOpenChange={(v) => setOpen(v)} open={open}>
@@ -75,10 +80,23 @@ export const DeleteAccountDialog = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             form.handleSubmit();
           }}
         >
           <FieldGroup>
+            <form.Subscribe selector={(state) => state.errorMap.onSubmit}>
+              {(errors) =>
+                errors && isSuccess ? (
+                  <Alert className="border border-red-500/20 bg-red-500/10">
+                    <AlertTriangleIcon />
+                    <AlertTitle>Request Error</AlertTitle>
+                    <AlertDescription>{errors.toString()}</AlertDescription>
+                  </Alert>
+                ) : null
+              }
+            </form.Subscribe>
+
             <form.Field name="password">
               {(field) => {
                 const isInvalid =
@@ -115,16 +133,25 @@ export const DeleteAccountDialog = () => {
           </FieldGroup>
           <DialogFooter className="mt-4 gap-2">
             <DialogClose
-              render={
-                <Button onClick={() => setOpen(false)} variant="secondary" />
-              }
+              onClick={() => setOpen(false)}
+              render={<Button variant="secondary" />}
             >
               Cancel
             </DialogClose>
 
-            <ButtonSpinner spin={isPending} variant="destructive">
-              Delete account
-            </ButtonSpinner>
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+            >
+              {([canSubmit, isSubmitting]) => (
+                <ButtonSpinner
+                  disabled={!canSubmit}
+                  spin={isSubmitting}
+                  variant="destructive"
+                >
+                  {isSubmitting ? "Deleting..." : "Delete account"}
+                </ButtonSpinner>
+              )}
+            </form.Subscribe>
           </DialogFooter>
         </form>
       </DialogContent>

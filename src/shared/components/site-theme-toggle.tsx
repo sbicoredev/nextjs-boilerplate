@@ -1,7 +1,7 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { useEffect } from "react";
+import { useTheme } from "next-themes";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -10,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { useThemeCustomizerStore } from "~/contexts/theme-context";
 import { useCircularTransition } from "~/hooks/use-circular-transition";
 
 type Props = {
@@ -18,32 +17,20 @@ type Props = {
   size?: "sm" | "lg" | "icon" | "icon-sm";
 };
 
-export const ThemeToggle = ({ variant, size }: Props) => {
-  const themeMode = useThemeCustomizerStore((s) => s.themeMode);
-  const setThemeMode = useThemeCustomizerStore((s) => s.setThemeMode);
-  const { trigger } = useCircularTransition(setThemeMode);
-
-  useEffect(() => {
-    if (themeMode !== "system") {
-      setThemeMode(themeMode);
-      const root = document.documentElement;
-      root.classList.toggle("dark", themeMode === "dark");
-      root.style.colorScheme = themeMode === "dark" ? "dark" : "light";
-      return;
-    }
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const handler = (e: MediaQueryListEvent) => {
-      const isDark = e.matches;
-      setThemeMode(isDark ? "dark" : "light");
-      const root = document.documentElement;
-      root.classList.toggle("dark", isDark);
-      root.style.colorScheme = isDark ? "dark" : "light";
-    };
-    mq.addEventListener("change", handler);
-    return () => {
-      mq.removeEventListener("change", handler);
-    };
-  }, [themeMode, setThemeMode]);
+/**
+ * Public-site equivalent of `~/components/theme-toggle.tsx`.
+ *
+ * The dashboard's `ThemeToggle` reads/writes the cookie-persisted
+ * `ThemeCustomizerContext` Zustand store, which requires that context to be
+ * present — fine inside `(dashboard)`, which is already dynamic. Public
+ * marketing/auth pages don't have (and shouldn't need) that context, so this
+ * component uses `next-themes` instead: it's a small client-only
+ * light/dark/system toggle with no cookie read, which keeps `(site)`/`(auth)`
+ * eligible for static rendering.
+ */
+export const SiteThemeToggle = ({ variant, size }: Props) => {
+  const { setTheme } = useTheme();
+  const { trigger } = useCircularTransition(setTheme);
 
   return (
     <DropdownMenu>

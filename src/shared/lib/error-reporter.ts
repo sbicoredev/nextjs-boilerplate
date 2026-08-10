@@ -1,8 +1,7 @@
 /**
- * Centralized error reporting. Currently logs to the console — swap the
- * body of `reportError` for a real integration (Sentry, Logtail, etc.)
- * once you add one. All error boundaries and Server Actions should route
- * errors through this function so there's a single place to change.
+ * Centralized error reporting. Always logs to the console.
+ * All error boundaries and Server Actions should route errors through this
+ * function so there's a single place to swap providers.
  *
  * @example
  * import { reportError } from "~/lib/error-reporter";
@@ -27,13 +26,8 @@ export function reportError(
 
   if (process.env.NODE_ENV === "development") {
     console.error("[ErrorReporter]", payload.message, payload);
-    return;
+  } else {
+    // Structured JSON for log aggregators (Vercel, Cloudflare, etc.)
+    console.error(JSON.stringify(payload));
   }
-
-  // Structured JSON for log aggregators (Vercel, Cloudflare, etc.)
-  console.error(JSON.stringify(payload));
-
-  // TODO: Replace with your error tracking service, e.g.:
-  // import * as Sentry from "@sentry/nextjs";
-  // Sentry.captureException(error, { extra: context });
 }

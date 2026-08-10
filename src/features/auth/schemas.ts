@@ -9,6 +9,7 @@ import {
 export const signInSchema = z.object({
   email: emailValidator,
   password: passwordValidator,
+  rememberMe: z.boolean().optional(),
 });
 export type SignInInput = z.infer<typeof signInSchema>;
 

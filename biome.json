@@ -88,5 +88,18 @@
         }
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["e2e/**", "scripts/**"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "useTopLevelRegex": "off",
+            "noAwaitInLoops": "off"
+          }
+        }
+      }
+    }
+  ]
 }

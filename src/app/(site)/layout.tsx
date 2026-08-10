@@ -1,6 +1,6 @@
 import { Geist, Montserrat } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 
-import { getThemePreference } from "~/features/theme";
 import { cn } from "~/lib/utils";
 
 const geist = Geist({
@@ -15,22 +15,33 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 });
 
-export default async function SiteGroupLayout({
-  children,
-}: React.PropsWithChildren) {
-  const preference = await getThemePreference();
+/**
+ * No `cookies()`/`headers()`/session read here — see `src/app/layout.tsx`
+ * for why that matters. Dark/light mode comes from `next-themes`
+ * (`SiteThemeProvider`), which is client-only and doesn't block rendering.
+ * `suppressHydrationWarning` is required on `<html>` because next-themes
+ * sets the `dark` class before React hydrates.
+ */
+export default function SiteGroupLayout({ children }: React.PropsWithChildren) {
   return (
     <html
-      className={preference.themeMode === "light" ? "" : "dark"}
       lang="en"
       style={{
         // @ts-expect-error
         "--font-sans": "geist",
         "--font-heading": "montserrat",
       }}
+      suppressHydrationWarning
     >
       <body className={cn(geist.variable, montserrat.variable)}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

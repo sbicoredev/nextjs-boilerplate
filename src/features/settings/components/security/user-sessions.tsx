@@ -8,18 +8,16 @@ import { Badge } from "~/components/ui/badge";
 import { Separator } from "~/components/ui/separator";
 import { useAuth } from "~/contexts/auth-context";
 
-import { useListSessions } from "../../api/list-sessions";
-import {
-  useAllRevokeSession,
-  useRevokeSession,
-} from "../../api/revoke-session";
+import { useListSessions } from "../../hooks/use-list-sessions";
+import { useRevokeOtherSessions } from "../../hooks/use-revoke-other-sessions";
+import { useRevokeSession } from "../../hooks/use-revoke-session";
 
 export const UserSessions = () => {
   const auth = useAuth();
   const { data: sessions, isPending } = useListSessions();
 
-  const { mutate: revokeAllSession, isPending: isTerminatingAll } =
-    useAllRevokeSession();
+  const { mutate: revokeOtherSessions, isPending: isTerminatingAll } =
+    useRevokeOtherSessions();
   const { mutate: revokeSession, isPending: isTerminating } =
     useRevokeSession();
 
@@ -43,7 +41,7 @@ export const UserSessions = () => {
                 <div className="space-y-1 text-muted-foreground text-sm">
                   <p className="flex gap-2 font-semibold text-base text-foreground">
                     {ua.getOS().name} ({ua.getCPU().toString()})
-                    {session.id === auth?.session?.id && (
+                    {session.id === auth.session.id && (
                       <Badge>This Device</Badge>
                     )}
                   </p>
@@ -55,7 +53,7 @@ export const UserSessions = () => {
                     {`${session.ipAddress ?? "Unknown"} ${session.createdAt.toDateString()} ${session.createdAt.toLocaleTimeString()}`}
                   </p>
                 </div>
-                {session.id !== auth?.session?.id && (
+                {session.id !== auth.session.id && (
                   <ButtonSpinner
                     className="ms-auto"
                     onClick={() => revokeSession({ token: session.token })}
@@ -79,7 +77,7 @@ export const UserSessions = () => {
         </p>
         <ButtonSpinner
           disabled={sessions?.length === 0}
-          onClick={() => revokeAllSession()}
+          onClick={() => revokeOtherSessions()}
           size="sm"
           spin={isTerminatingAll}
           variant="destructive"

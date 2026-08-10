@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: "24.11.0"
+  PNPM_VERSION: "11.13.1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@8912a9102ac27614460f54aedde9e1e7f9aec20d # v6.0.5
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Lint check
+        run: pnpm run lint
+
+      - name: Unit Tests
+        run: pnpm run test
+
+      - name: Build
+        run: pnpm build
+        # Real env vars aren't available (and shouldn't be) in CI for a
+        # generic PR check — SKIP_ENV_VALIDATION bypasses the t3-env schema
+        # the same way the Dockerfile does, so this only verifies the build
+        # itself succeeds, not that any particular deployment's config is
+        # valid.
+        env:
+          SKIP_ENV_VALIDATION: "1"
+          # NODE_ENV: production
+          # DATABASE_URL: "postgresql://user:pass@localhost:5432/db"
+          # BETTER_AUTH_SECRET: "ci-dummy-secret-that-is-at-least-32-chars"
+          # BETTER_AUTH_URL: "http://localhost:3000"
+          # UPSTASH_REDIS_REST_URL: "https://dummy.upstash.io"
+          # UPSTASH_REDIS_REST_TOKEN: "dummy-token"
+          # SMTP_HOST: "localhost"
+          # SMTP_PORT: "1025"
+          # SMTP_USER: "ci"
+          # SMTP_PASS: "ci"
+          # EMAIL_FROM: "ci@example.com"
+          # EMAIL_FROM_NAME: "CI"

@@ -23,6 +23,7 @@ import {
   InputOTPSlot,
 } from "~/components/ui/input-otp";
 import { AUTH_ROUTES } from "~/constants/auth";
+import { ErrorMessaage } from "~/constants/error-message";
 import { cn } from "~/lib/utils";
 import { mapToFormError } from "~/utils/form";
 
@@ -49,7 +50,7 @@ export const ResetPasswordForm = ({ email, className, ...props }: Props) => {
       if (validationErrors) {
         formApi.setErrorMap({
           onSubmit: {
-            form: "Validation failed!",
+            form: ErrorMessaage.validation.failed,
             fields: mapToFormError(validationErrors.fieldErrors),
           },
         });

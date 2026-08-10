@@ -33,7 +33,7 @@ const links = [
   },
 ];
 
-export const Footer = () => (
+export const SiteFooter = () => (
   <footer className="mt-auto py-8 md:py-10">
     <Container>
       <Link aria-label="go home" className="mx-auto block size-fit" href="/">

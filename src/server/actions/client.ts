@@ -6,9 +6,12 @@ import z from "zod";
 
 import { ErrorMessaage } from "~/constants/error-message";
 import { serverEnv } from "~/env/server";
+import { reportError } from "~/lib/error-reporter";
 
 import { getCurrentSession } from "../auth/get-current-session";
+import { checkRateLimit } from "../rate-limit/check";
 import { createUserRateLimit } from "../rate-limit/policies";
+import { ActionError } from "./action-error";
 import { loggerMiddleware } from "./middleware/logger";
 import {
   authRoutesRateLimitMiddleware,
@@ -19,6 +22,12 @@ import {
 export const publicAction = createSafeActionClient({
   handleServerError(e) {
     if (isAPIError(e)) {
+      return e.message;
+    }
+    // Expected, user-safe errors (not found / forbidden / rate limited /
+    // unauthorized) are raised as ActionError specifically so they pass
+    // through here unmasked — see action-error.ts for why this matters.
+    if (e instanceof ActionError) {
       return e.message;
     }
     reportError(e);
@@ -47,7 +56,7 @@ export const authRoutesActionClient = publicAction.use(
 export const authenticatedAction = publicAction.use(async ({ next }) => {
   const auth = await getCurrentSession();
   if (!auth?.user) {
-    throw new Error(ErrorMessaage.auth.unauthorized);
+    throw new ActionError(ErrorMessaage.auth.unauthorized);
   }
   return next({ ctx: { user: auth.user } });
 });
@@ -56,11 +65,12 @@ export const authenticatedAction = publicAction.use(async ({ next }) => {
 export const rateLimitedAuthenticatedAction = authenticatedAction.use(
   async ({ next, metadata, ctx }) => {
     if (serverEnv.RATE_LIMIT_ENABLED) {
-      const { success } = await createUserRateLimit(ctx.user.id).limit(
+      const outcome = await checkRateLimit(
+        createUserRateLimit(ctx.user.id),
         metadata.actionName
       );
-      if (!success) {
-        throw new Error(ErrorMessaage.rateLimit.tooManyRequest);
+      if (!outcome.ok) {
+        throw new ActionError(ErrorMessaage.rateLimit.tooManyRequest);
       }
     }
     return next();
@@ -71,7 +81,7 @@ export const rateLimitedAuthenticatedAction = authenticatedAction.use(
 export const adminAction = authenticatedAction.use(({ next, ctx }) => {
   // ctx.user is available here (typed!) from the auth middleware
   if (ctx.user.role !== "admin") {
-    throw new Error(ErrorMessaage.auth.forbidden);
+    throw new ActionError(ErrorMessaage.auth.forbidden);
   }
   return next({ ctx: { isAdmin: true } });
 });

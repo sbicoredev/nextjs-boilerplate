@@ -8,10 +8,9 @@ import {
   UserIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
 
 import { Logo } from "~/components/logo";
-import { ThemeToggle } from "~/components/theme-toggle";
+import { SiteThemeToggle } from "~/components/site-theme-toggle";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -25,19 +24,25 @@ import {
 import { UserAvatar } from "~/components/user-avatar";
 import { siteConfig } from "~/configs/site-config";
 import { AUTH_ROUTES } from "~/constants/auth";
-import { useAuth } from "~/contexts/auth-context";
 import { useSignOut } from "~/features/auth";
+import { authClient } from "~/server/auth/auth-client";
 
-export const Header = () => {
-  const { user, needSignOut } = useAuth();
+/**
+ * Uses `authClient.useSession()` (client-side, better-auth's own hook)
+ * rather than the server-injected `AuthContext` used inside `(dashboard)`.
+ * That context is fed by a server-side session read in the dashboard
+ * layout, which is fine there (already dynamic) but would force this
+ * shared Header — rendered on public `(site)`/`(auth)` pages — to be
+ * dynamic too if it depended on the same context. The trade-off: the
+ * logged-in state here resolves after hydration instead of on first paint,
+ * so there's a brief flash of the logged-out state for returning users.
+ * If a stale cookie no longer resolves to a DB session, `useSession()`
+ * simply reports "no session" — no separate cleanup step needed.
+ */
+export const SiteHeader = () => {
+  const { data } = authClient.useSession();
+  const user = data?.user ?? null;
   const { mutate: signOut } = useSignOut();
-
-  // incase db session revoked and session cookies left in browser
-  useEffect(() => {
-    if (needSignOut) {
-      signOut();
-    }
-  }, [needSignOut]);
 
   return (
     <header>
@@ -104,7 +109,7 @@ export const Header = () => {
               />
             </svg>
           </Button>
-          <ThemeToggle size="icon-sm" variant="link" />
+          <SiteThemeToggle size="icon-sm" variant="link" />
           <Button
             nativeButton={false}
             render={<Link href={user ? "/dashboard" : AUTH_ROUTES.signIn} />}

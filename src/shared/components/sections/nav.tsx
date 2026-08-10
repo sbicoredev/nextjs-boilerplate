@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
 import { AUTH_ROUTES } from "~/constants/auth";
-import { useAuth } from "~/contexts/auth-context";
+import { authClient } from "~/server/auth/auth-client";
 
 const menuItems = [
   { name: "Features", href: "#link" },
@@ -13,8 +13,11 @@ const menuItems = [
   { name: "About", href: "#link" },
 ];
 
+// See Header.tsx for why this reads the session client-side rather than
+// from the server-injected AuthContext used inside (dashboard).
 export const Nav = () => {
-  const { user } = useAuth();
+  const { data } = authClient.useSession();
+  const user = data?.user ?? null;
   return (
     <>
       <nav className="absolute inset-0 m-auto hidden size-fit lg:block">
@@ -53,7 +56,7 @@ export const Nav = () => {
                   size="sm"
                   variant="outline"
                 >
-                  Dashbaord
+                  Dashboard
                 </Button>
               ) : (
                 <>
