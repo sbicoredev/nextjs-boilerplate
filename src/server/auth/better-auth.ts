@@ -27,6 +27,7 @@ export const auth = betterAuth({
       disableSignUp: true,
       allowedAttempts: authConfig.email.otpAllowedAttempts,
       expiresIn: authConfig.email.otpExpiresIn,
+      storeOTP: "encrypted",
       async sendVerificationOTP({ email, otp }) {
         await sendEmail({
           sendTo: email,

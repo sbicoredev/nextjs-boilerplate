@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { AppBreadcrumbs } from "~/components/app-breadcrumb";
@@ -13,7 +12,6 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar";
 import { UserAvatar } from "~/components/user-avatar";
-import { siteConfig } from "~/configs/site-config";
 import { AUTH_ROUTES } from "~/constants/auth";
 import { AuthContext } from "~/contexts/auth-context";
 import { NotificationTrigger } from "~/features/notification";
@@ -22,14 +20,7 @@ import {
   getThemePreference,
   ThemeCustomizer,
 } from "~/features/theme";
-import { constructMetadata } from "~/lib/construct-metadata";
 import { getCurrentSession } from "~/server/auth/get-current-session";
-
-export async function generateMetadata(): Promise<Metadata> {
-  return constructMetadata({
-    title: `Dashboard | ${siteConfig.name}`,
-  });
-}
 
 type Props = {
   children: React.ReactNode;

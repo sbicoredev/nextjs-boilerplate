@@ -39,7 +39,7 @@ type Props = React.ComponentProps<"div"> & {
 };
 
 export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
-  const { mutateAsync, isPending, isSuccess } = useVerifyEmail();
+  const { mutateAsync, isSuccess, isPending: isVerifying } = useVerifyEmail();
   const { mutate: resendOTP, isPending: isSendingOTP } =
     useSendVerificationOTP();
 
@@ -148,11 +148,12 @@ export const VerifyEmailForm = ({ email, className, ...props }: Props) => {
 
               <Field>
                 <ButtonSpinner
+                  disabled={isSendingOTP || isVerifying}
                   onClick={() =>
                     resendOTP({ email, type: "email-verification" })
                   }
                   size={"sm"}
-                  spin={isSendingOTP || isPending}
+                  spin={isSendingOTP}
                   type="button"
                   variant={"link"}
                 >

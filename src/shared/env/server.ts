@@ -27,6 +27,10 @@ export const serverEnv = createEnv({
     RATE_LIMIT_TTL: z.coerce.number().default(60),
     /** How many requests a user can make in each time window. */
     RATE_LIMIT_MAX: z.coerce.number().default(5),
+    /** Time window for rate limiting (seconds). */
+    AUTH_RATE_LIMIT_TTL: z.coerce.number().default(60),
+    /** How many requests a user can make in each time window. */
+    AUTH_RATE_LIMIT_MAX: z.coerce.number().default(5),
     // upstash backend (hosted, REST-based) — required when
     // RATE_LIMIT_BACKEND=upstash
     UPSTASH_REDIS_REST_URL: z.url().optional(),

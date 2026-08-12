@@ -68,6 +68,7 @@
     "actions": {
       "source": {
         "useSortedKeys": "off",
+        "useSortedPackageJson": "off",
         "useSortedInterfaceMembers": "off",
         "organizeImports": {
           "level": "on",

@@ -9,4 +9,9 @@ export const useSendVerificationOTP = () =>
   useMutation({
     mutationFn: async (input: SendVerificationOtpInput) =>
       sendVerificationOtpAction(input),
+    onSuccess: ({ serverError }) => {
+      if (serverError) {
+        throw new Error(serverError);
+      }
+    },
   });

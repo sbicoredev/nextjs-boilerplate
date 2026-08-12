@@ -20,5 +20,9 @@ export const siteConfig = {
     linkedin: "https://linkedin.com/in/sbicoredev",
     x: "https://x.com/sbicoredev",
   },
+  socialAccount: {
+    linkedin: "your-website-linkedin-username",
+    x: "your-website-x-username",
+  },
   githubRepo: "https://github.com/sbicoredev/nextjs-boilerplate",
 } as const;

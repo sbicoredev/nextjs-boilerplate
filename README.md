@@ -72,9 +72,6 @@ src/
     settings/             account/security settings
     projects/             reference feature — the ownership/repository
                           pattern, see features/projects/README.md
-    _examples/             theme customizer + notifications — wired into
-                          the dashboard by default, but reference/example
-                          quality, not core infra. See its README.md.
   server/
     actions/client.ts     next-safe-action client hierarchy
     auth/                 better-auth instance, session helpers

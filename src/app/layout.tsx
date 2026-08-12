@@ -5,9 +5,7 @@ import { constructMetadata } from "~/lib/construct-metadata";
 
 import "../styles/globals.css";
 
-export const metadata: Metadata = constructMetadata({
-  keywords: ["Next.js", "React", "Shadcn", "Better Auth"],
-});
+export const metadata: Metadata = constructMetadata({});
 
 /**
  * Intentionally does NOT read `cookies()`/`headers()` or fetch the session.

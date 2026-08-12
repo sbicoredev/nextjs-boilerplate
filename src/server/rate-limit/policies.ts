@@ -71,8 +71,8 @@ export const generalRateLimit = buildLimiter({
 
 // Stricter for auth endpoints
 export const authRoutesRateLimit = buildLimiter({
-  max: 20,
-  windowSeconds: 600, // 20 attempts / 10 min
+  max: serverEnv.AUTH_RATE_LIMIT_MAX,
+  windowSeconds: serverEnv.AUTH_RATE_LIMIT_TTL,
   prefix: "@ratelimit/auth",
 });
 
