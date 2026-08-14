@@ -1,0 +1,47 @@
+/**
+ * Self-hosted fonts via Fontsource (npm-bundled .woff2 files, no runtime
+ * fetch to fonts.googleapis.com) instead of next/font/google.
+ *
+ * next/font/google needs live internet access at *build* time to download
+ * font files — fine for most deployments, but this template targets
+ * self-hosted Docker deployment, where the build environment may be
+ * firewalled/air-gapped. Fontsource ships the actual font files inside the
+ * npm package, so `pnpm install` is the only network dependency; the build
+ * itself never talks to Google.
+ *
+ * Each @font-face import below registers the font under Fontsource's own
+ * family name (e.g. "Inter Variable"); the --font-* custom properties here
+ * are what the rest of the app actually references (see
+ * `src/shared/lib/fonts.ts`), so that indirection is the only thing call
+ * sites need to know about.
+ */
+
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "@fontsource-variable/montserrat";
+@import "@fontsource-variable/noto-sans";
+@import "@fontsource-variable/noto-serif";
+@import "@fontsource-variable/roboto";
+@import "@fontsource-variable/roboto-mono";
+
+/* Poppins has no variable-font release upstream — only static weights.
+ * 300/400/500/700/800 mirrors the weight list the old next/font/google
+ * config requested. */
+@import "@fontsource/poppins/300.css";
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/700.css";
+@import "@fontsource/poppins/800.css";
+
+:root {
+  --font-dm-sans: "DM Sans Variable", sans-serif;
+  --font-geist: "Geist Variable", sans-serif;
+  --font-geist-mono: "Geist Mono Variable", monospace;
+  --font-montserrat: "Montserrat Variable", sans-serif;
+  --font-noto-sans: "Noto Sans Variable", sans-serif;
+  --font-noto-serif: "Noto Serif Variable", serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-roboto: "Roboto Variable", sans-serif;
+  --font-roboto-mono: "Roboto Mono Variable", monospace;
+}

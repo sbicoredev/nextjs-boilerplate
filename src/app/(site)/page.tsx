@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { SiteFooter } from "~/components/sections/site-footer";
@@ -83,16 +82,6 @@ export default async function HomePage() {
         </div>
       </div>
       <SiteFooter />
-
-      <Image
-        alt="Hero"
-        className="fixed top-0 left-0 z-0 h-full w-full opacity-60 dark:invert"
-        height={500}
-        src="/assets/shadow.png"
-        width={500}
-      />
-      <div className="base-grid fixed h-screen w-screen opacity-40" />
-      <div className="fixed bottom-0 h-screen w-screen bg-linear-to-t from-[hsl(var(--card))] to-transparent" />
     </div>
   );
 }

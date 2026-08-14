@@ -1,32 +1,22 @@
-import { Geist, Montserrat } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 
-import { cn } from "~/lib/utils";
-
-const geist = Geist({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-geist",
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-montserrat",
-});
-
+/**
+ * Fonts: `--font-geist`/`--font-montserrat` come from the global `:root`
+ * block in `src/styles/fonts.css` (self-hosted via Fontsource) — no
+ * next/font wrapper needed here, see that file's header comment.
+ */
 export default function AuthLayout({ children }: React.PropsWithChildren) {
   return (
     <html
       lang="en"
       style={{
         // @ts-expect-error
-        "--font-sans": "geist",
-        "--font-heading": "montserrat",
+        "--font-sans": "var(--font-geist)",
+        "--font-heading": "var(--font-montserrat)",
       }}
       suppressHydrationWarning
     >
-      <body className={cn(geist.variable, montserrat.variable)}>
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

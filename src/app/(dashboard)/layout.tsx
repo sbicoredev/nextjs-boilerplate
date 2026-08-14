@@ -1,6 +1,6 @@
 import { ThemeCustomizerContext } from "~/contexts/theme-context";
 import { getThemePreference } from "~/features/theme";
-import { fontRegistry, fontVars } from "~/lib/fonts";
+import { fontRegistry } from "~/lib/fonts";
 
 export default async function DashboardGroupLayout({
   children,
@@ -19,11 +19,11 @@ export default async function DashboardGroupLayout({
       lang="en"
       style={{
         // @ts-expect-error
-        "--font-sans": preference.fontPrimary,
-        "--font-heading": preference.fontHeading,
+        "--font-sans": `var(${fontRegistry[preference.fontPrimary].cssVar})`,
+        "--font-heading": `var(${fontRegistry[preference.fontHeading].cssVar})`,
       }}
     >
-      <body className={fontVars}>
+      <body>
         <ThemeCustomizerContext
           allowedFonts={allowedFonts}
           themeStoreState={preference}

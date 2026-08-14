@@ -1,19 +1,4 @@
-import { Geist, Montserrat } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-
-import { cn } from "~/lib/utils";
-
-const geist = Geist({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-geist",
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-montserrat",
-});
 
 /**
  * No `cookies()`/`headers()`/session read here — see `src/app/layout.tsx`
@@ -21,6 +6,10 @@ const montserrat = Montserrat({
  * (`SiteThemeProvider`), which is client-only and doesn't block rendering.
  * `suppressHydrationWarning` is required on `<html>` because next-themes
  * sets the `dark` class before React hydrates.
+ *
+ * Fonts: `--font-geist`/`--font-montserrat` come from the global
+ * `:root` block in `src/styles/fonts.css` (self-hosted via Fontsource) —
+ * no next/font wrapper needed here, see that file's header comment.
  */
 export default function SiteGroupLayout({ children }: React.PropsWithChildren) {
   return (
@@ -28,12 +17,12 @@ export default function SiteGroupLayout({ children }: React.PropsWithChildren) {
       lang="en"
       style={{
         // @ts-expect-error
-        "--font-sans": "geist",
-        "--font-heading": "montserrat",
+        "--font-sans": "var(--font-geist)",
+        "--font-heading": "var(--font-montserrat)",
       }}
       suppressHydrationWarning
     >
-      <body className={cn(geist.variable, montserrat.variable)}>
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

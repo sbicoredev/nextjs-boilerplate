@@ -1,182 +1,24 @@
-import "server-only";
-
-import {
-  DM_Sans,
-  Fraunces,
-  Geist,
-  Geist_Mono,
-  Inter,
-  Montserrat,
-  Noto_Sans,
-  Noto_Serif,
-  Playfair_Display,
-  Plus_Jakarta_Sans,
-  Poppins,
-  Raleway,
-  Roboto,
-  Roboto_Mono,
-  Space_Grotesk,
-} from "next/font/google";
-
-// const ibmPlexMono = IBM_Plex_Mono({
-//   subsets: ["latin"],
-//   weight: ["300", "400", "700"],
-//   variable: "--font-ibmPlexMono",
-// });
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-dm-sans",
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-fraunces",
-});
-
-const geist = Geist({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-geist",
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-geist-mono",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-inter",
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-montserrat",
-});
-
-const notoSerif = Noto_Serif({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-noto-serif",
-});
-
-const notoSans = Noto_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-noto-sans",
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-plus-jakarta-sans",
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
-  variable: "--font-playfair-display",
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-poppins",
-});
-
-const raleway = Raleway({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-raleway",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-roboto",
-});
-
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-roboto-mono",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-space-grotesk",
-});
+/**
+ * Font registry — labels + the CSS custom property each font is exposed
+ * under. The actual @font-face declarations and --font-* variable
+ * definitions live in `src/styles/fonts.css` (self-hosted via Fontsource,
+ * see that file's header comment for why).
+ *
+ * This file used to wrap next/font/google and export each font's
+ * generated `.variable` className. That's gone: with self-hosted fonts,
+ * `--font-x` is a plain global CSS variable (see fonts.css's `:root`
+ * block) rather than something scoped to a next/font-generated className,
+ * so there's no per-font className to collect anymore.
+ */
 
 export const fontRegistry = {
-  dmSans: {
-    label: "DM Sans",
-    font: dmSans,
-  },
-  geist: {
-    label: "Geist",
-    font: geist,
-  },
-  geistMono: {
-    label: "Geist Mono",
-    font: geistMono,
-  },
-  fraunces: {
-    label: "Fraunces",
-    font: fraunces,
-  },
-  inter: {
-    label: "Inter",
-    font: inter,
-  },
-  montserrat: {
-    label: "Montserrat",
-    font: montserrat,
-  },
-  notoSans: {
-    label: "Noto Sans",
-    font: notoSans,
-  },
-  notoSerif: {
-    label: "Noto Serif",
-    font: notoSerif,
-  },
-  plusJakartaSans: {
-    label: "Plus Jakarta Sans",
-    font: plusJakartaSans,
-  },
-  playfairDisplay: {
-    label: "Playfair Display",
-    font: playfairDisplay,
-  },
-  poppins: {
-    label: "Poppins",
-    font: poppins,
-  },
-  roboto: {
-    label: "Roboto",
-    font: roboto,
-  },
-  robotoMono: {
-    label: "Roboto Mono",
-    font: robotoMono,
-  },
-  raleway: {
-    label: "Raleway",
-    font: raleway,
-  },
-  spaceGrotesk: {
-    label: "Space Grotesk",
-    font: spaceGrotesk,
-  },
+  dmSans: { label: "DM Sans", cssVar: "--font-dm-sans" },
+  geist: { label: "Geist", cssVar: "--font-geist" },
+  geistMono: { label: "Geist Mono", cssVar: "--font-geist-mono" },
+  montserrat: { label: "Montserrat", cssVar: "--font-montserrat" },
+  notoSans: { label: "Noto Sans", cssVar: "--font-noto-sans" },
+  notoSerif: { label: "Noto Serif", cssVar: "--font-noto-serif" },
+  poppins: { label: "Poppins", cssVar: "--font-poppins" },
+  roboto: { label: "Roboto", cssVar: "--font-roboto" },
+  robotoMono: { label: "Roboto Mono", cssVar: "--font-roboto-mono" },
 } as const;
-
-export const fontVars = Object.values(fontRegistry)
-  .map((f) => f.font.variable)
-  .join(" ");

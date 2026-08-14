@@ -43,6 +43,7 @@ import {
   useThemeCustomizer,
   useThemeCustomizerStore,
 } from "~/contexts/theme-context";
+import { fontRegistry } from "~/lib/fonts";
 import { cn } from "~/lib/utils";
 import { toTitleCase } from "~/utils/string";
 
@@ -90,13 +91,21 @@ export function ThemeCustomizer() {
   };
 
   const handlePrimaryChange = (v: FontKey | null) => {
-    document.documentElement.style.setProperty("--font-sans", v);
-    setFontPrimary(v ?? DEFAULT_THEME_PREFERENCE.fontPrimary);
+    const key = v ?? DEFAULT_THEME_PREFERENCE.fontPrimary;
+    document.documentElement.style.setProperty(
+      "--font-sans",
+      `var(${fontRegistry[key].cssVar})`
+    );
+    setFontPrimary(key);
   };
 
   const handleHeadingChange = (v: FontKey | null) => {
-    document.documentElement.style.setProperty("--font-heading", v);
-    setFontHeading(v ?? DEFAULT_THEME_PREFERENCE.fontHeading);
+    const key = v ?? DEFAULT_THEME_PREFERENCE.fontHeading;
+    document.documentElement.style.setProperty(
+      "--font-heading",
+      `var(${fontRegistry[key].cssVar})`
+    );
+    setFontHeading(key);
   };
 
   const handleDirectionChange = (v: PageDirection) => {
@@ -117,10 +126,13 @@ export function ThemeCustomizer() {
       "data-theme-preset",
       DEFAULT_THEME_PREFERENCE.themePreset
     );
-    root.style.setProperty("--font-sans", DEFAULT_THEME_PREFERENCE.fontPrimary);
+    root.style.setProperty(
+      "--font-sans",
+      `var(${fontRegistry[DEFAULT_THEME_PREFERENCE.fontPrimary].cssVar})`
+    );
     root.style.setProperty(
       "--font-heading",
-      DEFAULT_THEME_PREFERENCE.fontHeading
+      `var(${fontRegistry[DEFAULT_THEME_PREFERENCE.fontHeading].cssVar})`
     );
     document
       .querySelector('[data-slot="dashboard-main"]')
