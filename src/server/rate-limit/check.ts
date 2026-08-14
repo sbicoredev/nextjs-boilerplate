@@ -1,8 +1,19 @@
 import "server-only";
 
+import type { Ratelimit } from "@upstash/ratelimit";
+
 import { reportError } from "~/lib/error-reporter";
 
-import type { RateLimiter, RateLimitResult } from "./client";
+type RatelimitResponse = {
+  /** Whether the request may pass(true) or exceeded the limit(false) */
+  success: boolean;
+  /** Maximum number of requests allowed within a window. */
+  limit: number;
+  /** How many requests the user has left within the current window. */
+  remaining: number;
+  /** Unix timestamp in milliseconds when the limits are reset. */
+  reset: number;
+};
 
 /**
  * Single, documented fail-mode for every rate-limited surface in the app
@@ -20,12 +31,12 @@ import type { RateLimiter, RateLimitResult } from "./client";
 const FAIL_MODE: "open" | "closed" = "closed";
 
 export type RateLimitOutcome =
-  | { ok: true; result: RateLimitResult }
-  | { ok: false; reason: "rate_limited"; result: RateLimitResult }
+  | { ok: true; result: RatelimitResponse }
+  | { ok: false; reason: "rate_limited"; result: RatelimitResponse }
   | { ok: false; reason: "backend_unavailable" };
 
 export async function checkRateLimit(
-  limiter: RateLimiter,
+  limiter: Ratelimit,
   identifier: string
 ): Promise<RateLimitOutcome> {
   try {

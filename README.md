@@ -15,7 +15,7 @@ next-safe-action, Tailwind CSS 4, shadcn/ui, Vitest, and Docker.
 | Server Actions | next-safe-action (middleware chain) |
 | Styling | Tailwind CSS 4 + shadcn/ui |
 | State | Zustand + TanStack Query |
-| Rate Limiting | Upstash Redis or self-hosted Redis (swappable, see `RATE_LIMIT_BACKEND`) |
+| Rate Limiting | Upstash Redis |
 | Email | Nodemailer |
 | Lint | Biome + Ultracite |
 | Testing | Vitest + Testing Library |
@@ -25,7 +25,7 @@ next-safe-action, Tailwind CSS 4, shadcn/ui, Vitest, and Docker.
 
 ```bash
 cp .env.example .env        # fill in values
-docker compose up -d        # postgres + mailpit (+ redis, if RATE_LIMIT_BACKEND=redis)
+docker compose up -d        # postgres + mailpit + redis
 pnpm install
 pnpm db:push                # create tables
 pnpm dev                    # http://localhost:3000 — leave this running
@@ -76,7 +76,7 @@ src/
     actions/client.ts     next-safe-action client hierarchy
     auth/                 better-auth instance, session helpers
     db/                   Drizzle client + schema aggregator
-    rate-limit/           swappable Upstash/self-hosted-Redis rate limiter
+    rate-limit/           swappable Upstash rate limiter
     email/                 nodemailer + react-email templates
   shared/
     components/           shadcn/ui primitives + shared layout components
@@ -138,8 +138,9 @@ Multi-stage build, non-root user, healthcheck, standalone output.
 
 ## CI/CD
 
-Every push/PR runs: lint -> typecheck -> test -> build.
-See `.github/workflows/ci.yml`.
+Every push/PR runs: lint -> typecheck -> test -> build -> e2e (Playwright,
+against the built app + a real Postgres service container).
+See `.github/workflows/ci.yaml`.
 
 ## Security
 
@@ -147,7 +148,7 @@ See `.github/workflows/ci.yml`.
 - [x] poweredByHeader: false
 - [x] Non-root Docker user + container healthcheck (`/api/health`)
 - [x] .env excluded from image and git
-- [x] Rate limiting (edge + server actions), swappable Upstash/self-hosted Redis backend
+- [x] Rate limiting (edge + server actions)
 - [x] Zod validation on all server actions
 - [x] scrypt password hashing (via better-auth)
 - [ ] CSP header (tailor per-project)
