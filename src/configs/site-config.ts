@@ -4,8 +4,8 @@ const currentYear = new Date().getFullYear().toString();
 const websiteLaunchYear = "2026";
 
 export const siteConfig = {
-  name: clientEnv.NEXT_PUBLIC_APP_NAME,
-  url: clientEnv.NEXT_PUBLIC_APP_URL,
+  name: clientEnv.NEXT_PUBLIC_APP_NAME ?? "Acme",
+  url: clientEnv.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   locale: "en-US",
   language: "en-us",
   description: "A simple Next.js boilerplate",
