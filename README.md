@@ -31,6 +31,12 @@ pnpm db:push                # create tables
 pnpm dev                    # http://localhost:3000 — leave this running
 ```
 
+To run the whole stack in Docker instead of `pnpm dev`:
+
+```bash
+docker compose --profile app up -d --build
+```
+
 In another terminal, once the dev server is up:
 
 ```bash
